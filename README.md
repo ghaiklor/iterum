@@ -1,6 +1,6 @@
 # Iterum
 
-TK badges here
+[![BCH compliance](https://bettercodehub.com/edge/badge/ghaiklor/iterum?branch=master)](https://bettercodehub.com/)
 
 ---
 
