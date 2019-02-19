@@ -1,22 +1,39 @@
 {
   "name": "iterum",
   "version": "0.0.1",
-  "description": "Another attempt to create VM with its own language and intermediate representation",
+  "description": "Yet another attempt to create VM with its own language and intermediate representation",
+  "license": "MIT",
   "main": "index.js",
-  "keywords": [
-    "iterum",
-    "parser",
-    "interpretation",
-    "vm"
-  ],
+  "homepage": "https://github.com/ghaiklor/iterum#readme",
+  "author": {
+    "name": "Eugene Obrezkov",
+    "email": "ghaiklor@gmail.com",
+    "url": "https://ghaiklor.com"
+  },
+  "bugs": {
+    "url": "https://github.com/ghaiklor/iterum/issues",
+    "email": "ghaiklor@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghaiklor/iterum.git"
+  },
+  "directories": {
+    "lib": "src",
+    "doc": "docs",
+    "example": "examples",
+    "test": "spec"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "scripts": {
     "build": "npm run clean && npm run lint && npm run test && tsc",
-    "clean": "rimraf dist",
+    "clean": "rimraf coverage dist",
     "lint": "tslint --project tsconfig.json --config tslint.json",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles --config jest.config.json"
   },
-  "author": "ghaiklor",
-  "license": "MIT",
+  "dependencies": {},
   "devDependencies": {
     "@types/jest": "24.0.6",
     "jest": "24.1.0",
