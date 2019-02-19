@@ -1,0 +1,10 @@
+{
+  "extends": "tslint:recommended",
+  "defaultSeverity": "error",
+  "jsRules": {},
+  "rules": {},
+  "rulesDirectory": [],
+  "linterOptions": {
+    "format": "stylish"
+  }
+}
