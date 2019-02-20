@@ -1,33 +1,6 @@
-export interface IToken {
-  type: TokenType;
-  code: string;
-  location: ITokenLocation;
-}
-
-export interface ITokenLocation {
-  line: number;
-  column: number;
-}
-
-export const enum TokenType {
-  ASTERISK = "ASTERISK",
-  COLON = "COLON",
-  COMMA = "COMMA",
-  DOUBLE_QUOTES = "DOUBLE_QUOTES",
-  EQUALS = "EQUALS",
-  IDENTIFIER = "IDENTIFIER",
-  FUNCTION = "FUNCTION",
-  LEFT_CURLY_BRACES = "LEFT_CURLY_BRACES",
-  LEFT_PARENTHESIS = "LEFT_PARENTHESIS",
-  MINUS = "MINUS",
-  PLUS = "PLUS",
-  RIGHT_CURLY_BRACES = "RIGHT_CURLY_BRACES",
-  RIGHT_PARENTHESIS = "RIGHT_PARENTHESIS",
-  SEMICOLON = "SEMICOLON",
-  SINGLE_QUOTES = "SINGLE_QUOTES",
-  SLASH = "SLASH",
-  BACKSLASH = "BACKSLASH",
-}
+import { IToken } from "./IToken";
+import { ITokenLocation } from "./ITokenLocation";
+import { TokenType } from "./TokenType";
 
 export class Token implements IToken {
   public type: TokenType;

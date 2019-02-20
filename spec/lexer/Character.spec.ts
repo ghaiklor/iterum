@@ -1,0 +1,51 @@
+import { Character } from "../../src/lexer/Character";
+
+describe("Iterum::Lexer::Char", () => {
+  test("Should properly wrap the character", () => {
+    const char = Character.from("*");
+
+    expect(char).toBeInstanceOf(Character);
+    expect(char.char).toEqual("*");
+  });
+
+  test("Should properly check if it is matches against other string", () => {
+    const char = Character.from("*");
+
+    expect(char.is("*")).toBeTruthy();
+    expect(char.is("/")).toBeFalsy();
+  });
+
+  test("Should properly check if it is newline", () => {
+    const asterisk = Character.from("*");
+    const newline = Character.from(`\n`);
+
+    expect(asterisk.isNewline()).toBeFalsy();
+    expect(newline.isNewline()).toBeTruthy();
+  });
+
+  test("Should properly check if it is whitespace", () => {
+    const whitespace = Character.from(`\n`);
+
+    expect(whitespace.isNewline()).toBeTruthy();
+  });
+
+  test("Should properly check if it is alpha char", () => {
+    const alpha = Character.from("a");
+
+    expect(alpha.isAlpha()).toBeTruthy();
+  });
+
+  test("Should properly check if it is digit", () => {
+    const digit = Character.from("2");
+
+    expect(digit.isDigit()).toBeTruthy();
+  });
+
+  test("Should properly check if it is alphanumeric", () => {
+    const alpha = Character.from("b");
+    const digit = Character.from("7");
+
+    expect(alpha.isAlphaNumeric()).toBeTruthy();
+    expect(digit.isAlphaNumeric()).toBeTruthy();
+  });
+});

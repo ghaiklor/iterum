@@ -1,4 +1,5 @@
-import { Token, TokenType } from "../src/Token";
+import { Token } from "../../src/token/Token";
+import { TokenType } from "../../src/token/TokenType";
 
 describe("Iterum::Token", () => {
   test("Should properly instantiate Token", () => {
