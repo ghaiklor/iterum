@@ -21,7 +21,7 @@ export class Character {
   }
 
   public isAlpha(): boolean {
-    return /\w/.test(this.char);
+    return /[a-zA-Z]/.test(this.char);
   }
 
   public isDigit(): boolean {

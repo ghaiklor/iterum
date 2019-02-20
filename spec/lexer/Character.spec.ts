@@ -39,6 +39,7 @@ describe("Iterum::Lexer::Char", () => {
     const digit = Character.from("2");
 
     expect(digit.isDigit()).toBeTruthy();
+    expect(digit.isAlpha()).toBeFalsy();
   });
 
   test("Should properly check if it is alphanumeric", () => {
@@ -47,5 +48,11 @@ describe("Iterum::Lexer::Char", () => {
 
     expect(alpha.isAlphaNumeric()).toBeTruthy();
     expect(digit.isAlphaNumeric()).toBeTruthy();
+  });
+
+  test("Should properly return string representation of itself", () => {
+    const char = Character.from("s");
+
+    expect(char.toString()).toEqual("s");
   });
 });

@@ -2,18 +2,17 @@ import { ITokenLocation } from "../token/ITokenLocation";
 import { Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
 import { Character } from "./Character";
-import { ILexer } from "./ILexer";
 
-export class Lexer implements ILexer {
+export class Lexer {
   public sourceCode: string;
   public cursorPosition: number;
   public currentChar: Character;
-  public charLocation: ITokenLocation;
+  public cursorLocation: ITokenLocation;
   constructor(source: string) {
     this.sourceCode = source;
     this.cursorPosition = 0;
     this.currentChar = Character.from(this.sourceCode[this.cursorPosition]);
-    this.charLocation = { line: 1, column: 0 };
+    this.cursorLocation = { line: 1, column: 0 };
   }
 
   /**
@@ -23,7 +22,7 @@ export class Lexer implements ILexer {
    */
   public advance(shift: number = 1): Lexer {
     this.cursorPosition += shift;
-    this.charLocation.column += shift;
+    this.cursorLocation.column += shift;
     this.currentChar = Character.from(this.sourceCode[this.cursorPosition]);
 
     return this;
@@ -31,13 +30,28 @@ export class Lexer implements ILexer {
 
   /**
    * Peeks up a character specified by shift argument, starting from current position.
+   * This method does not modify the state of the cursor.
    *
    * @param shift How many characters to skip before peeking
    */
-  public peek(shift: number = 1): string {
-    return this.sourceCode[this.cursorPosition + shift];
+  public peek(shift: number = 1): Character {
+    return Character.from(this.sourceCode[this.cursorPosition + shift]);
   }
 
+  /**
+   * Creates new instance of a token.
+   * Same as new Token(), but it does not require location of a token.
+   *
+   * @param tokenType Type of the token to create
+   * @param code Part of the source code that is related to token
+   */
+  public createToken(tokenType: TokenType, code: string): Token {
+    return new Token(tokenType, code, this.cursorLocation);
+  }
+
+  /**
+   * Iterates over the source code and returns token one at a time.
+   */
   public next(): Token {
     if (this.currentChar.isWhitespace()) {
       this.skipWhitespace();
@@ -45,29 +59,29 @@ export class Lexer implements ILexer {
 
     if (this.currentChar.is("*")) {
       this.advance();
-      return new Token(TokenType.ASTERISK, "*", this.charLocation);
+      return new Token(TokenType.ASTERISK, "*", this.cursorLocation);
     } else if (this.currentChar.is("+")) {
       this.advance();
-      return new Token(TokenType.PLUS, "+", this.charLocation);
+      return new Token(TokenType.PLUS, "+", this.cursorLocation);
     } else if (this.currentChar.is("-")) {
       this.advance();
-      return new Token(TokenType.MINUS, "-", this.charLocation);
+      return new Token(TokenType.MINUS, "-", this.cursorLocation);
     } else if (this.currentChar.is("/")) {
       this.advance();
-      return new Token(TokenType.SLASH, "/", this.charLocation);
+      return new Token(TokenType.SLASH, "/", this.cursorLocation);
     } else if (this.currentChar.is("\\")) {
       this.advance();
-      return new Token(TokenType.BACKSLASH, "\\", this.charLocation);
+      return new Token(TokenType.BACKSLASH, "\\", this.cursorLocation);
     }
 
-    throw new Error(`Unrecognized token at ${this.charLocation.line}:${this.charLocation.column}`);
+    throw new Error(`Unrecognized token at ${this.cursorLocation.line}:${this.cursorLocation.column}`);
   }
 
   private skipWhitespace() {
     while (this.currentChar.isWhitespace()) {
       if (this.currentChar.isNewline()) {
-        this.charLocation.line++;
-        this.charLocation.column = 1;
+        this.cursorLocation.line++;
+        this.cursorLocation.column = 1;
       }
 
       this.advance();
