@@ -34,15 +34,15 @@ TK fill it with grammar and some examples
 
 An example program that read two numbers and adds them together:
 
-```iterum
-fun add(a, b) {
-    ret a + b;
+```javascript
+function add(a, b) {
+    return a + b;
 }
 
 print("A = ");
 let a = read();
 
-print ("B = ");
+print("B = ");
 let b = read();
 
 let result = add(a, b);
