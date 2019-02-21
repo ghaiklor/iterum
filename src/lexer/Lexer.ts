@@ -53,8 +53,13 @@ export class Lexer {
    * Iterates over the source code and returns token one at a time.
    */
   public next(): Token {
-    if (this.currentChar.isWhitespace()) {
-      this.skipWhitespace();
+    while (this.currentChar.isWhitespace()) {
+      if (this.currentChar.isNewline()) {
+        this.cursorLocation.line++;
+        this.cursorLocation.column = 0;
+      }
+
+      this.advance();
     }
 
     if (this.currentChar.isDigit()) {
@@ -142,19 +147,10 @@ export class Lexer {
     } else if (this.currentChar.is(";")) {
       this.advance();
       return this.createToken(TokenType.SEMICOLON, ";");
+    } else if (this.currentChar.isEOF()) {
+      return this.createToken(TokenType.EOF, "EOF");
     }
 
     throw new Error(`Unrecognized character ${this.currentChar} at ${this.cursorLocation}`);
-  }
-
-  private skipWhitespace() {
-    while (this.currentChar.isWhitespace()) {
-      if (this.currentChar.isNewline()) {
-        this.cursorLocation.line++;
-        this.cursorLocation.column = 1;
-      }
-
-      this.advance();
-    }
   }
 }

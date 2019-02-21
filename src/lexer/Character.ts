@@ -32,6 +32,10 @@ export class Character {
     return this.isAlpha() || this.isDigit();
   }
 
+  public isEOF(): boolean {
+    return this.char === undefined;
+  }
+
   public toString(): string {
     return this.char.toString();
   }

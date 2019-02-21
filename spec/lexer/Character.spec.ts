@@ -55,4 +55,13 @@ describe("Iterum::Lexer::Char", () => {
 
     expect(char.toString()).toEqual("s");
   });
+
+  test("Should properly check if it is end of file", () => {
+    const char = Character.from("test"[10]);
+
+    expect(char.isEOF()).toBeTruthy();
+    expect(char.isDigit()).toBeFalsy();
+    expect(char.isAlpha()).toBeFalsy();
+    expect(char.isAlphaNumeric()).toBeFalsy();
+  });
 });

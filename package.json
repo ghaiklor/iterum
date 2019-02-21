@@ -31,7 +31,7 @@
     "build": "npm run clean && npm run lint && npm run test && tsc",
     "clean": "rimraf coverage dist",
     "lint": "tslint --project tsconfig.json --config tslint.json",
-    "test": "jest --detectOpenHandles --config jest.config.json"
+    "test": "jest --coverage --config jest.config.json"
   },
   "dependencies": {},
   "devDependencies": {

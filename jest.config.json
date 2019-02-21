@@ -1,5 +1,5 @@
 {
-  "collectCoverage": true,
+  "collectCoverage": false,
   "collectCoverageFrom": [
     "./src/**/*.ts"
   ],
