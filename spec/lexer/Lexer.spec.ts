@@ -63,7 +63,8 @@ describe("Iterum::Lexer", () => {
         return a + b;
       };
 
-      add(1, 2);
+      let result = add(1, 2);
+      print(result);
     `;
 
     const lexer = new Lexer(source);
@@ -82,11 +83,19 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_CURLY_BRACES, code: "}" } as IToken);
     expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "result" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as IToken);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "add" } as IToken);
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as IToken);
     expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "1" } as IToken);
     expect(lexer.next()).toMatchObject({ type: TokenType.COMMA, code: "," } as IToken);
     expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "print" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "result" } as IToken);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as IToken);
     expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
