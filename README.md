@@ -4,7 +4,6 @@
 [![codecov](https://codecov.io/gh/ghaiklor/iterum/branch/master/graph/badge.svg)](https://codecov.io/gh/ghaiklor/iterum)
 [![BCH compliance](https://bettercodehub.com/edge/badge/ghaiklor/iterum?branch=master)](https://bettercodehub.com/)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/315a0c481bd74165bc0c64597d893f32)](https://www.codacy.com/app/ghaiklor/iterum)
----
 
 _Iterum (latin) means "again, a second time, repeatedly, once more, for the second time, anew"._
 
