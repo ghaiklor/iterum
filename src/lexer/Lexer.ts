@@ -53,77 +53,16 @@ export class Lexer {
    * Iterates over the source code and returns token one at a time.
    */
   public next(): Token {
-    while (this.currentChar.isWhitespace()) {
-      if (this.currentChar.isNewline()) {
-        this.tokenLocation.line++;
-        this.tokenLocation.column = 0;
-      }
-
-      this.advance();
-    }
+    this.skipWhitespace();
 
     if (this.currentChar.isDigit()) {
-      let buffer: string = "";
-
-      while (this.currentChar.isDigit()) {
-        buffer += this.currentChar;
-        this.advance();
-      }
-
-      if (this.currentChar.is(".") && this.peek().isDigit()) {
-        buffer += this.currentChar;
-        this.advance();
-
-        while (this.currentChar.isDigit()) {
-          buffer += this.currentChar;
-          this.advance();
-        }
-      }
-
-      return this.createToken(TokenType.NUMBER_LITERAL, buffer);
+      return this.numberLiteral();
     } else if (this.currentChar.isAlpha()) {
-      let buffer: string = "";
-
-      while (this.currentChar.isAlphaNumeric()) {
-        buffer += this.currentChar;
-        this.advance();
-      }
-
-      if (buffer === "function") {
-        return this.createToken(TokenType.FUNCTION, "function");
-      }
-
-      if (buffer === "return") {
-        return this.createToken(TokenType.RETURN, "return");
-      }
-
-      if (buffer === "let") {
-        return this.createToken(TokenType.LET, "let");
-      }
-
-      return this.createToken(TokenType.IDENTIFIER, buffer);
+      return this.identifierOrKeyword();
     } else if (this.currentChar.is('"')) {
-      let buffer: string = "";
-      this.advance();
-
-      while (!this.currentChar.is('"')) {
-        buffer += this.currentChar;
-        this.advance();
-      }
-
-      this.advance();
-      return this.createToken(TokenType.STRING_LITERAL, buffer);
+      return this.stringLiteral('"');
     } else if (this.currentChar.is("'")) {
-      let buffer: string = "";
-      this.advance();
-
-      while (!this.currentChar.is("'")) {
-        buffer += this.currentChar;
-        this.advance();
-      }
-
-      this.advance();
-      return this.createToken(TokenType.STRING_LITERAL, buffer);
+      return this.stringLiteral("'");
     } else if (this.currentChar.is("*")) {
       this.advance();
       return this.createToken(TokenType.ASTERISK, "*");
@@ -162,5 +101,70 @@ export class Lexer {
     }
 
     throw new Error(`Unrecognized character ${this.currentChar} at ${this.tokenLocation}`);
+  }
+
+  private skipWhitespace(): void {
+    while (this.currentChar.isWhitespace()) {
+      if (this.currentChar.isNewline()) {
+        this.tokenLocation.line++;
+        this.tokenLocation.column = 0;
+      }
+
+      this.advance();
+    }
+  }
+
+  private numberLiteral(): Token {
+    let buffer: string = "";
+
+    while (this.currentChar.isDigit()) {
+      buffer += this.currentChar;
+      this.advance();
+    }
+
+    if (this.currentChar.is(".") && this.peek().isDigit()) {
+      buffer += this.currentChar;
+      this.advance();
+
+      while (this.currentChar.isDigit()) {
+        buffer += this.currentChar;
+        this.advance();
+      }
+    }
+
+    return this.createToken(TokenType.NUMBER_LITERAL, buffer);
+  }
+
+  private stringLiteral(quoteType: string): Token {
+    let buffer: string = "";
+    this.advance();
+
+    while (!this.currentChar.is(quoteType)) {
+      buffer += this.currentChar;
+      this.advance();
+    }
+
+    this.advance();
+    return this.createToken(TokenType.STRING_LITERAL, buffer);
+  }
+
+  private identifierOrKeyword(): Token {
+    let buffer: string = "";
+
+    while (this.currentChar.isAlphaNumeric()) {
+      buffer += this.currentChar;
+      this.advance();
+    }
+
+    switch (buffer) {
+      case "function":
+        return this.createToken(TokenType.FUNCTION, "function");
+      case "return":
+        return this.createToken(TokenType.RETURN, "return");
+      case "let":
+        return this.createToken(TokenType.LET, "let");
+      default:
+        return this.createToken(TokenType.IDENTIFIER, buffer);
+    }
   }
 }
