@@ -129,4 +129,71 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "bar" } as IToken);
     expect(lexer.next.bind(lexer)).toThrowError("Unrecognized character § at 3:15");
   });
+
+  it("Should properly tokenize a program with read/print calls", () => {
+    const source = `
+      function multiplyBy10(a) {
+        return a * 10;
+      }
+
+      function divideBy5(a) {
+        return a / 5;
+      }
+
+      let a = read();
+      let result = divideBy5(multiplyBy10(a));
+      print(result);
+    `;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.FUNCTION, code: "function" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "multiplyBy10" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_CURLY_BRACES, code: "{" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RETURN, code: "return" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASTERISK, code: "*" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "10" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_CURLY_BRACES, code: "}" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.FUNCTION, code: "function" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "divideBy5" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_CURLY_BRACES, code: "{" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RETURN, code: "return" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SLASH, code: "/" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "5" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_CURLY_BRACES, code: "}" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "read" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "result" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "divideBy5" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "multiplyBy10" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "print" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "result" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
+  });
 });
