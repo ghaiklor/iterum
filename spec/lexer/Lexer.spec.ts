@@ -3,7 +3,7 @@ import { IToken } from "../../src/token/IToken";
 import { TokenType } from "../../src/token/TokenType";
 
 describe("Iterum::Lexer", () => {
-  test("Should properly peek the character without advancing the cursor", () => {
+  it("Should properly peek the character without advancing the cursor", () => {
     const source = 'let foo = "bar"';
     const lexer = new Lexer(source);
 
@@ -14,7 +14,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.cursorPosition).toEqual(0);
   });
 
-  test("Should properly tokenize mathematical symbols", () => {
+  it("Should properly tokenize mathematical symbols", () => {
     const source = "+ - * /";
     const lexer = new Lexer(source);
 
@@ -26,7 +26,17 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
   });
 
-  test("Should properly tokenize string literals", () => {
+  it("Should properly tokenize number literals", () => {
+    const source = `2 2.52`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2.52" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
+  });
+
+  it("Should properly tokenize string literals", () => {
     const source = `
       let foo = 'bar';
       let bar = "foo";
@@ -47,7 +57,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
   });
 
-  test("Should properly tokenize some simple program", () => {
+  it("Should properly tokenize some simple program", () => {
     const source = `
       function add(a, b) {
         return a + b;
@@ -83,7 +93,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
   });
 
-  test("Should properly throw an error if unrecognized character", () => {
+  it("Should properly throw an error if unrecognized character", () => {
     const source = `let foo § bar`;
     const lexer = new Lexer(source);
 
@@ -92,7 +102,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next.bind(lexer)).toThrowError("Unrecognized character § at 1:9");
   });
 
-  test("Should properly throw an error if unrecognized character at multi-line code", () => {
+  it("Should properly throw an error if unrecognized character at multi-line code", () => {
     const source = `
       let foo = "bar";
       let bar § "foo";

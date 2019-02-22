@@ -70,6 +70,16 @@ export class Lexer {
         this.advance();
       }
 
+      if (this.currentChar.is(".") && this.peek().isDigit()) {
+        buffer += this.currentChar;
+        this.advance();
+
+        while (this.currentChar.isDigit()) {
+          buffer += this.currentChar;
+          this.advance();
+        }
+      }
+
       return this.createToken(TokenType.NUMBER_LITERAL, buffer);
     } else if (this.currentChar.isAlpha()) {
       let buffer: string = "";
