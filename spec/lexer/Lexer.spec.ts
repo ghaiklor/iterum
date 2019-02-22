@@ -1,15 +1,50 @@
 import { Lexer } from "../../src/lexer/Lexer";
+import { IToken } from "../../src/token/IToken";
 import { TokenType } from "../../src/token/TokenType";
 
 describe("Iterum::Lexer", () => {
-  test("Should properly tokenize mathematical expression", () => {
+  test("Should properly peek the character without advancing the cursor", () => {
+    const source = 'let foo = "bar"';
+    const lexer = new Lexer(source);
+
+    expect(lexer.cursorPosition).toEqual(0);
+    expect(lexer.peek().char).toEqual("e");
+    expect(lexer.cursorPosition).toEqual(0);
+    expect(lexer.peek(5).char).toEqual("o");
+    expect(lexer.cursorPosition).toEqual(0);
+  });
+
+  test("Should properly tokenize mathematical symbols", () => {
     const source = "+ - * /";
     const lexer = new Lexer(source);
 
-    expect(lexer.next().toString()).toEqual("Token(+, +, 1:1)");
-    expect(lexer.next().toString()).toEqual("Token(-, -, 1:3)");
-    expect(lexer.next().toString()).toEqual("Token(*, *, 1:5)");
-    expect(lexer.next().toString()).toEqual("Token(/, /, 1:7)");
+    expect(lexer.next()).toMatchObject({ type: TokenType.PLUS, code: "+" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.MINUS, code: "-" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASTERISK, code: "*" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SLASH, code: "/" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
+  });
+
+  test("Should properly tokenize string literals", () => {
+    const source = `
+      let foo = 'bar';
+      let bar = "foo";
+    `;
+
+    const lexer = new Lexer(source);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "bar" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "bar" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "foo" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
   });
 
   test("Should properly tokenize some simple program", () => {
@@ -22,49 +57,38 @@ describe("Iterum::Lexer", () => {
     `;
 
     const lexer = new Lexer(source);
-    expect(lexer.next().type).toEqual(TokenType.FUNCTION);
-    expect(lexer.next().type).toEqual(TokenType.IDENTIFIER);
-    expect(lexer.next().type).toEqual(TokenType.LEFT_PARENTHESIS);
-    expect(lexer.next().type).toEqual(TokenType.IDENTIFIER);
-    expect(lexer.next().type).toEqual(TokenType.COMMA);
-    expect(lexer.next().type).toEqual(TokenType.IDENTIFIER);
-    expect(lexer.next().type).toEqual(TokenType.RIGHT_PARENTHESIS);
-    expect(lexer.next().type).toEqual(TokenType.LEFT_CURLY_BRACES);
-    expect(lexer.next().type).toEqual(TokenType.RETURN);
-    expect(lexer.next().type).toEqual(TokenType.IDENTIFIER);
-    expect(lexer.next().type).toEqual(TokenType.PLUS);
-    expect(lexer.next().type).toEqual(TokenType.IDENTIFIER);
-    expect(lexer.next().type).toEqual(TokenType.SEMICOLON);
-    expect(lexer.next().type).toEqual(TokenType.RIGHT_CURLY_BRACES);
-    expect(lexer.next().type).toEqual(TokenType.SEMICOLON);
-    expect(lexer.next().type).toEqual(TokenType.IDENTIFIER);
-    expect(lexer.next().type).toEqual(TokenType.LEFT_PARENTHESIS);
-    expect(lexer.next().type).toEqual(TokenType.NUMBER_LITERAL);
-    expect(lexer.next().type).toEqual(TokenType.COMMA);
-    expect(lexer.next().type).toEqual(TokenType.NUMBER_LITERAL);
-    expect(lexer.next().type).toEqual(TokenType.RIGHT_PARENTHESIS);
-    expect(lexer.next().type).toEqual(TokenType.SEMICOLON);
-    expect(lexer.next().code).toEqual("function");
-    expect(lexer.next().code).toEqual("add");
-    expect(lexer.next().code).toEqual("(");
-    expect(lexer.next().code).toEqual("a");
-    expect(lexer.next().code).toEqual(",");
-    expect(lexer.next().code).toEqual("b");
-    expect(lexer.next().code).toEqual(")");
-    expect(lexer.next().code).toEqual("{");
-    expect(lexer.next().code).toEqual("return");
-    expect(lexer.next().code).toEqual("a");
-    expect(lexer.next().code).toEqual("+");
-    expect(lexer.next().code).toEqual("b");
-    expect(lexer.next().code).toEqual(";");
-    expect(lexer.next().code).toEqual("}");
-    expect(lexer.next().code).toEqual(";");
-    expect(lexer.next().code).toEqual("add");
-    expect(lexer.next().code).toEqual("(");
-    expect(lexer.next().code).toEqual("1");
-    expect(lexer.next().code).toEqual(",");
-    expect(lexer.next().code).toEqual("2");
-    expect(lexer.next().code).toEqual(")");
-    expect(lexer.next().code).toEqual(";");
+    expect(lexer.next()).toMatchObject({ type: TokenType.FUNCTION, code: "function" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "add" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.COMMA, code: "," } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "b" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_CURLY_BRACES, code: "{" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RETURN, code: "return" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.PLUS, code: "+" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "b" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_CURLY_BRACES, code: "}" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "add" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "1" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.COMMA, code: "," } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as IToken);
+  });
+
+  test("Should properly throw an error if unrecognized character", () => {
+    const source = `let foo § bar`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as IToken);
+    expect(lexer.next.bind(lexer)).toThrowError("Unrecognized character § at 1:8");
   });
 });

@@ -1,5 +1,5 @@
-import { ITokenLocation } from "../token/ITokenLocation";
 import { Token } from "../token/Token";
+import { TokenLocation } from "../token/TokenLocation";
 import { TokenType } from "../token/TokenType";
 import { Character } from "./Character";
 
@@ -7,12 +7,12 @@ export class Lexer {
   public sourceCode: string;
   public cursorPosition: number;
   public currentChar: Character;
-  public cursorLocation: ITokenLocation;
+  public cursorLocation: TokenLocation;
   constructor(source: string) {
     this.sourceCode = source;
     this.cursorPosition = 0;
     this.currentChar = Character.from(this.sourceCode[this.cursorPosition]);
-    this.cursorLocation = { line: 1, column: 0 };
+    this.cursorLocation = TokenLocation.from(1, 0);
   }
 
   /**
@@ -87,6 +87,10 @@ export class Lexer {
         return this.createToken(TokenType.RETURN, "return");
       }
 
+      if (buffer === "let") {
+        return this.createToken(TokenType.LET, "let");
+      }
+
       return this.createToken(TokenType.IDENTIFIER, buffer);
     } else if (this.currentChar.is('"')) {
       let buffer: string = "";
@@ -97,6 +101,7 @@ export class Lexer {
         this.advance();
       }
 
+      this.advance();
       return this.createToken(TokenType.STRING_LITERAL, buffer);
     } else if (this.currentChar.is("'")) {
       let buffer: string = "";
@@ -107,6 +112,7 @@ export class Lexer {
         this.advance();
       }
 
+      this.advance();
       return this.createToken(TokenType.STRING_LITERAL, buffer);
     } else if (this.currentChar.is("*")) {
       this.advance();
@@ -120,9 +126,6 @@ export class Lexer {
     } else if (this.currentChar.is("/")) {
       this.advance();
       return this.createToken(TokenType.SLASH, "/");
-    } else if (this.currentChar.is("\\")) {
-      this.advance();
-      return this.createToken(TokenType.BACKSLASH, "\\");
     } else if (this.currentChar.is("=")) {
       this.advance();
       return this.createToken(TokenType.ASSIGN, "=");
@@ -141,9 +144,6 @@ export class Lexer {
     } else if (this.currentChar.is("}")) {
       this.advance();
       return this.createToken(TokenType.RIGHT_CURLY_BRACES, "}");
-    } else if (this.currentChar.is(":")) {
-      this.advance();
-      return this.createToken(TokenType.COLON, ":");
     } else if (this.currentChar.is(";")) {
       this.advance();
       return this.createToken(TokenType.SEMICOLON, ";");
