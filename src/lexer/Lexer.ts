@@ -55,7 +55,7 @@ export class Lexer {
   public next(): Token {
     this.skipWhitespace();
 
-    if (this.currentChar.isDigit()) {
+    if (this.currentChar.isDigit() || (this.currentChar.is("-") && this.peek().isDigit())) {
       return this.numberLiteral();
     } else if (this.currentChar.isAlpha()) {
       return this.identifierOrKeyword();
@@ -116,6 +116,9 @@ export class Lexer {
 
   private numberLiteral(): Token {
     let buffer: string = "";
+
+    buffer += this.currentChar;
+    this.advance();
 
     while (this.currentChar.isDigit()) {
       buffer += this.currentChar;
