@@ -4,7 +4,7 @@ export class Character {
   }
 
   public char: string;
-  constructor(char: string) {
+  constructor(char: string = "") {
     this.char = char;
   }
 
@@ -33,7 +33,7 @@ export class Character {
   }
 
   public isEOF(): boolean {
-    return this.char === undefined;
+    return this.char === undefined || this.char === "";
   }
 
   public toString(): string {

@@ -1,6 +1,6 @@
 import { Character } from "../../src/lexer/Character";
 
-describe("Iterum::Lexer::Char", () => {
+describe("Iterum::Lexer::Character", () => {
   test("Should properly wrap the character", () => {
     const char = Character.from("*");
 
