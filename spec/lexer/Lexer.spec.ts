@@ -89,6 +89,23 @@ describe("Iterum::Lexer", () => {
 
     expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as IToken);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as IToken);
-    expect(lexer.next.bind(lexer)).toThrowError("Unrecognized character § at 1:8");
+    expect(lexer.next.bind(lexer)).toThrowError("Unrecognized character § at 1:9");
+  });
+
+  test("Should properly throw an error if unrecognized character at multi-line code", () => {
+    const source = `
+      let foo = "bar";
+      let bar § "foo";
+    `;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "bar" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as IToken);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "bar" } as IToken);
+    expect(lexer.next.bind(lexer)).toThrowError("Unrecognized character § at 3:15");
   });
 });

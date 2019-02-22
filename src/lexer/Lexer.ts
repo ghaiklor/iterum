@@ -7,12 +7,12 @@ export class Lexer {
   public sourceCode: string;
   public cursorPosition: number;
   public currentChar: Character;
-  public cursorLocation: TokenLocation;
+  public tokenLocation: TokenLocation;
   constructor(source: string) {
     this.sourceCode = source;
     this.cursorPosition = 0;
     this.currentChar = Character.from(this.sourceCode[this.cursorPosition]);
-    this.cursorLocation = TokenLocation.from(1, 0);
+    this.tokenLocation = TokenLocation.from(1, 1);
   }
 
   /**
@@ -22,7 +22,7 @@ export class Lexer {
    */
   public advance(shift: number = 1): Lexer {
     this.cursorPosition += shift;
-    this.cursorLocation.column += shift;
+    this.tokenLocation.column += shift;
     this.currentChar = Character.from(this.sourceCode[this.cursorPosition]);
 
     return this;
@@ -46,7 +46,7 @@ export class Lexer {
    * @param code Part of the source code that is related to token
    */
   public createToken(tokenType: TokenType, code: string): Token {
-    return new Token(tokenType, code, this.cursorLocation);
+    return new Token(tokenType, code, this.tokenLocation);
   }
 
   /**
@@ -55,8 +55,8 @@ export class Lexer {
   public next(): Token {
     while (this.currentChar.isWhitespace()) {
       if (this.currentChar.isNewline()) {
-        this.cursorLocation.line++;
-        this.cursorLocation.column = 0;
+        this.tokenLocation.line++;
+        this.tokenLocation.column = 0;
       }
 
       this.advance();
@@ -151,6 +151,6 @@ export class Lexer {
       return this.createToken(TokenType.EOF, "EOF");
     }
 
-    throw new Error(`Unrecognized character ${this.currentChar} at ${this.cursorLocation}`);
+    throw new Error(`Unrecognized character ${this.currentChar} at ${this.tokenLocation}`);
   }
 }
