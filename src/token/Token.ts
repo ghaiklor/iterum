@@ -1,12 +1,11 @@
 import { IToken } from "./IToken";
-import { ITokenLocation } from "./ITokenLocation";
 import { TokenLocation } from "./TokenLocation";
 import { TokenType } from "./TokenType";
 
 export class Token implements IToken {
   public type: TokenType;
   public code: string;
-  public location: ITokenLocation;
+  public location: TokenLocation;
 
   constructor(type: TokenType, code: string, location: TokenLocation) {
     this.type = type;
