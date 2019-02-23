@@ -4,10 +4,10 @@ import { TokenType } from "../token/TokenType";
 import { Character } from "./Character";
 
 export class Lexer {
-  public sourceCode: string;
-  public cursorPosition: number;
-  public currentChar: Character;
-  public tokenLocation: TokenLocation;
+  private sourceCode: string;
+  private cursorPosition: number;
+  private currentChar: Character;
+  private tokenLocation: TokenLocation;
   constructor(source: string) {
     this.sourceCode = source;
     this.cursorPosition = 0;

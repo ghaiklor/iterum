@@ -3,7 +3,7 @@ export class Character {
     return new Character(char);
   }
 
-  public char: string;
+  private char: string;
   constructor(char: string = "") {
     this.char = char;
   }
