@@ -7,7 +7,7 @@ describe("Iterum::Parser", () => {
     const parser = new Parser(source);
     const ast = parser.parse();
 
-    expect(ast.body[0]).toMatchObject({ value: 5, raw: "5" } as Literal);
+    expect(ast.body[0]).toMatchObject({ type: "Literal", value: 5, raw: "5" } as Literal);
     // FIXME: fix me asap
     // expect(ast.nodes[1]).toMatchObject({ value: 10 } as NumberLiteral);
     // expect(ast.nodes[2]).toMatchObject({ value: -20 } as NumberLiteral);

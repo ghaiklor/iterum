@@ -5,7 +5,7 @@ describe("Iterum::Lexer::Character", () => {
     const char = Character.from("*");
 
     expect(char).toBeInstanceOf(Character);
-    expect(char.char).toEqual("*");
+    expect(char.is("*")).toBeTruthy();
   });
 
   test("Should properly check if it is matches against other string", () => {
