@@ -1,9 +1,7 @@
-import { Token } from "../token/Token";
-
 export class Node {
-  public token: Token;
+  public type: string;
 
-  constructor(token: Token) {
-    this.token = token;
+  constructor() {
+    this.type = this.constructor.name;
   }
 }

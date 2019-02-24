@@ -1,5 +1,5 @@
+import { Literal } from "../ast/Literal";
 import { Node } from "../ast/Node";
-import { NumberLiteral } from "../ast/NumberLiteral";
 import { Program } from "../ast/Program";
 import { Lexer } from "../lexer/Lexer";
 import { Token } from "../token/Token";
@@ -33,7 +33,7 @@ export class Parser {
 
     if (token.is(TokenType.NUMBER_LITERAL)) {
       this.eat(TokenType.NUMBER_LITERAL);
-      return new NumberLiteral(token, token.code);
+      return new Literal(parseFloat(token.code), token.code);
     } else if (token.is(TokenType.LEFT_PARENTHESIS)) {
       this.eat(TokenType.LEFT_PARENTHESIS);
       const expression = this.expression();

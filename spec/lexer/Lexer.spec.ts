@@ -7,11 +7,8 @@ describe("Iterum::Lexer", () => {
     const source = 'let foo = "bar"';
     const lexer = new Lexer(source);
 
-    expect(lexer.cursorPosition).toEqual(0);
-    expect(lexer.peek().char).toEqual("e");
-    expect(lexer.cursorPosition).toEqual(0);
-    expect(lexer.peek(5).char).toEqual("o");
-    expect(lexer.cursorPosition).toEqual(0);
+    expect(lexer.peek().is("e")).toBeTruthy();
+    expect(lexer.peek(5).is("o")).toBeTruthy();
   });
 
   it("Should properly tokenize mathematical symbols", () => {

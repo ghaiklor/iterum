@@ -1,6 +1,6 @@
 import { Node } from "./Node";
 
-export class Program extends Node {
+export class BlockStatement extends Node {
   public body: Node[];
   constructor(body: Node[]) {
     super();
