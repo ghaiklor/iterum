@@ -56,6 +56,57 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
 
+  it("Should properly tokenize logical operators", () => {
+    const source = `&& == >= > < <= != ||`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.AND, code: "&&" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EQUAL, code: "==" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.GREATER_THAN_OR_EQUAL, code: ">=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.GREATER_THAN, code: ">" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LESS_THAN, code: "<" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LESS_THAN_OR_EQUAL, code: "<=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NOT_EQUAL, code: "!=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.OR, code: "||" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly tokenize logical expression", () => {
+    const source = `
+      if (a > 5) {
+        print("Greater");
+      } else {
+        print("Lesser");
+      }
+    `;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.IF, code: "if" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.GREATER_THAN, code: ">" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "5" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_CURLY_BRACES, code: "{" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "print" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "Greater" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_CURLY_BRACES, code: "}" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ELSE, code: "else" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_CURLY_BRACES, code: "{" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "print" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "Lesser" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_CURLY_BRACES, code: "}" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
   it("Should properly tokenize some simple program", () => {
     const source = `
       function add(a, b) {

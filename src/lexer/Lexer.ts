@@ -63,6 +63,24 @@ export class Lexer {
       return this.stringLiteral('"');
     } else if (this.currentChar.is("'")) {
       return this.stringLiteral("'");
+    } else if (this.currentChar.is("&") && this.peek().is("&")) {
+      this.advance(2);
+      return this.createToken(TokenType.AND, "&&");
+    } else if (this.currentChar.is("=") && this.peek().is("=")) {
+      this.advance(2);
+      return this.createToken(TokenType.EQUAL, "==");
+    } else if (this.currentChar.is(">") && this.peek().is("=")) {
+      this.advance(2);
+      return this.createToken(TokenType.GREATER_THAN_OR_EQUAL, ">=");
+    } else if (this.currentChar.is("<") && this.peek().is("=")) {
+      this.advance(2);
+      return this.createToken(TokenType.LESS_THAN_OR_EQUAL, "<=");
+    } else if (this.currentChar.is("!") && this.peek().is("=")) {
+      this.advance(2);
+      return this.createToken(TokenType.NOT_EQUAL, "!=");
+    } else if (this.currentChar.is("|") && this.peek().is("|")) {
+      this.advance(2);
+      return this.createToken(TokenType.OR, "||");
     } else if (this.currentChar.is("*")) {
       this.advance();
       return this.createToken(TokenType.ASTERISK, "*");
@@ -96,6 +114,12 @@ export class Lexer {
     } else if (this.currentChar.is(";")) {
       this.advance();
       return this.createToken(TokenType.SEMICOLON, ";");
+    } else if (this.currentChar.is(">")) {
+      this.advance();
+      return this.createToken(TokenType.GREATER_THAN, ">");
+    } else if (this.currentChar.is("<")) {
+      this.advance();
+      return this.createToken(TokenType.LESS_THAN, "<");
     } else if (this.currentChar.isEOF()) {
       return this.createToken(TokenType.EOF, "EOF");
     }
@@ -166,6 +190,10 @@ export class Lexer {
         return this.createToken(TokenType.RETURN, "return");
       case "let":
         return this.createToken(TokenType.LET, "let");
+      case "else":
+        return this.createToken(TokenType.ELSE, "else");
+      case "if":
+        return this.createToken(TokenType.IF, "if");
       default:
         return this.createToken(TokenType.IDENTIFIER, buffer);
     }
