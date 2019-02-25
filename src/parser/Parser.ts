@@ -94,6 +94,6 @@ export class Parser {
       return expression;
     }
 
-    throw new Error(`Unrecognized ${token.code} at ${token.location}`);
+    throw new Error(`Unrecognized token ${token.code} at ${token.location}`);
   }
 }
