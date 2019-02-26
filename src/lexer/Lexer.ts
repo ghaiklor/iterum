@@ -111,6 +111,12 @@ export class Lexer {
     } else if (this.currentChar.is("}")) {
       this.advance();
       return this.createToken(TokenType.RIGHT_CURLY_BRACES, "}");
+    } else if (this.currentChar.is("[")) {
+      this.advance();
+      return this.createToken(TokenType.LEFT_SQUARE_BRACKETS, "[");
+    } else if (this.currentChar.is("]")) {
+      this.advance();
+      return this.createToken(TokenType.RIGHT_SQUARE_BRACKETS, "]");
     } else if (this.currentChar.is(";")) {
       this.advance();
       return this.createToken(TokenType.SEMICOLON, ";");

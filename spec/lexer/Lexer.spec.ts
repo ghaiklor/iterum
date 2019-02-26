@@ -107,6 +107,23 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
 
+  it("Should properly tokenize array declarator", () => {
+    const source = `let a = [1, 2];`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_SQUARE_BRACKETS, code: "[" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "1" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.COMMA, code: "," } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_SQUARE_BRACKETS, code: "]" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
   it("Should properly tokenize some simple program", () => {
     const source = `
       function add(a, b) {
