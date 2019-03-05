@@ -56,6 +56,86 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
 
+  it("Should properly tokenize string literals, ignoring single-line comments", () => {
+    const source = `
+      // Variable foo
+      let foo = 'bar';
+
+      let bar = "foo"; // Inline comment about variable bar
+      // Random comment to check that let foo = 'bar' here is not tokenized
+    `;
+
+    const lexer = new Lexer(source);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "bar" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "bar" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "foo" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly tokenize string literals, ignoring multi-line comments", () => {
+    const source = `
+      /**
+       * @type {String}
+       * @example
+       * let foo = 'bar';
+       */
+      let foo = 'bar';
+
+      let bar = "foo"; /* Inline multi-line comment about variable bar */
+      /* Random comment to check that let foo = 'bar' here is not tokenized */
+    `;
+
+    const lexer = new Lexer(source);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "bar" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "bar" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "foo" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly ignore single-line comment when no new line, but EOF instead", () => {
+    const source = `let foo = 'bar'; // comment`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "bar" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly throw an error if multi-line comment with no closing block for it", () => {
+    const source = `
+      let foo = 'bar';
+      /* not closed comment
+    `;
+
+    const lexer = new Lexer(source);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "bar" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
+    expect(lexer.next.bind(lexer)).toThrowError(`Expected */ at 4:5`);
+  });
+
   it("Should properly tokenize logical operators", () => {
     const source = `&& == >= > < <= != ||`;
     const lexer = new Lexer(source);

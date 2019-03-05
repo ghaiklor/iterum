@@ -53,7 +53,10 @@ export class Lexer {
    * Iterates over the source code and returns token one at a time.
    */
   public next(): Token {
-    this.skipWhitespace();
+    while (this.currentChar.isWhitespace()) {
+      this.skipWhitespace();
+      this.skipComments();
+    }
 
     if (this.currentChar.isDigit() || (this.currentChar.is("-") && this.peek().isDigit())) {
       return this.numberLiteral();
@@ -133,14 +136,54 @@ export class Lexer {
     throw new Error(`Unrecognized character ${this.currentChar} at ${this.tokenLocation}`);
   }
 
+  private incrementLineLocation(): void {
+    this.tokenLocation.line++;
+    this.tokenLocation.column = 0;
+  }
+
   private skipWhitespace(): void {
     while (this.currentChar.isWhitespace()) {
-      if (this.currentChar.isNewline()) {
-        this.tokenLocation.line++;
-        this.tokenLocation.column = 0;
+      if (this.currentChar.isLineTerminator()) {
+        this.incrementLineLocation();
       }
 
       this.advance();
+    }
+  }
+
+  private skipComments(): void {
+    if (this.currentChar.is("/") && this.peek().is("*")) {
+      this.advance(2);
+
+      while (!(this.currentChar.is("*") && this.peek().is("/"))) {
+        if (this.currentChar.isEOF()) {
+          throw new Error(`Expected */ at ${this.tokenLocation}`);
+        }
+
+        if (this.currentChar.isNewline()) {
+          this.incrementLineLocation();
+        }
+
+        this.advance();
+      }
+
+      this.advance(2);
+      return;
+    }
+
+    if (this.currentChar.is("/") && this.peek().is("/")) {
+      this.advance(2);
+
+      while (!(this.currentChar.isLineTerminator() || this.currentChar.isEOF())) {
+        this.advance();
+
+        if (this.currentChar.isLineTerminator()) {
+          this.incrementLineLocation();
+        }
+      }
+
+      this.advance();
+      return;
     }
   }
 

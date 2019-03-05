@@ -16,6 +16,10 @@ export class Character {
     return /[\r\n]/.test(this.char);
   }
 
+  public isLineTerminator(): boolean {
+    return this.isNewline();
+  }
+
   public isWhitespace(): boolean {
     return /\s/.test(this.char);
   }
