@@ -160,7 +160,7 @@ export class Lexer {
           throw new Error(`Expected */ at ${this.tokenLocation}`);
         }
 
-        if (this.currentChar.isNewline()) {
+        if (this.currentChar.isLineTerminator()) {
           this.incrementLineLocation();
         }
 

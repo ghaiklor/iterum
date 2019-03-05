@@ -12,12 +12,8 @@ export class Character {
     return this.char === char;
   }
 
-  public isNewline(): boolean {
-    return /[\r\n]/.test(this.char);
-  }
-
   public isLineTerminator(): boolean {
-    return this.isNewline();
+    return /[\r\n]/.test(this.char);
   }
 
   public isWhitespace(): boolean {

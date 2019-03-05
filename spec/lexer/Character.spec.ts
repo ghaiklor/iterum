@@ -15,14 +15,6 @@ describe("Iterum::Lexer::Character", () => {
     expect(char.is("/")).toBeFalsy();
   });
 
-  it("Should properly check if it is newline", () => {
-    const asterisk = Character.from("*");
-    const newline = Character.from(`\n`);
-
-    expect(asterisk.isNewline()).toBeFalsy();
-    expect(newline.isNewline()).toBeTruthy();
-  });
-
   it("Should properly check if it is line terminator", () => {
     const asterisk = Character.from("*");
     const newline = Character.from(`\n`);
@@ -32,9 +24,9 @@ describe("Iterum::Lexer::Character", () => {
   });
 
   it("Should properly check if it is whitespace", () => {
-    const whitespace = Character.from(`\n`);
+    const whitespace = Character.from(` `);
 
-    expect(whitespace.isNewline()).toBeTruthy();
+    expect(whitespace.isWhitespace()).toBeTruthy();
   });
 
   it("Should properly check if it is alpha char", () => {
