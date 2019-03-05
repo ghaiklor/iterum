@@ -3,14 +3,6 @@ import { Token } from "../../src/token/Token";
 import { TokenType } from "../../src/token/TokenType";
 
 describe("Iterum::Lexer", () => {
-  it("Should properly peek the character without advancing the cursor", () => {
-    const source = 'let foo = "bar"';
-    const lexer = new Lexer(source);
-
-    expect(lexer.peek().is("e")).toBeTruthy();
-    expect(lexer.peek(5).is("o")).toBeTruthy();
-  });
-
   it("Should properly tokenize mathematical symbols", () => {
     const source = "+ - * /";
     const lexer = new Lexer(source);
