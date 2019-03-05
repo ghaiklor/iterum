@@ -24,10 +24,10 @@ export class Lexer {
       this.skipComments();
     }
 
-    if (this.currentChar.isDigit() || (this.currentChar.is("-") && this.peek().isDigit())) {
-      return this.numberLiteral();
-    } else if (this.currentChar.isAlpha()) {
+    if (this.currentChar.isAlpha()) {
       return this.identifierOrKeyword();
+    } else if (this.currentChar.isDigit() || (this.currentChar.is("-") && this.peek().isDigit())) {
+      return this.numberLiteral();
     } else if (this.currentChar.is('"')) {
       return this.stringLiteral('"');
     } else if (this.currentChar.is("'")) {
@@ -225,6 +225,55 @@ export class Lexer {
   }
 
   private identifierOrKeyword(): Token {
+    const KEYWORDS: Record<string, () => Token> = {
+      async: this.createToken.bind(this, TokenType.ASYNC, "async"),
+      await: this.createToken.bind(this, TokenType.AWAIT, "await"),
+      break: this.createToken.bind(this, TokenType.BREAK, "break"),
+      case: this.createToken.bind(this, TokenType.CASE, "case"),
+      catch: this.createToken.bind(this, TokenType.CATCH, "catch"),
+      class: this.createToken.bind(this, TokenType.CLASS, "class"),
+      const: this.createToken.bind(this, TokenType.CONST, "const"),
+      continue: this.createToken.bind(this, TokenType.CONTINUE, "continue"),
+      debugger: this.createToken.bind(this, TokenType.DEBUGGER, "debugger"),
+      default: this.createToken.bind(this, TokenType.DEFAULT, "default"),
+      delete: this.createToken.bind(this, TokenType.DELETE, "delete"),
+      do: this.createToken.bind(this, TokenType.DO, "do"),
+      else: this.createToken.bind(this, TokenType.ELSE, "else"),
+      enum: this.createToken.bind(this, TokenType.ENUM, "enum"),
+      export: this.createToken.bind(this, TokenType.EXPORT, "export"),
+      extends: this.createToken.bind(this, TokenType.EXTENDS, "extends"),
+      false: this.createToken.bind(this, TokenType.BOOLEAN_LITERAL, "false"),
+      finally: this.createToken.bind(this, TokenType.FINALLY, "finally"),
+      for: this.createToken.bind(this, TokenType.FOR, "for"),
+      function: this.createToken.bind(this, TokenType.FUNCTION, "function"),
+      if: this.createToken.bind(this, TokenType.IF, "if"),
+      implements: this.createToken.bind(this, TokenType.IMPLEMENTS, "implements"),
+      import: this.createToken.bind(this, TokenType.IMPORT, "import"),
+      in: this.createToken.bind(this, TokenType.IN, "in"),
+      instanceof: this.createToken.bind(this, TokenType.INSTANCE_OF, "instanceof"),
+      interface: this.createToken.bind(this, TokenType.INTERFACE, "interface"),
+      let: this.createToken.bind(this, TokenType.LET, "let"),
+      new: this.createToken.bind(this, TokenType.NEW, "new"),
+      null: this.createToken.bind(this, TokenType.NULL_LITERAL, "null"),
+      package: this.createToken.bind(this, TokenType.PACKAGE, "package"),
+      private: this.createToken.bind(this, TokenType.PRIVATE, "private"),
+      protected: this.createToken.bind(this, TokenType.PROTECTED, "protected"),
+      public: this.createToken.bind(this, TokenType.PUBLIC, "public"),
+      return: this.createToken.bind(this, TokenType.RETURN, "return"),
+      super: this.createToken.bind(this, TokenType.SUPER, "super"),
+      switch: this.createToken.bind(this, TokenType.SWITCH, "switch"),
+      this: this.createToken.bind(this, TokenType.THIS, "this"),
+      throw: this.createToken.bind(this, TokenType.THROW, "throw"),
+      true: this.createToken.bind(this, TokenType.BOOLEAN_LITERAL, "true"),
+      try: this.createToken.bind(this, TokenType.TRY, "try"),
+      typeof: this.createToken.bind(this, TokenType.TYPE_OF, "typeof"),
+      var: this.createToken.bind(this, TokenType.VAR, "var"),
+      void: this.createToken.bind(this, TokenType.VOID, "void"),
+      while: this.createToken.bind(this, TokenType.WHILE, "while"),
+      with: this.createToken.bind(this, TokenType.WITH, "with"),
+      yield: this.createToken.bind(this, TokenType.YIELD, "yield"),
+    };
+
     let buffer: string = "";
 
     while (this.currentChar.isAlphaNumeric()) {
@@ -232,19 +281,10 @@ export class Lexer {
       this.advance();
     }
 
-    switch (buffer) {
-      case "function":
-        return this.createToken(TokenType.FUNCTION, "function");
-      case "return":
-        return this.createToken(TokenType.RETURN, "return");
-      case "let":
-        return this.createToken(TokenType.LET, "let");
-      case "else":
-        return this.createToken(TokenType.ELSE, "else");
-      case "if":
-        return this.createToken(TokenType.IF, "if");
-      default:
-        return this.createToken(TokenType.IDENTIFIER, buffer);
+    if (typeof KEYWORDS[buffer] === "function") {
+      return KEYWORDS[buffer]();
+    } else {
+      return this.createToken(TokenType.IDENTIFIER, buffer);
     }
   }
 }
