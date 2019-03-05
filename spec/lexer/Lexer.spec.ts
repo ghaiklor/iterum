@@ -4,13 +4,14 @@ import { TokenType } from "../../src/token/TokenType";
 
 describe("Iterum::Lexer", () => {
   it("Should properly tokenize mathematical symbols", () => {
-    const source = "+ - * /";
+    const source = "+ - * / %";
     const lexer = new Lexer(source);
 
     expect(lexer.next()).toMatchObject({ type: TokenType.PLUS, code: "+" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.MINUS, code: "-" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.ASTERISK, code: "*" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.SLASH, code: "/" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.PERCENT, code: "%" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
@@ -129,7 +130,7 @@ describe("Iterum::Lexer", () => {
   });
 
   it("Should properly tokenize logical operators", () => {
-    const source = `&& == >= > < <= != ||`;
+    const source = `&& == >= > < <= != || !`;
     const lexer = new Lexer(source);
 
     expect(lexer.next()).toMatchObject({ type: TokenType.AND, code: "&&" } as Token);
@@ -140,6 +141,78 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.LESS_THAN_OR_EQUAL, code: "<=" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.NOT_EQUAL, code: "!=" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.OR, code: "||" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EXCLAMATION_MARK, code: "!" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly tokenize boolean literals", () => {
+    const source = `true false`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.BOOLEAN_LITERAL, code: "true" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.BOOLEAN_LITERAL, code: "false" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly tokenize null literal", () => {
+    const source = `null`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.NULL_LITERAL, code: "null" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly tokenize increment and decrement tokens", () => {
+    const source = `foo++ bar--`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.INCREMENT, code: "++" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "bar" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DECREMENT, code: "--" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly tokenize public keyword", () => {
+    const source = `public foo = null`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.PUBLIC, code: "public" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NULL_LITERAL, code: "null" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly tokenize strict equality", () => {
+    const source = `foo === true && bar !== false`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.STRICT_EQUAL, code: "===" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.BOOLEAN_LITERAL, code: "true" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.AND, code: "&&" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "bar" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NOT_STRICT_EQUAL, code: "!==" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.BOOLEAN_LITERAL, code: "false" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly tokenize dot sign", () => {
+    const source = `obj.foo = 2`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "obj" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DOT, code: "." } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });

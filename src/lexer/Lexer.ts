@@ -32,6 +32,18 @@ export class Lexer {
       return this.stringLiteral('"');
     } else if (this.currentChar.is("'")) {
       return this.stringLiteral("'");
+    } else if (this.currentChar.is("=") && this.peek().is("=") && this.peek(2).is("=")) {
+      this.advance(3);
+      return this.createToken(TokenType.STRICT_EQUAL, "===");
+    } else if (this.currentChar.is("!") && this.peek().is("=") && this.peek(2).is("=")) {
+      this.advance(3);
+      return this.createToken(TokenType.NOT_STRICT_EQUAL, "!==");
+    } else if (this.currentChar.is("+") && this.peek().is("+")) {
+      this.advance(2);
+      return this.createToken(TokenType.INCREMENT, "++");
+    } else if (this.currentChar.is("-") && this.peek().is("-")) {
+      this.advance(2);
+      return this.createToken(TokenType.DECREMENT, "--");
     } else if (this.currentChar.is("&") && this.peek().is("&")) {
       this.advance(2);
       return this.createToken(TokenType.AND, "&&");
@@ -62,6 +74,9 @@ export class Lexer {
     } else if (this.currentChar.is("/")) {
       this.advance();
       return this.createToken(TokenType.SLASH, "/");
+    } else if (this.currentChar.is("%")) {
+      this.advance();
+      return this.createToken(TokenType.PERCENT, "%");
     } else if (this.currentChar.is("=")) {
       this.advance();
       return this.createToken(TokenType.ASSIGN, "=");
@@ -86,6 +101,12 @@ export class Lexer {
     } else if (this.currentChar.is("]")) {
       this.advance();
       return this.createToken(TokenType.RIGHT_SQUARE_BRACKETS, "]");
+    } else if (this.currentChar.is("!")) {
+      this.advance();
+      return this.createToken(TokenType.EXCLAMATION_MARK, "!");
+    } else if (this.currentChar.is(".")) {
+      this.advance();
+      return this.createToken(TokenType.DOT, ".");
     } else if (this.currentChar.is(";")) {
       this.advance();
       return this.createToken(TokenType.SEMICOLON, ";");
