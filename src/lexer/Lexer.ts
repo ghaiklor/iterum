@@ -16,40 +16,6 @@ export class Lexer {
   }
 
   /**
-   * Advances the cursor in the source code.
-   *
-   * @param shift How many characters to advance
-   */
-  public advance(shift: number = 1): Lexer {
-    this.cursorPosition += shift;
-    this.tokenLocation.column += shift;
-    this.currentChar = Character.from(this.sourceCode[this.cursorPosition]);
-
-    return this;
-  }
-
-  /**
-   * Peeks up a character specified by shift argument, starting from current position.
-   * This method does not modify the state of the cursor.
-   *
-   * @param shift How many characters to skip before peeking
-   */
-  public peek(shift: number = 1): Character {
-    return Character.from(this.sourceCode[this.cursorPosition + shift]);
-  }
-
-  /**
-   * Creates new instance of a token.
-   * Same as new Token(), but it does not require location of a token.
-   *
-   * @param tokenType Type of the token to create
-   * @param code Part of the source code that is related to token
-   */
-  public createToken(tokenType: TokenType, code: string): Token {
-    return new Token(tokenType, code, this.tokenLocation);
-  }
-
-  /**
    * Iterates over the source code and returns token one at a time.
    */
   public next(): Token {
@@ -134,6 +100,40 @@ export class Lexer {
     }
 
     throw new Error(`Unrecognized character ${this.currentChar} at ${this.tokenLocation}`);
+  }
+
+  /**
+   * Advances the cursor in the source code.
+   *
+   * @param shift How many characters to advance
+   */
+  private advance(shift: number = 1): Lexer {
+    this.cursorPosition += shift;
+    this.tokenLocation.column += shift;
+    this.currentChar = Character.from(this.sourceCode[this.cursorPosition]);
+
+    return this;
+  }
+
+  /**
+   * Peeks up a character specified by shift argument, starting from current position.
+   * This method does not modify the state of the cursor.
+   *
+   * @param shift How many characters to skip before peeking
+   */
+  private peek(shift: number = 1): Character {
+    return Character.from(this.sourceCode[this.cursorPosition + shift]);
+  }
+
+  /**
+   * Creates new instance of a token.
+   * Same as new Token(), but it does not require location of a token.
+   *
+   * @param tokenType Type of the token to create
+   * @param code Part of the source code that is related to token
+   */
+  private createToken(tokenType: TokenType, code: string): Token {
+    return new Token(tokenType, code, this.tokenLocation);
   }
 
   private incrementLineLocation(): void {
