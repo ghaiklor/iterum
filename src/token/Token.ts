@@ -1,16 +1,12 @@
-import { IToken } from "./IToken";
-import { TokenLocation } from "./TokenLocation";
 import { TokenType } from "./TokenType";
 
-export class Token implements IToken {
+export class Token {
   public type: TokenType;
   public code: string;
-  public location: TokenLocation;
 
-  constructor(type: TokenType, code: string, location: TokenLocation) {
+  constructor(type: TokenType, code: string) {
     this.type = type;
     this.code = code;
-    this.location = location;
   }
 
   /**
@@ -29,6 +25,6 @@ export class Token implements IToken {
    * @returns {String}
    */
   public toString(): string {
-    return `Token(${this.type}, ${this.code}, ${this.location.line}:${this.location.column})`;
+    return `Token(${this.type}, ${this.code})`;
   }
 }

@@ -27,9 +27,15 @@
   "engines": {
     "node": ">=8.0.0"
   },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
   "scripts": {
     "build": "npm run clean && npm run lint && npm run test && tsc",
     "clean": "rimraf coverage dist",
+    "commit": "npx git-cz",
     "lint": "tslint --project tsconfig.json --config tslint.json",
     "test": "jest --coverage --config jest.config.json"
   },
@@ -37,6 +43,7 @@
   "devDependencies": {
     "@types/jest": "24.0.6",
     "codecov": "3.2.0",
+    "cz-conventional-changelog": "2.1.0",
     "jest": "24.1.0",
     "rimraf": "2.6.3",
     "ts-jest": "24.0.0",

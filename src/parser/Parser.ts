@@ -23,7 +23,10 @@ export class Parser {
     if (this.currentToken.is(tokenToEat)) {
       this.currentToken = this.lexer.next();
     } else {
-      throw new Error(`Expected ${tokenToEat} at ${this.currentToken.location}, but got ${this.currentToken.code}`);
+      throw new Error(
+        `Expected ${tokenToEat} at ${this.lexer.location.line}:${this.lexer.location.column}, ` +
+        `but got ${this.currentToken.code}`,
+      );
     }
 
     return this;
@@ -94,6 +97,6 @@ export class Parser {
       return expression;
     }
 
-    throw new Error(`Unrecognized token ${token.code} at ${token.location}`);
+    throw new Error(`Unrecognized token ${token.code} at ${this.lexer.location.line}:${this.lexer.location.column}`);
   }
 }

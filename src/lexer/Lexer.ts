@@ -1,129 +1,50 @@
 import { Token } from "../token/Token";
-import { TokenLocation } from "../token/TokenLocation";
 import { TokenType } from "../token/TokenType";
 import { Character } from "./Character";
 
 export class Lexer {
-  private sourceCode: string;
-  private cursorPosition: number;
-  private currentChar: Character;
-  private tokenLocation: TokenLocation;
+  public location: { line: number, column: number };
+  private source: string;
+  private index: number;
+  private char: Character;
   constructor(source: string) {
-    this.sourceCode = source;
-    this.cursorPosition = 0;
-    this.currentChar = Character.from(this.sourceCode[this.cursorPosition]);
-    this.tokenLocation = TokenLocation.from(1, 1);
+    this.source = source;
+    this.index = 0;
+    this.char = Character.from(this.source[this.index]);
+    this.location = { line: 1, column: 1 };
   }
 
-  /**
-   * Iterates over the source code and returns token one at a time.
-   */
   public next(): Token {
-    while (this.currentChar.isWhitespace()) {
+    while (this.char.isWhitespace()) {
       this.skipWhitespace();
       this.skipComments();
     }
 
-    if (this.currentChar.isAlpha()) {
+    if (this.char.isAlpha()) {
       return this.identifierOrKeyword();
-    } else if (this.currentChar.isDigit() || (this.currentChar.is("-") && this.peek().isDigit())) {
+    } else if (this.char.isDigit() || (this.char.is("-") && this.peek().isDigit())) {
       return this.numericLiteral();
-    } else if (this.currentChar.is('"')) {
+    } else if (this.char.is('"')) {
       return this.stringLiteral('"');
-    } else if (this.currentChar.is("'")) {
+    } else if (this.char.is("'")) {
       return this.stringLiteral("'");
-    } else if (this.currentChar.is("=") && this.peek().is("=") && this.peek(2).is("=")) {
+    } else if (Lexer.PUNCTUATION[`${this.char}${this.peek()}${this.peek(2)}`]) {
+      const token = Lexer.PUNCTUATION[`${this.char}${this.peek()}${this.peek(2)}`];
       this.advance(3);
-      return this.createToken(TokenType.STRICT_EQUAL, "===");
-    } else if (this.currentChar.is("!") && this.peek().is("=") && this.peek(2).is("=")) {
-      this.advance(3);
-      return this.createToken(TokenType.NOT_STRICT_EQUAL, "!==");
-    } else if (this.currentChar.is("+") && this.peek().is("+")) {
+      return token;
+    } else if (Lexer.PUNCTUATION[`${this.char}${this.peek()}`]) {
+      const token = Lexer.PUNCTUATION[`${this.char}${this.peek()}`];
       this.advance(2);
-      return this.createToken(TokenType.INCREMENT, "++");
-    } else if (this.currentChar.is("-") && this.peek().is("-")) {
-      this.advance(2);
-      return this.createToken(TokenType.DECREMENT, "--");
-    } else if (this.currentChar.is("&") && this.peek().is("&")) {
-      this.advance(2);
-      return this.createToken(TokenType.AND, "&&");
-    } else if (this.currentChar.is("=") && this.peek().is("=")) {
-      this.advance(2);
-      return this.createToken(TokenType.EQUAL, "==");
-    } else if (this.currentChar.is(">") && this.peek().is("=")) {
-      this.advance(2);
-      return this.createToken(TokenType.GREATER_THAN_OR_EQUAL, ">=");
-    } else if (this.currentChar.is("<") && this.peek().is("=")) {
-      this.advance(2);
-      return this.createToken(TokenType.LESS_THAN_OR_EQUAL, "<=");
-    } else if (this.currentChar.is("!") && this.peek().is("=")) {
-      this.advance(2);
-      return this.createToken(TokenType.NOT_EQUAL, "!=");
-    } else if (this.currentChar.is("|") && this.peek().is("|")) {
-      this.advance(2);
-      return this.createToken(TokenType.OR, "||");
-    } else if (this.currentChar.is("*")) {
+      return token;
+    } else if (Lexer.PUNCTUATION[`${this.char}`]) {
+      const token = Lexer.PUNCTUATION[`${this.char}`];
       this.advance();
-      return this.createToken(TokenType.ASTERISK, "*");
-    } else if (this.currentChar.is("+")) {
-      this.advance();
-      return this.createToken(TokenType.PLUS, "+");
-    } else if (this.currentChar.is("-")) {
-      this.advance();
-      return this.createToken(TokenType.MINUS, "-");
-    } else if (this.currentChar.is("/")) {
-      this.advance();
-      return this.createToken(TokenType.SLASH, "/");
-    } else if (this.currentChar.is("%")) {
-      this.advance();
-      return this.createToken(TokenType.PERCENT, "%");
-    } else if (this.currentChar.is("=")) {
-      this.advance();
-      return this.createToken(TokenType.ASSIGN, "=");
-    } else if (this.currentChar.is(",")) {
-      this.advance();
-      return this.createToken(TokenType.COMMA, ",");
-    } else if (this.currentChar.is("(")) {
-      this.advance();
-      return this.createToken(TokenType.LEFT_PARENTHESIS, "(");
-    } else if (this.currentChar.is(")")) {
-      this.advance();
-      return this.createToken(TokenType.RIGHT_PARENTHESIS, ")");
-    } else if (this.currentChar.is("{")) {
-      this.advance();
-      return this.createToken(TokenType.LEFT_CURLY_BRACES, "{");
-    } else if (this.currentChar.is("}")) {
-      this.advance();
-      return this.createToken(TokenType.RIGHT_CURLY_BRACES, "}");
-    } else if (this.currentChar.is("[")) {
-      this.advance();
-      return this.createToken(TokenType.LEFT_SQUARE_BRACKETS, "[");
-    } else if (this.currentChar.is("]")) {
-      this.advance();
-      return this.createToken(TokenType.RIGHT_SQUARE_BRACKETS, "]");
-    } else if (this.currentChar.is("!")) {
-      this.advance();
-      return this.createToken(TokenType.EXCLAMATION_MARK, "!");
-    } else if (this.currentChar.is("~")) {
-      this.advance();
-      return this.createToken(TokenType.TILDE, "~");
-    } else if (this.currentChar.is(".")) {
-      this.advance();
-      return this.createToken(TokenType.DOT, ".");
-    } else if (this.currentChar.is(";")) {
-      this.advance();
-      return this.createToken(TokenType.SEMICOLON, ";");
-    } else if (this.currentChar.is(">")) {
-      this.advance();
-      return this.createToken(TokenType.GREATER_THAN, ">");
-    } else if (this.currentChar.is("<")) {
-      this.advance();
-      return this.createToken(TokenType.LESS_THAN, "<");
-    } else if (this.currentChar.isEOF()) {
-      return this.createToken(TokenType.EOF, "EOF");
+      return token;
+    } else if (this.char.isEOF()) {
+      return new Token(TokenType.EOF, "EOF");
     }
 
-    throw new Error(`Unrecognized character ${this.currentChar} at ${this.tokenLocation}`);
+    throw new Error(`Unrecognized character ${this.char} at ${this.location.line}:${this.location.column}`);
   }
 
   /**
@@ -132,9 +53,9 @@ export class Lexer {
    * @param shift How many characters to advance
    */
   private advance(shift: number = 1): Lexer {
-    this.cursorPosition += shift;
-    this.tokenLocation.column += shift;
-    this.currentChar = Character.from(this.sourceCode[this.cursorPosition]);
+    this.index += shift;
+    this.location.column += shift;
+    this.char = Character.from(this.source[this.index]);
 
     return this;
   }
@@ -146,28 +67,17 @@ export class Lexer {
    * @param shift How many characters to skip before peeking
    */
   private peek(shift: number = 1): Character {
-    return Character.from(this.sourceCode[this.cursorPosition + shift]);
-  }
-
-  /**
-   * Creates new instance of a token.
-   * Same as new Token(), but it does not require location of a token.
-   *
-   * @param tokenType Type of the token to create
-   * @param code Part of the source code that is related to token
-   */
-  private createToken(tokenType: TokenType, code: string): Token {
-    return new Token(tokenType, code, this.tokenLocation);
+    return Character.from(this.source[this.index + shift]);
   }
 
   private incrementLineLocation(): void {
-    this.tokenLocation.line++;
-    this.tokenLocation.column = 0;
+    this.location.line++;
+    this.location.column = 0;
   }
 
   private skipWhitespace(): void {
-    while (this.currentChar.isWhitespace()) {
-      if (this.currentChar.isLineTerminator()) {
+    while (this.char.isWhitespace()) {
+      if (this.char.isLineTerminator()) {
         this.incrementLineLocation();
       }
 
@@ -176,15 +86,15 @@ export class Lexer {
   }
 
   private skipComments(): void {
-    if (this.currentChar.is("/") && this.peek().is("*")) {
+    if (this.char.is("/") && this.peek().is("*")) {
       this.advance(2);
 
-      while (!(this.currentChar.is("*") && this.peek().is("/"))) {
-        if (this.currentChar.isEOF()) {
-          throw new Error(`Expected */ at ${this.tokenLocation}`);
+      while (!(this.char.is("*") && this.peek().is("/"))) {
+        if (this.char.isEOF()) {
+          throw new Error(`Expected */ at ${this.location.line}:${this.location.column}`);
         }
 
-        if (this.currentChar.isLineTerminator()) {
+        if (this.char.isLineTerminator()) {
           this.incrementLineLocation();
         }
 
@@ -195,13 +105,13 @@ export class Lexer {
       return;
     }
 
-    if (this.currentChar.is("/") && this.peek().is("/")) {
+    if (this.char.is("/") && this.peek().is("/")) {
       this.advance(2);
 
-      while (!(this.currentChar.isLineTerminator() || this.currentChar.isEOF())) {
+      while (!(this.char.isLineTerminator() || this.char.isEOF())) {
         this.advance();
 
-        if (this.currentChar.isLineTerminator()) {
+        if (this.char.isLineTerminator()) {
           this.incrementLineLocation();
         }
       }
@@ -214,101 +124,133 @@ export class Lexer {
   private numericLiteral(): Token {
     let buffer: string = "";
 
-    buffer += this.currentChar;
+    buffer += this.char;
     this.advance();
 
-    while (this.currentChar.isDigit()) {
-      buffer += this.currentChar;
+    while (this.char.isDigit()) {
+      buffer += this.char;
       this.advance();
     }
 
-    if (this.currentChar.is(".") && this.peek().isDigit()) {
-      buffer += this.currentChar;
+    if (this.char.is(".") && this.peek().isDigit()) {
+      buffer += this.char;
       this.advance();
 
-      while (this.currentChar.isDigit()) {
-        buffer += this.currentChar;
+      while (this.char.isDigit()) {
+        buffer += this.char;
         this.advance();
       }
     }
 
-    return this.createToken(TokenType.NUMBER_LITERAL, buffer);
+    return new Token(TokenType.NUMBER_LITERAL, buffer);
   }
 
   private stringLiteral(quoteType: string): Token {
     let buffer: string = "";
     this.advance();
 
-    while (!this.currentChar.is(quoteType)) {
-      buffer += this.currentChar;
+    while (!this.char.is(quoteType)) {
+      buffer += this.char;
       this.advance();
     }
 
     this.advance();
-    return this.createToken(TokenType.STRING_LITERAL, buffer);
+    return new Token(TokenType.STRING_LITERAL, buffer);
   }
 
   private identifierOrKeyword(): Token {
-    const KEYWORDS: Record<string, () => Token> = {
-      async: this.createToken.bind(this, TokenType.ASYNC, "async"),
-      await: this.createToken.bind(this, TokenType.AWAIT, "await"),
-      break: this.createToken.bind(this, TokenType.BREAK, "break"),
-      case: this.createToken.bind(this, TokenType.CASE, "case"),
-      catch: this.createToken.bind(this, TokenType.CATCH, "catch"),
-      class: this.createToken.bind(this, TokenType.CLASS, "class"),
-      const: this.createToken.bind(this, TokenType.CONST, "const"),
-      continue: this.createToken.bind(this, TokenType.CONTINUE, "continue"),
-      debugger: this.createToken.bind(this, TokenType.DEBUGGER, "debugger"),
-      default: this.createToken.bind(this, TokenType.DEFAULT, "default"),
-      delete: this.createToken.bind(this, TokenType.DELETE, "delete"),
-      do: this.createToken.bind(this, TokenType.DO, "do"),
-      else: this.createToken.bind(this, TokenType.ELSE, "else"),
-      enum: this.createToken.bind(this, TokenType.ENUM, "enum"),
-      export: this.createToken.bind(this, TokenType.EXPORT, "export"),
-      extends: this.createToken.bind(this, TokenType.EXTENDS, "extends"),
-      false: this.createToken.bind(this, TokenType.BOOLEAN_LITERAL, "false"),
-      finally: this.createToken.bind(this, TokenType.FINALLY, "finally"),
-      for: this.createToken.bind(this, TokenType.FOR, "for"),
-      function: this.createToken.bind(this, TokenType.FUNCTION, "function"),
-      if: this.createToken.bind(this, TokenType.IF, "if"),
-      implements: this.createToken.bind(this, TokenType.IMPLEMENTS, "implements"),
-      import: this.createToken.bind(this, TokenType.IMPORT, "import"),
-      in: this.createToken.bind(this, TokenType.IN, "in"),
-      instanceof: this.createToken.bind(this, TokenType.INSTANCE_OF, "instanceof"),
-      interface: this.createToken.bind(this, TokenType.INTERFACE, "interface"),
-      let: this.createToken.bind(this, TokenType.LET, "let"),
-      new: this.createToken.bind(this, TokenType.NEW, "new"),
-      null: this.createToken.bind(this, TokenType.NULL_LITERAL, "null"),
-      package: this.createToken.bind(this, TokenType.PACKAGE, "package"),
-      private: this.createToken.bind(this, TokenType.PRIVATE, "private"),
-      protected: this.createToken.bind(this, TokenType.PROTECTED, "protected"),
-      public: this.createToken.bind(this, TokenType.PUBLIC, "public"),
-      return: this.createToken.bind(this, TokenType.RETURN, "return"),
-      super: this.createToken.bind(this, TokenType.SUPER, "super"),
-      switch: this.createToken.bind(this, TokenType.SWITCH, "switch"),
-      this: this.createToken.bind(this, TokenType.THIS, "this"),
-      throw: this.createToken.bind(this, TokenType.THROW, "throw"),
-      true: this.createToken.bind(this, TokenType.BOOLEAN_LITERAL, "true"),
-      try: this.createToken.bind(this, TokenType.TRY, "try"),
-      typeof: this.createToken.bind(this, TokenType.TYPE_OF, "typeof"),
-      var: this.createToken.bind(this, TokenType.VAR, "var"),
-      void: this.createToken.bind(this, TokenType.VOID, "void"),
-      while: this.createToken.bind(this, TokenType.WHILE, "while"),
-      with: this.createToken.bind(this, TokenType.WITH, "with"),
-      yield: this.createToken.bind(this, TokenType.YIELD, "yield"),
-    };
-
     let buffer: string = "";
 
-    while (this.currentChar.isAlphaNumeric()) {
-      buffer += this.currentChar;
+    while (this.char.isAlphaNumeric()) {
+      buffer += this.char;
       this.advance();
     }
 
-    if (typeof KEYWORDS[buffer] === "function") {
-      return KEYWORDS[buffer]();
-    } else {
-      return this.createToken(TokenType.IDENTIFIER, buffer);
-    }
+    return Lexer.KEYWORDS[buffer] || new Token(TokenType.IDENTIFIER, buffer);
+  }
+
+  static get PUNCTUATION(): Record<string, Token> {
+    return {
+      "!": new Token(TokenType.EXCLAMATION_MARK, "!"),
+      "!=": new Token(TokenType.NOT_EQUAL, "!="),
+      "!==": new Token(TokenType.NOT_STRICT_EQUAL, "!=="),
+      "%": new Token(TokenType.PERCENT, "%"),
+      "&&": new Token(TokenType.AND, "&&"),
+      "(": new Token(TokenType.LEFT_PARENTHESIS, "("),
+      ")": new Token(TokenType.RIGHT_PARENTHESIS, ")"),
+      "*": new Token(TokenType.ASTERISK, "*"),
+      "+": new Token(TokenType.PLUS, "+"),
+      "++": new Token(TokenType.INCREMENT, "++"),
+      ",": new Token(TokenType.COMMA, ","),
+      "-": new Token(TokenType.MINUS, "-"),
+      "--": new Token(TokenType.DECREMENT, "--"),
+      ".": new Token(TokenType.DOT, "."),
+      "/": new Token(TokenType.SLASH, "/"),
+      ";": new Token(TokenType.SEMICOLON, ";"),
+      "<": new Token(TokenType.LESS_THAN, "<"),
+      "<=": new Token(TokenType.LESS_THAN_OR_EQUAL, "<="),
+      "=": new Token(TokenType.ASSIGN, "="),
+      "==": new Token(TokenType.EQUAL, "=="),
+      "===": new Token(TokenType.STRICT_EQUAL, "==="),
+      ">": new Token(TokenType.GREATER_THAN, ">"),
+      ">=": new Token(TokenType.GREATER_THAN_OR_EQUAL, ">="),
+      "[": new Token(TokenType.LEFT_SQUARE_BRACKETS, "["),
+      "]": new Token(TokenType.RIGHT_SQUARE_BRACKETS, "]"),
+      "{": new Token(TokenType.LEFT_CURLY_BRACES, "{"),
+      "||": new Token(TokenType.OR, "||"),
+      "}": new Token(TokenType.RIGHT_CURLY_BRACES, "}"),
+      "~": new Token(TokenType.TILDE, "~"),
+    };
+  }
+
+  static get KEYWORDS(): Record<string, Token> {
+    return {
+      async: new Token(TokenType.ASYNC, "async"),
+      await: new Token(TokenType.AWAIT, "await"),
+      break: new Token(TokenType.BREAK, "break"),
+      case: new Token(TokenType.CASE, "case"),
+      catch: new Token(TokenType.CATCH, "catch"),
+      class: new Token(TokenType.CLASS, "class"),
+      const: new Token(TokenType.CONST, "const"),
+      continue: new Token(TokenType.CONTINUE, "continue"),
+      debugger: new Token(TokenType.DEBUGGER, "debugger"),
+      default: new Token(TokenType.DEFAULT, "default"),
+      delete: new Token(TokenType.DELETE, "delete"),
+      do: new Token(TokenType.DO, "do"),
+      else: new Token(TokenType.ELSE, "else"),
+      enum: new Token(TokenType.ENUM, "enum"),
+      export: new Token(TokenType.EXPORT, "export"),
+      extends: new Token(TokenType.EXTENDS, "extends"),
+      false: new Token(TokenType.BOOLEAN_LITERAL, "false"),
+      finally: new Token(TokenType.FINALLY, "finally"),
+      for: new Token(TokenType.FOR, "for"),
+      function: new Token(TokenType.FUNCTION, "function"),
+      if: new Token(TokenType.IF, "if"),
+      implements: new Token(TokenType.IMPLEMENTS, "implements"),
+      import: new Token(TokenType.IMPORT, "import"),
+      in: new Token(TokenType.IN, "in"),
+      instanceof: new Token(TokenType.INSTANCE_OF, "instanceof"),
+      interface: new Token(TokenType.INTERFACE, "interface"),
+      let: new Token(TokenType.LET, "let"),
+      new: new Token(TokenType.NEW, "new"),
+      null: new Token(TokenType.NULL_LITERAL, "null"),
+      package: new Token(TokenType.PACKAGE, "package"),
+      private: new Token(TokenType.PRIVATE, "private"),
+      protected: new Token(TokenType.PROTECTED, "protected"),
+      public: new Token(TokenType.PUBLIC, "public"),
+      return: new Token(TokenType.RETURN, "return"),
+      super: new Token(TokenType.SUPER, "super"),
+      switch: new Token(TokenType.SWITCH, "switch"),
+      this: new Token(TokenType.THIS, "this"),
+      throw: new Token(TokenType.THROW, "throw"),
+      true: new Token(TokenType.BOOLEAN_LITERAL, "true"),
+      try: new Token(TokenType.TRY, "try"),
+      typeof: new Token(TokenType.TYPE_OF, "typeof"),
+      var: new Token(TokenType.VAR, "var"),
+      void: new Token(TokenType.VOID, "void"),
+      while: new Token(TokenType.WHILE, "while"),
+      with: new Token(TokenType.WITH, "with"),
+      yield: new Token(TokenType.YIELD, "yield"),
+    };
   }
 }
