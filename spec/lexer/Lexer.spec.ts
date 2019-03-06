@@ -130,7 +130,7 @@ describe("Iterum::Lexer", () => {
   });
 
   it("Should properly tokenize logical operators", () => {
-    const source = `&& == >= > < <= != || !`;
+    const source = `&& == >= > < <= != || ! ~`;
     const lexer = new Lexer(source);
 
     expect(lexer.next()).toMatchObject({ type: TokenType.AND, code: "&&" } as Token);
@@ -142,6 +142,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.NOT_EQUAL, code: "!=" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.OR, code: "||" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EXCLAMATION_MARK, code: "!" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.TILDE, code: "~" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });

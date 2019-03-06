@@ -69,6 +69,7 @@ export const enum TokenType {
   SWITCH = "SWITCH",
   THIS = "THIS",
   THROW = "THROW",
+  TILDE = "~",
   TRY = "TRY",
   TYPE_OF = "TYPE_OF",
   VAR = "VAR",

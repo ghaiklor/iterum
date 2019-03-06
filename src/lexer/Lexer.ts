@@ -27,7 +27,7 @@ export class Lexer {
     if (this.currentChar.isAlpha()) {
       return this.identifierOrKeyword();
     } else if (this.currentChar.isDigit() || (this.currentChar.is("-") && this.peek().isDigit())) {
-      return this.numberLiteral();
+      return this.numericLiteral();
     } else if (this.currentChar.is('"')) {
       return this.stringLiteral('"');
     } else if (this.currentChar.is("'")) {
@@ -104,6 +104,9 @@ export class Lexer {
     } else if (this.currentChar.is("!")) {
       this.advance();
       return this.createToken(TokenType.EXCLAMATION_MARK, "!");
+    } else if (this.currentChar.is("~")) {
+      this.advance();
+      return this.createToken(TokenType.TILDE, "~");
     } else if (this.currentChar.is(".")) {
       this.advance();
       return this.createToken(TokenType.DOT, ".");
@@ -208,7 +211,7 @@ export class Lexer {
     }
   }
 
-  private numberLiteral(): Token {
+  private numericLiteral(): Token {
     let buffer: string = "";
 
     buffer += this.currentChar;
