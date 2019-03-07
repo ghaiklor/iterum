@@ -28,16 +28,16 @@ export class Lexer {
       return this.stringLiteral('"');
     } else if (this.char.is("'")) {
       return this.stringLiteral("'");
-    } else if (Lexer.PUNCTUATION[`${this.char}${this.peek()}${this.peek(2)}`]) {
-      const token = Lexer.PUNCTUATION[`${this.char}${this.peek()}${this.peek(2)}`];
-      this.advance(3);
+    } else if (Lexer.PUNCTUATION[this.slice(3)]) {
+      const token = Lexer.PUNCTUATION[this.slice(3)];
+      this.advance(this.slice(3).length);
       return token;
-    } else if (Lexer.PUNCTUATION[`${this.char}${this.peek()}`]) {
-      const token = Lexer.PUNCTUATION[`${this.char}${this.peek()}`];
-      this.advance(2);
+    } else if (Lexer.PUNCTUATION[this.slice(2)]) {
+      const token = Lexer.PUNCTUATION[this.slice(2)];
+      this.advance(this.slice(2).length);
       return token;
-    } else if (Lexer.PUNCTUATION[`${this.char}`]) {
-      const token = Lexer.PUNCTUATION[`${this.char}`];
+    } else if (Lexer.PUNCTUATION[this.slice()]) {
+      const token = Lexer.PUNCTUATION[this.slice()];
       this.advance();
       return token;
     } else if (this.char.isEOF()) {
@@ -68,6 +68,15 @@ export class Lexer {
    */
   private peek(shift: number = 1): Character {
     return Character.from(this.source[this.index + shift]);
+  }
+
+  /**
+   * Takes a substring of required length, starting from the current position.
+   *
+   * @param length How many characters to slice from current position
+   */
+  private slice(length: number = 1): string {
+    return this.source.slice(this.index, this.index + length);
   }
 
   private incrementLineLocation(): void {
