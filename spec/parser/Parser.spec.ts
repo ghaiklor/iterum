@@ -1,9 +1,9 @@
-import { BinaryExpression } from "../../src/ast/BinaryExpression";
+import { BinaryExpression } from "../../src/ast/expression/BinaryExpression";
+import { ConditionalExpression } from "../../src/ast/expression/ConditionalExpression";
+import { SequenceExpression } from "../../src/ast/expression/SequenceExpression";
 import { Identifier } from "../../src/ast/Identifier";
 import { Literal } from "../../src/ast/Literal";
-import { SequenceExpression } from "../../src/ast/SequenceExpression";
 import { Parser } from "../../src/parser/Parser";
-import { ConditionalExpression } from "../../src/ast/ConditionalExpression";
 
 describe("Iterum::Parser", () => {
   it("Should properly parse the simplest expression with +", () => {
