@@ -20,6 +20,15 @@ export class Token {
   }
 
   /**
+   * Check if the token is some of provided token types.
+   *
+   * @param types An array of token types to check against
+   */
+  public isSomeOf(types: TokenType[]) {
+    return types.some((type) => this.is(type));
+  }
+
+  /**
    * Serialize token to string representation for easier debugging.
    *
    * @returns {String}

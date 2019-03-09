@@ -1,8 +1,8 @@
-import { Node } from "./Node";
+import { Expression } from "./Expression";
 
-export class ArrayExpression extends Node {
-  public elements: Node[];
-  constructor(elements: Node[]) {
+export class ArrayExpression extends Expression {
+  public elements: Expression[];
+  constructor(elements: Expression[]) {
     super();
 
     this.elements = elements;

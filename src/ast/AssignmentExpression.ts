@@ -1,6 +1,6 @@
 import { Expression } from "./Expression";
 
-export class BinaryExpression extends Expression {
+export class AssignmentExpression extends Expression {
   public left: Expression;
   public operator: string;
   public right: Expression;
