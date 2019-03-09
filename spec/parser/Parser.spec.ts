@@ -1,6 +1,9 @@
 import { BinaryExpression } from "../../src/ast/BinaryExpression";
+import { Identifier } from "../../src/ast/Identifier";
 import { Literal } from "../../src/ast/Literal";
+import { SequenceExpression } from "../../src/ast/SequenceExpression";
 import { Parser } from "../../src/parser/Parser";
+import { ConditionalExpression } from "../../src/ast/ConditionalExpression";
 
 describe("Iterum::Parser", () => {
   it("Should properly parse the simplest expression with +", () => {
@@ -64,5 +67,30 @@ describe("Iterum::Parser", () => {
   it("Should properly throw an error if unrecognized token met", () => {
     const source = `5 + /`;
     expect(() => Parser.parse(source)).toThrowError("Unexpected / at 1:6");
+  });
+
+  it("Should properly parse the sequence of expressions", () => {
+    const source = `foo, bar`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      expressions: [
+        { name: "foo", type: "Identifier" } as Identifier,
+        { name: "bar", type: "Identifier" } as Identifier,
+      ],
+      type: "SequenceExpression",
+    } as SequenceExpression);
+  });
+
+  it("Should properly parse conditional expression", () => {
+    const source = `foo ? true : false`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      alternate: { value: false, raw: "false" } as Literal,
+      consequent: { value: true, raw: "true" } as Literal,
+      test: { name: "foo" } as Identifier,
+      type: "ConditionalExpression",
+    } as ConditionalExpression);
   });
 });

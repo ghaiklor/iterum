@@ -105,7 +105,7 @@ export class Parser {
       return new Literal(null, "null");
     } else if (token.is(TokenType.BOOLEAN_LITERAL)) {
       this.eat(TokenType.BOOLEAN_LITERAL);
-      return new Literal(!!token.code, token.code);
+      return new Literal(token.code === "true" ? true : false, token.code);
     } else if (token.is(TokenType.NUMBER_LITERAL)) {
       this.eat(TokenType.NUMBER_LITERAL);
       return new Literal(parseFloat(token.code), token.code);
