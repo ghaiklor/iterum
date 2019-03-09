@@ -8,36 +8,26 @@ describe("Iterum::Parser", () => {
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
-      left: { value: 5, raw: "5" } as Literal,
+      left: { value: 2, raw: "2" } as Literal,
       operator: "+",
-      right: { value: 2, raw: "2" } as Literal,
+      right: { value: 5, raw: "5" } as Literal,
       type: "BinaryExpression",
     } as BinaryExpression);
   });
 
-  it("Should properly parse the expression with all mathematical operators", () => {
-    const source = `5 + 10 - -20 * -4.20 / 2`;
-    const ast = Parser.parse(source)
+  it("Should properly parse the simplest expression with the correct precedence", () => {
+    const source = `5 + 10 / 2`;
+    const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
-      left: { value: 5 } as Literal,
-      operator: "+",
-      right: {
-        left: { value: 10 } as Literal,
-        operator: "-",
-        right: {
-          left: { value: -20 } as Literal,
-          operator: "*",
-          right: {
-            left: { value: -4.20 } as Literal,
-            operator: "/",
-            right: { value: 2 } as Literal,
-            type: "BinaryExpression",
-          } as BinaryExpression,
-          type: "BinaryExpression",
-        } as BinaryExpression,
+      left: {
+        left: { value: 2, raw: "2" } as Literal,
+        operator: "/",
+        right: { value: 10, raw: "10" } as Literal,
         type: "BinaryExpression",
       } as BinaryExpression,
+      operator: "+",
+      right: { value: 5, raw: "5" } as Literal,
       type: "BinaryExpression",
     } as BinaryExpression);
   });
@@ -47,14 +37,14 @@ describe("Iterum::Parser", () => {
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
-      left: { value: 5, raw: "5" } as Literal,
-      operator: "*",
-      right: {
-        left: { value: 10, raw: "10" } as Literal,
+      left: {
+        left: { value: 2, raw: "2" } as Literal,
         operator: "+",
-        right: { value: 2, raw: "2" } as Literal,
+        right: { value: 10, raw: "10" } as Literal,
         type: "BinaryExpression",
       } as BinaryExpression,
+      operator: "*",
+      right: { value: 5, raw: "5" } as Literal,
       type: "BinaryExpression",
     } as BinaryExpression);
   });
@@ -73,6 +63,6 @@ describe("Iterum::Parser", () => {
 
   it("Should properly throw an error if unrecognized token met", () => {
     const source = `5 + /`;
-    expect(() => Parser.parse(source)).toThrowError("Unrecognized token / at 1:6");
+    expect(() => Parser.parse(source)).toThrowError("Unexpected / at 1:6");
   });
 });

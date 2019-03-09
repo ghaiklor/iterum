@@ -17,13 +17,11 @@ describe("Iterum::Lexer", () => {
   });
 
   it("Should properly tokenize number literals", () => {
-    const source = `2 2.52 -15 -10.5`;
+    const source = `2 2.52`;
     const lexer = new Lexer(source);
 
     expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2.52" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "-15" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "-10.5" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
@@ -130,7 +128,7 @@ describe("Iterum::Lexer", () => {
   });
 
   it("Should properly tokenize logical operators", () => {
-    const source = `&& == >= > < <= != || ! ~`;
+    const source = `&& == >= > < <= != || !`;
     const lexer = new Lexer(source);
 
     expect(lexer.next()).toMatchObject({ type: TokenType.AND, code: "&&" } as Token);
@@ -142,7 +140,6 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.NOT_EQUAL, code: "!=" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.OR, code: "||" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EXCLAMATION_MARK, code: "!" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.TILDE, code: "~" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });

@@ -22,7 +22,7 @@ export class Lexer {
 
     if (this.char.isAlpha()) {
       return this.identifierOrKeyword();
-    } else if (this.char.isDigit() || (this.char.is("-") && this.peek().isDigit())) {
+    } else if (this.char.isDigit()) {
       return this.numericLiteral();
     } else if (this.char.is('"')) {
       return this.stringLiteral('"');

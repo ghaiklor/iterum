@@ -165,36 +165,45 @@ export class Parser {
   }
 
   private memberExpression(): MemberExpression | Expression {
+    if (this.currentToken.is(TokenType.NEW)) {
+      this.eat(TokenType.NEW);
+      return new NewExpression(this.memberExpression(), this.arguments());
+    }
+
     const object = this.primaryExpression();
 
     if (this.currentToken.is(TokenType.LEFT_SQUARE_BRACKETS)) {
       this.eat(TokenType.LEFT_SQUARE_BRACKETS);
       const property = this.expression();
       this.eat(TokenType.RIGHT_SQUARE_BRACKETS);
-      return new MemberExpression(object, property);
+      return new MemberExpression(this.memberExpression(), property);
     } else if (this.currentToken.is(TokenType.DOT)) {
       this.eat(TokenType.DOT);
       const property = this.identifier();
-      return new MemberExpression(object, property);
+      return new MemberExpression(this.memberExpression(), property);
     }
 
     return object;
   }
 
-  private newExpression(): NewExpression | Expression {
-    if (this.currentToken.is(TokenType.NEW)) {
-      this.eat(TokenType.NEW);
-      return this.newExpression();
-    } else {
-      return this.memberExpression();
-    }
-  }
-
   private callExpression(): CallExpression | Expression {
     const callee = this.memberExpression();
-    const args = this.arguments();
 
-    return new CallExpression(callee, args);
+    if (this.currentToken.is(TokenType.LEFT_PARENTHESIS)) {
+      return new CallExpression(this.callExpression(), this.arguments());
+    } else if (this.currentToken.is(TokenType.LEFT_SQUARE_BRACKETS)) {
+      this.eat(TokenType.LEFT_SQUARE_BRACKETS);
+      const property = this.expression();
+      this.eat(TokenType.RIGHT_SQUARE_BRACKETS);
+
+      return new MemberExpression(this.callExpression(), property);
+    } else if (this.currentToken.is(TokenType.DOT)) {
+      this.eat(TokenType.DOT);
+
+      return new MemberExpression(this.callExpression(), this.identifier());
+    }
+
+    return callee;
   }
 
   private arguments(): Expression[] {
@@ -220,16 +229,8 @@ export class Parser {
     return args;
   }
 
-  private leftHandSideExpression(): Expression {
-    if (this.currentToken.is(TokenType.NEW)) {
-      return this.newExpression();
-    } else {
-      return this.callExpression();
-    }
-  }
-
   private postfixExpression(): UpdateExpression | Expression {
-    const argument = this.leftHandSideExpression();
+    const argument = this.callExpression();
 
     if (this.currentToken.is(TokenType.INCREMENT)) {
       this.eat(TokenType.INCREMENT);
