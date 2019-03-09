@@ -1,5 +1,5 @@
+import { Property } from "../Property";
 import { Expression } from "./Expression";
-import { Property } from "./Property";
 
 export class ObjectExpression extends Expression {
   public properties: Property[];

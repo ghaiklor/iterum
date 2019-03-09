@@ -1,4 +1,4 @@
-import { Expression } from "./Expression";
+import { Expression } from "./expression/Expression";
 import { Identifier } from "./Identifier";
 import { Literal } from "./Literal";
 import { Node } from "./Node";
