@@ -9,9 +9,9 @@ describe("Iterum::Lexer", () => {
 
     expect(lexer.next()).toMatchObject({ type: TokenType.PLUS, code: "+" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.MINUS, code: "-" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.ASTERISK, code: "*" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.SLASH, code: "/" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.PERCENT, code: "%" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.MULTIPLY, code: "*" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DIVIDE, code: "/" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.MODULUS, code: "%" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
@@ -20,8 +20,8 @@ describe("Iterum::Lexer", () => {
     const source = `2 2.52`;
     const lexer = new Lexer(source);
 
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2.52" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "2" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "2.52" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
@@ -139,7 +139,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.LESS_THAN_OR_EQUAL, code: "<=" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.NOT_EQUAL, code: "!=" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.OR, code: "||" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.EXCLAMATION_MARK, code: "!" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.NOT, code: "!" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
@@ -168,9 +168,9 @@ describe("Iterum::Lexer", () => {
     const lexer = new Lexer(source);
 
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.INCREMENT, code: "++" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.PLUS_PLUS, code: "++" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "bar" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.DECREMENT, code: "--" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.MINUS_MINUS, code: "--" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
@@ -210,7 +210,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.DOT, code: "." } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "2" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
@@ -229,7 +229,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.GREATER_THAN, code: ">" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "5" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "5" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_CURLY_BRACES, code: "{" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "print" } as Token);
@@ -258,9 +258,9 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_SQUARE_BRACKETS, code: "[" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "1" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "1" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.COMMA, code: "," } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "2" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_SQUARE_BRACKETS, code: "]" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
@@ -298,9 +298,9 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.ASSIGN, code: "=" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "add" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "1" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "1" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.COMMA, code: "," } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "2" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "2" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "print" } as Token);
@@ -362,8 +362,8 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_CURLY_BRACES, code: "{" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RETURN, code: "return" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.ASTERISK, code: "*" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "10" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.MULTIPLY, code: "*" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "10" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_CURLY_BRACES, code: "}" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.FUNCTION, code: "function" } as Token);
@@ -374,8 +374,8 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_CURLY_BRACES, code: "{" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RETURN, code: "return" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "a" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.SLASH, code: "/" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NUMBER_LITERAL, code: "5" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DIVIDE, code: "/" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "5" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_CURLY_BRACES, code: "}" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LET, code: "let" } as Token);

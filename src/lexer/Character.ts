@@ -12,6 +12,10 @@ export class Character {
     return this.char === char;
   }
 
+  public isSomeOf(chars: string[]): boolean {
+    return chars.some((char) => this.is(char));
+  }
+
   public isLineTerminator(): boolean {
     return /[\r\n]/.test(this.char);
   }
@@ -26,6 +30,18 @@ export class Character {
 
   public isDigit(): boolean {
     return /\d/.test(this.char);
+  }
+
+  public isHexDigit(): boolean {
+    return this.isDigit() || /[a-fA-F]/.test(this.char);
+  }
+
+  public isOctalDigit(): boolean {
+    return /[0-7]/.test(this.char);
+  }
+
+  public isBinaryDigit(): boolean {
+    return /[01]/.test(this.char);
   }
 
   public isAlphaNumeric(): boolean {

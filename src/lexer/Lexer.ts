@@ -22,12 +22,22 @@ export class Lexer {
 
     if (this.char.isAlpha()) {
       return this.identifierOrKeyword();
+    } else if (this.char.is("0") && this.peek().isSomeOf(["x", "X"]) && this.peek(2).isHexDigit()) {
+      return this.hexadecimalLiteral();
+    } else if (this.char.is("0") && this.peek().isSomeOf(["o", "O"]) && this.peek(2).isOctalDigit()) {
+      return this.octalLiteral();
+    } else if (this.char.is("0") && this.peek().isSomeOf(["b", "B"]) && this.peek(2).isBinaryDigit()) {
+      return this.binaryLiteral();
     } else if (this.char.isDigit()) {
-      return this.numericLiteral();
+      return this.decimalLiteral();
     } else if (this.char.is('"')) {
       return this.stringLiteral('"');
     } else if (this.char.is("'")) {
       return this.stringLiteral("'");
+    } else if (Lexer.PUNCTUATION[this.slice(4)]) {
+      const token = Lexer.PUNCTUATION[this.slice(4)];
+      this.advance(this.slice(4).length);
+      return token;
     } else if (Lexer.PUNCTUATION[this.slice(3)]) {
       const token = Lexer.PUNCTUATION[this.slice(3)];
       this.advance(this.slice(3).length);
@@ -130,11 +140,8 @@ export class Lexer {
     }
   }
 
-  private numericLiteral(): Token {
+  private decimalLiteral(): Token {
     let buffer: string = "";
-
-    buffer += this.char;
-    this.advance();
 
     while (this.char.isDigit()) {
       buffer += this.char;
@@ -151,7 +158,43 @@ export class Lexer {
       }
     }
 
-    return new Token(TokenType.NUMBER_LITERAL, buffer);
+    return new Token(TokenType.DECIMAL_LITERAL, buffer);
+  }
+
+  private hexadecimalLiteral(): Token {
+    let buffer: string = "0x";
+    this.advance(2);
+
+    while (this.char.isHexDigit()) {
+      buffer += this.char;
+      this.advance();
+    }
+
+    return new Token(TokenType.HEXADECIMAL_LITERAL, buffer);
+  }
+
+  private octalLiteral(): Token {
+    let buffer: string = "0o";
+    this.advance(2);
+
+    while (this.char.isOctalDigit()) {
+      buffer += this.char;
+      this.advance();
+    }
+
+    return new Token(TokenType.OCTAL_LITERAL, buffer);
+  }
+
+  private binaryLiteral(): Token {
+    let buffer: string = "0b";
+    this.advance(2);
+
+    while (this.char.isBinaryDigit()) {
+      buffer += this.char;
+      this.advance();
+    }
+
+    return new Token(TokenType.BINARY_LITERAL, buffer);
   }
 
   private stringLiteral(quoteType: string): Token {
@@ -159,6 +202,10 @@ export class Lexer {
     this.advance();
 
     while (!this.char.is(quoteType)) {
+      if (this.char.isLineTerminator()) {
+        throw new Error(`Unterminated string literal at ${this.location.line}:${this.location.column}`);
+      }
+
       buffer += this.char;
       this.advance();
     }
@@ -180,40 +227,53 @@ export class Lexer {
 
   static get PUNCTUATION(): Record<string, Token> {
     return {
-      "!": new Token(TokenType.EXCLAMATION_MARK, "!"),
+      "!": new Token(TokenType.NOT, "!"),
       "!=": new Token(TokenType.NOT_EQUAL, "!="),
       "!==": new Token(TokenType.NOT_STRICT_EQUAL, "!=="),
-      "%": new Token(TokenType.PERCENT, "%"),
+      "%": new Token(TokenType.MODULUS, "%"),
+      "%=": new Token(TokenType.MODULUS_ASSIGN, "%="),
       "&": new Token(TokenType.BITWISE_AND, "&"),
       "&&": new Token(TokenType.AND, "&&"),
+      "&=": new Token(TokenType.BITWISE_AND_ASSIGN, "&="),
       "(": new Token(TokenType.LEFT_PARENTHESIS, "("),
       ")": new Token(TokenType.RIGHT_PARENTHESIS, ")"),
-      "*": new Token(TokenType.ASTERISK, "*"),
+      "*": new Token(TokenType.MULTIPLY, "*"),
+      "*=": new Token(TokenType.MULTIPLY_ASSIGN, "*="),
       "+": new Token(TokenType.PLUS, "+"),
-      "++": new Token(TokenType.INCREMENT, "++"),
+      "++": new Token(TokenType.PLUS_PLUS, "++"),
+      "+=": new Token(TokenType.PLUS_ASSIGN, "+="),
       ",": new Token(TokenType.COMMA, ","),
       "-": new Token(TokenType.MINUS, "-"),
-      "--": new Token(TokenType.DECREMENT, "--"),
+      "--": new Token(TokenType.MINUS_MINUS, "--"),
+      "-=": new Token(TokenType.MINUS_ASSIGN, "-="),
       ".": new Token(TokenType.DOT, "."),
-      "/": new Token(TokenType.SLASH, "/"),
+      "...": new Token(TokenType.ELLIPSIS, "..."),
+      "/": new Token(TokenType.DIVIDE, "/"),
+      "/=": new Token(TokenType.DIVIDE_ASSIGN, "/="),
       ":": new Token(TokenType.COLON, ":"),
       ";": new Token(TokenType.SEMICOLON, ";"),
       "<": new Token(TokenType.LESS_THAN, "<"),
       "<<": new Token(TokenType.BITWISE_LEFT_SHIFT, "<<"),
+      "<<=": new Token(TokenType.BITWISE_LEFT_SHIFT_ASSIGN, "<<="),
       "<=": new Token(TokenType.LESS_THAN_OR_EQUAL, "<="),
       "=": new Token(TokenType.ASSIGN, "="),
       "==": new Token(TokenType.EQUAL, "=="),
       "===": new Token(TokenType.STRICT_EQUAL, "==="),
+      "=>": new Token(TokenType.ARROW, "=>"),
       ">": new Token(TokenType.GREATER_THAN, ">"),
       ">=": new Token(TokenType.GREATER_THAN_OR_EQUAL, ">="),
       ">>": new Token(TokenType.BITWISE_RIGHT_SHIFT, ">>"),
+      ">>=": new Token(TokenType.BITWISE_RIGHT_SHIFT_ASSIGN, ">>="),
       ">>>": new Token(TokenType.BITWISE_RIGHT_SHIFT_ZERO, ">>>"),
+      ">>>=": new Token(TokenType.BITWISE_RIGHT_SHIFT_ZERO_ASSIGN, ">>>="),
       "?": new Token(TokenType.QUESTION_MARK, "?"),
       "[": new Token(TokenType.LEFT_SQUARE_BRACKETS, "["),
       "]": new Token(TokenType.RIGHT_SQUARE_BRACKETS, "]"),
       "^": new Token(TokenType.BITWISE_XOR, "^"),
+      "^=": new Token(TokenType.BITWISE_XOR_ASSIGN, "^="),
       "{": new Token(TokenType.LEFT_CURLY_BRACES, "{"),
       "|": new Token(TokenType.BITWISE_OR, "|"),
+      "|=": new Token(TokenType.BITWISE_OR_ASSIGN, "|="),
       "||": new Token(TokenType.OR, "||"),
       "}": new Token(TokenType.RIGHT_CURLY_BRACES, "}"),
       "~": new Token(TokenType.BITWISE_NOT, "~"),
@@ -256,6 +316,7 @@ export class Lexer {
       protected: new Token(TokenType.PROTECTED, "protected"),
       public: new Token(TokenType.PUBLIC, "public"),
       return: new Token(TokenType.RETURN, "return"),
+      static: new Token(TokenType.STATIC, "static"),
       super: new Token(TokenType.SUPER, "super"),
       switch: new Token(TokenType.SWITCH, "switch"),
       this: new Token(TokenType.THIS, "this"),

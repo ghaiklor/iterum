@@ -69,7 +69,7 @@ export class Parser {
     } else if (this.currentToken.isSomeOf([
       TokenType.NULL_LITERAL,
       TokenType.BOOLEAN_LITERAL,
-      TokenType.NUMBER_LITERAL,
+      TokenType.DECIMAL_LITERAL,
       TokenType.STRING_LITERAL])
     ) {
       return this.literal();
@@ -106,8 +106,8 @@ export class Parser {
     } else if (token.is(TokenType.BOOLEAN_LITERAL)) {
       this.eat(TokenType.BOOLEAN_LITERAL);
       return new Literal(token.code === "true" ? true : false, token.code);
-    } else if (token.is(TokenType.NUMBER_LITERAL)) {
-      this.eat(TokenType.NUMBER_LITERAL);
+    } else if (token.is(TokenType.DECIMAL_LITERAL)) {
+      this.eat(TokenType.DECIMAL_LITERAL);
       return new Literal(parseFloat(token.code), token.code);
     } else {
       this.eat(TokenType.STRING_LITERAL);
@@ -232,11 +232,11 @@ export class Parser {
   private postfixExpression(): UpdateExpression | Expression {
     const argument = this.callExpression();
 
-    if (this.currentToken.is(TokenType.INCREMENT)) {
-      this.eat(TokenType.INCREMENT);
+    if (this.currentToken.is(TokenType.PLUS_PLUS)) {
+      this.eat(TokenType.PLUS_PLUS);
       return new UpdateExpression(argument, "++", false);
-    } else if (this.currentToken.is(TokenType.DECREMENT)) {
-      this.eat(TokenType.DECREMENT);
+    } else if (this.currentToken.is(TokenType.MINUS_MINUS)) {
+      this.eat(TokenType.MINUS_MINUS);
       return new UpdateExpression(argument, "--", false);
     }
 
@@ -244,8 +244,8 @@ export class Parser {
   }
 
   private unaryExpression(): UnaryExpression | Expression {
-    if (this.currentToken.is(TokenType.EXCLAMATION_MARK)) {
-      this.eat(TokenType.EXCLAMATION_MARK);
+    if (this.currentToken.is(TokenType.NOT)) {
+      this.eat(TokenType.NOT);
       return new UnaryExpression(this.unaryExpression(), "!", true);
     } else if (this.currentToken.is(TokenType.BITWISE_NOT)) {
       this.eat(TokenType.BITWISE_NOT);
@@ -256,11 +256,11 @@ export class Parser {
     } else if (this.currentToken.is(TokenType.PLUS)) {
       this.eat(TokenType.PLUS);
       return new UnaryExpression(this.unaryExpression(), "+", true);
-    } else if (this.currentToken.is(TokenType.DECREMENT)) {
-      this.eat(TokenType.DECREMENT);
+    } else if (this.currentToken.is(TokenType.MINUS_MINUS)) {
+      this.eat(TokenType.MINUS_MINUS);
       return new UpdateExpression(this.unaryExpression(), "--", true);
-    } else if (this.currentToken.is(TokenType.INCREMENT)) {
-      this.eat(TokenType.INCREMENT);
+    } else if (this.currentToken.is(TokenType.PLUS_PLUS)) {
+      this.eat(TokenType.PLUS_PLUS);
       return new UpdateExpression(this.unaryExpression(), "++", true);
     } else if (this.currentToken.is(TokenType.TYPE_OF)) {
       this.eat(TokenType.TYPE_OF);
@@ -279,14 +279,14 @@ export class Parser {
   private multiplicativeExpression(): BinaryExpression | Expression {
     const right = this.unaryExpression();
 
-    if (this.currentToken.is(TokenType.ASTERISK)) {
-      this.eat(TokenType.ASTERISK);
+    if (this.currentToken.is(TokenType.MULTIPLY)) {
+      this.eat(TokenType.MULTIPLY);
       return new BinaryExpression(this.multiplicativeExpression(), "*", right);
-    } else if (this.currentToken.is(TokenType.SLASH)) {
-      this.eat(TokenType.SLASH);
+    } else if (this.currentToken.is(TokenType.DIVIDE)) {
+      this.eat(TokenType.DIVIDE);
       return new BinaryExpression(this.multiplicativeExpression(), "/", right);
-    } else if (this.currentToken.is(TokenType.PERCENT)) {
-      this.eat(TokenType.PERCENT);
+    } else if (this.currentToken.is(TokenType.MODULUS)) {
+      this.eat(TokenType.MODULUS);
       return new BinaryExpression(this.multiplicativeExpression(), "%", right);
     }
 
