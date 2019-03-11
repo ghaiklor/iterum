@@ -2,7 +2,7 @@ import { Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
 import { Character } from "./Character";
 
-export class Lexer {
+export class Scanner {
   public location: { line: number, column: number };
   private source: string;
   private index: number;
@@ -34,20 +34,20 @@ export class Lexer {
       return this.stringLiteral('"');
     } else if (this.char.is("'")) {
       return this.stringLiteral("'");
-    } else if (Lexer.PUNCTUATION[this.slice(4)]) {
-      const token = Lexer.PUNCTUATION[this.slice(4)];
+    } else if (Scanner.PUNCTUATION[this.slice(4)]) {
+      const token = Scanner.PUNCTUATION[this.slice(4)];
       this.advance(this.slice(4).length);
       return token;
-    } else if (Lexer.PUNCTUATION[this.slice(3)]) {
-      const token = Lexer.PUNCTUATION[this.slice(3)];
+    } else if (Scanner.PUNCTUATION[this.slice(3)]) {
+      const token = Scanner.PUNCTUATION[this.slice(3)];
       this.advance(this.slice(3).length);
       return token;
-    } else if (Lexer.PUNCTUATION[this.slice(2)]) {
-      const token = Lexer.PUNCTUATION[this.slice(2)];
+    } else if (Scanner.PUNCTUATION[this.slice(2)]) {
+      const token = Scanner.PUNCTUATION[this.slice(2)];
       this.advance(this.slice(2).length);
       return token;
-    } else if (Lexer.PUNCTUATION[this.slice()]) {
-      const token = Lexer.PUNCTUATION[this.slice()];
+    } else if (Scanner.PUNCTUATION[this.slice()]) {
+      const token = Scanner.PUNCTUATION[this.slice()];
       this.advance();
       return token;
     } else if (this.char.isEOF()) {
@@ -62,7 +62,7 @@ export class Lexer {
    *
    * @param shift How many characters to advance
    */
-  private advance(shift: number = 1): Lexer {
+  private advance(shift: number = 1): Scanner {
     this.index += shift;
     this.location.column += shift;
     this.char = Character.from(this.source[this.index]);
@@ -222,7 +222,7 @@ export class Lexer {
       this.advance();
     }
 
-    return Lexer.KEYWORDS[buffer] || new Token(TokenType.IDENTIFIER, buffer);
+    return Scanner.KEYWORDS[buffer] || new Token(TokenType.IDENTIFIER, buffer);
   }
 
   static get PUNCTUATION(): Record<string, Token> {

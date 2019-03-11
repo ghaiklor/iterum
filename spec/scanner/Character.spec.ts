@@ -1,4 +1,4 @@
-import { Character } from "../../src/lexer/Character";
+import { Character } from "../../src/scanner/Character";
 
 describe("Iterum::Lexer::Character", () => {
   it("Should properly wrap the character", () => {

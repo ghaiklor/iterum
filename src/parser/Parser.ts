@@ -15,7 +15,7 @@ import { Identifier } from "../ast/Identifier";
 import { Literal } from "../ast/Literal";
 import { Node } from "../ast/Node";
 import { Property } from "../ast/Property";
-import { Lexer } from "../lexer/Lexer";
+import { Scanner } from "../scanner/Scanner";
 import { Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
 
@@ -24,11 +24,11 @@ export class Parser {
     return new Parser(source).expression();
   }
 
-  private lexer: Lexer;
+  private scanner: Scanner;
   private currentToken: Token;
   constructor(source: string) {
-    this.lexer = new Lexer(source);
-    this.currentToken = this.lexer.next();
+    this.scanner = new Scanner(source);
+    this.currentToken = this.scanner.next();
   }
 
   /**
@@ -39,10 +39,10 @@ export class Parser {
    */
   private eat(tokenToEat: TokenType): Parser {
     if (this.currentToken.is(tokenToEat)) {
-      this.currentToken = this.lexer.next();
+      this.currentToken = this.scanner.next();
     } else {
       throw new Error(
-        `Expected ${tokenToEat} at ${this.lexer.location.line}:${this.lexer.location.column}, ` +
+        `Expected ${tokenToEat} at ${this.scanner.location.line}:${this.scanner.location.column}, ` +
         `but got ${this.currentToken.type}`,
       );
     }
@@ -93,7 +93,7 @@ export class Parser {
 
     throw new Error(
       `Unexpected ${this.currentToken.code} ` +
-      `at ${this.lexer.location.line}:${this.lexer.location.column}`,
+      `at ${this.scanner.location.line}:${this.scanner.location.column}`,
     );
   }
 
