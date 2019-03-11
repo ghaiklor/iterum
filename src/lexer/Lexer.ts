@@ -202,7 +202,7 @@ export class Lexer {
     this.advance();
 
     while (!this.char.is(quoteType)) {
-      if (this.char.isLineTerminator()) {
+      if (this.char.isLineTerminator() || this.char.isEOF()) {
         throw new Error(`Unterminated string literal at ${this.location.line}:${this.location.column}`);
       }
 

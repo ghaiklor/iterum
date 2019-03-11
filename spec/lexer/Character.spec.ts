@@ -15,6 +15,13 @@ describe("Iterum::Lexer::Character", () => {
     expect(char.is("/")).toBeFalsy();
   });
 
+  it("Should properly check if it is matches against some of possible variants", () => {
+    const char = Character.from("2");
+
+    expect(char.isSomeOf(["1", "2", "3"])).toBeTruthy();
+    expect(char.isSomeOf(["1", "3"])).toBeFalsy();
+  });
+
   it("Should properly check if it is line terminator", () => {
     const asterisk = Character.from("*");
     const newline = Character.from(`\n`);
@@ -40,6 +47,38 @@ describe("Iterum::Lexer::Character", () => {
 
     expect(digit.isDigit()).toBeTruthy();
     expect(digit.isAlpha()).toBeFalsy();
+  });
+
+  it("Should properly check if it is hexadecimal digit", () => {
+    const digit = Character.from("2");
+    const hexDigit = Character.from("B");
+
+    expect(digit.isDigit()).toBeTruthy();
+    expect(digit.isHexDigit()).toBeTruthy();
+    expect(digit.isAlpha()).toBeFalsy();
+    expect(hexDigit.isDigit()).toBeFalsy();
+    expect(hexDigit.isAlpha()).toBeTruthy();
+    expect(hexDigit.isHexDigit()).toBeTruthy();
+  });
+
+  it("Should properly check if it is octal digit", () => {
+    const digit = Character.from("4");
+    const nonOctalDigit = Character.from("9");
+
+    expect(digit.isDigit()).toBeTruthy();
+    expect(digit.isOctalDigit()).toBeTruthy();
+    expect(nonOctalDigit.isDigit()).toBeTruthy();
+    expect(nonOctalDigit.isOctalDigit()).toBeFalsy();
+  });
+
+  it("Should properly check if it is binary digit", () => {
+    const digit = Character.from("1");
+    const nonBinaryDigit = Character.from("4");
+
+    expect(digit.isDigit()).toBeTruthy();
+    expect(digit.isBinaryDigit()).toBeTruthy();
+    expect(nonBinaryDigit.isDigit()).toBeTruthy();
+    expect(nonBinaryDigit.isBinaryDigit()).toBeFalsy();
   });
 
   it("Should properly check if it is alphanumeric", () => {

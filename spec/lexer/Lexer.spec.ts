@@ -26,6 +26,33 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
 
+  it("Should properly tokenize hexadecimal literal", () => {
+    const source = `0x19AF`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.HEXADECIMAL_LITERAL, code: "0x19AF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly tokenize octal literal", () => {
+    const source = `0o07`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.OCTAL_LITERAL, code: "0o07" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
+  it("Should properly tokenize binary literal", () => {
+    const source = `0b101`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.BINARY_LITERAL, code: "0b101" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
+
   it("Should properly tokenize string literals", () => {
     const source = `
       let foo = 'bar';
@@ -125,6 +152,38 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "bar" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
     expect(lexer.next.bind(lexer)).toThrowError(`Expected */ at 4:5`);
+  });
+
+  it("Should properly throw an error if one-line string literal (double quote) does not have a closing quote", () => {
+    const source = `"foo`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next.bind(lexer)).toThrowError("Unterminated string literal at 1:5");
+  });
+
+  it("Should properly throw an error if multi-line string literal (double quote) does not have a closing quote", () => {
+    const source = `
+      "foo
+    `;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next.bind(lexer)).toThrowError("Unterminated string literal at 2:11");
+  });
+
+  it("Should properly throw an error if one-line string literal (single quote) does not have a closing quote", () => {
+    const source = `'foo`;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next.bind(lexer)).toThrowError("Unterminated string literal at 1:5");
+  });
+
+  it("Should properly throw an error if multi-line string literal (single quote) does not have a closing quote", () => {
+    const source = `
+      'foo
+    `;
+    const lexer = new Lexer(source);
+
+    expect(lexer.next.bind(lexer)).toThrowError("Unterminated string literal at 2:11");
   });
 
   it("Should properly tokenize logical operators", () => {
