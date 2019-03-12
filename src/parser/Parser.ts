@@ -53,7 +53,37 @@ export class Parser {
   // ---         --- //
   // --- GRAMMAR --- //
   // ---         --- //
-  private identifier(): Identifier {
+  private eos(): Parser {
+    if (this.currentToken.is(TokenType.SEMICOLON)) {
+      this.eat(TokenType.SEMICOLON);
+      return this;
+    } else if (this.currentToken.is(TokenType.EOF)) {
+      this.eat(TokenType.EOF);
+      return this;
+    } else if (this.currentToken.is(TokenType.RIGHT_CURLY_BRACES)) {
+      this.eat(TokenType.RIGHT_CURLY_BRACES);
+      return this;
+    }
+
+    throw new Error(
+      `Expected end-of-statement punctuation [; } end-of-source] at ` +
+      `${this.scanner.location.line}:${this.scanner.location.column}
+    `);
+  }
+
+  private setter(): Identifier | Literal {
+    this.eat(TokenType.SET);
+
+    return this.propertyName();
+  }
+
+  private getter(): Identifier | Literal {
+    this.eat(TokenType.GET);
+
+    return this.propertyName();
+  }
+
+  private identifierName(): Identifier {
     const identifier = new Identifier(this.currentToken.code);
     this.eat(TokenType.IDENTIFIER);
 
@@ -65,7 +95,7 @@ export class Parser {
       this.eat(TokenType.THIS);
       return new ThisExpression();
     } else if (this.currentToken.is(TokenType.IDENTIFIER)) {
-      return this.identifier();
+      return this.identifierName();
     } else if (this.currentToken.isSomeOf([
       TokenType.NULL_LITERAL,
       TokenType.BOOLEAN_LITERAL,
@@ -153,7 +183,7 @@ export class Parser {
 
   private propertyDefinition(): Property {
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
-      const identifier = this.identifier();
+      const identifier = this.identifierName();
       return new Property(identifier, identifier);
     } else {
       const key = this.literal();
@@ -161,6 +191,14 @@ export class Parser {
       const value = this.assignmentExpression();
 
       return new Property(key, value);
+    }
+  }
+
+  private propertyName(): Identifier | Literal {
+    if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      return this.identifierName();
+    } else {
+      return this.literal();
     }
   }
 
@@ -179,7 +217,7 @@ export class Parser {
       return new MemberExpression(this.memberExpression(), property);
     } else if (this.currentToken.is(TokenType.DOT)) {
       this.eat(TokenType.DOT);
-      const property = this.identifier();
+      const property = this.identifierName();
       return new MemberExpression(this.memberExpression(), property);
     }
 
@@ -200,7 +238,7 @@ export class Parser {
     } else if (this.currentToken.is(TokenType.DOT)) {
       this.eat(TokenType.DOT);
 
-      return new MemberExpression(this.callExpression(), this.identifier());
+      return new MemberExpression(this.callExpression(), this.identifierName());
     }
 
     return callee;
