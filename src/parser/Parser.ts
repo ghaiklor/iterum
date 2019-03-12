@@ -14,14 +14,16 @@ import { UpdateExpression } from "../ast/expression/UpdateExpression";
 import { Identifier } from "../ast/Identifier";
 import { Literal } from "../ast/Literal";
 import { Node } from "../ast/Node";
+import { Program } from "../ast/Program";
 import { Property } from "../ast/Property";
+import { ExpressionStatement } from "../ast/statement/ExpressionStatement";
 import { Scanner } from "../scanner/Scanner";
 import { Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
 
 export class Parser {
   public static parse(source: string): Node {
-    return new Parser(source).expression();
+    return new Parser(source).program();
   }
 
   private scanner: Scanner;
@@ -50,39 +52,9 @@ export class Parser {
     return this;
   }
 
-  // ---         --- //
-  // --- GRAMMAR --- //
-  // ---         --- //
-  private eos(): Parser {
-    if (this.currentToken.is(TokenType.SEMICOLON)) {
-      this.eat(TokenType.SEMICOLON);
-      return this;
-    } else if (this.currentToken.is(TokenType.EOF)) {
-      this.eat(TokenType.EOF);
-      return this;
-    } else if (this.currentToken.is(TokenType.RIGHT_CURLY_BRACES)) {
-      this.eat(TokenType.RIGHT_CURLY_BRACES);
-      return this;
-    }
-
-    throw new Error(
-      `Expected end-of-statement punctuation [; } end-of-source] at ` +
-      `${this.scanner.location.line}:${this.scanner.location.column}
-    `);
-  }
-
-  private setter(): Identifier | Literal {
-    this.eat(TokenType.SET);
-
-    return this.propertyName();
-  }
-
-  private getter(): Identifier | Literal {
-    this.eat(TokenType.GET);
-
-    return this.propertyName();
-  }
-
+  // ----------------------------- //
+  // --- GRAMMAR (EXPRESSIONS) --- //
+  // ----------------------------- //
   private identifierName(): Identifier {
     const identifier = new Identifier(this.currentToken.code);
     this.eat(TokenType.IDENTIFIER);
@@ -90,28 +62,146 @@ export class Parser {
     return identifier;
   }
 
+  private numericLiteral(): Literal {
+    const token = this.currentToken;
+
+    if (token.is(TokenType.DECIMAL_LITERAL)) {
+      this.eat(TokenType.DECIMAL_LITERAL);
+      return new Literal(parseFloat(token.code), token.code);
+    } else if (token.is(TokenType.HEXADECIMAL_LITERAL)) {
+      this.eat(TokenType.HEXADECIMAL_LITERAL);
+      return new Literal(parseInt(token.code, 16), token.code);
+    } else if (token.is(TokenType.OCTAL_LITERAL)) {
+      this.eat(TokenType.OCTAL_LITERAL);
+      return new Literal(parseInt(token.code, 8), token.code);
+    } else {
+      this.eat(TokenType.BINARY_LITERAL);
+      return new Literal(parseInt(token.code, 2), token.code);
+    }
+  }
+
+  private literal(): Literal {
+    const token = this.currentToken;
+
+    if (token.is(TokenType.NULL_LITERAL)) {
+      this.eat(TokenType.NULL_LITERAL);
+      return new Literal(null, "null");
+    } else if (token.is(TokenType.BOOLEAN_LITERAL)) {
+      this.eat(TokenType.BOOLEAN_LITERAL);
+      return new Literal(token.code === "true" ? true : false, token.code);
+    } else if (token.is(TokenType.STRING_LITERAL)) {
+      this.eat(TokenType.STRING_LITERAL);
+      return new Literal(token.code, token.code);
+    } else {
+      return this.numericLiteral();
+    }
+  }
+
+  private arrayLiteral(): ArrayExpression {
+    this.eat(TokenType.LEFT_SQUARE_BRACKETS);
+    if (this.currentToken.is(TokenType.RIGHT_SQUARE_BRACKETS)) {
+      this.eat(TokenType.RIGHT_SQUARE_BRACKETS);
+      return new ArrayExpression([]);
+    }
+
+    const elements = this.elementList();
+    this.eat(TokenType.RIGHT_SQUARE_BRACKETS);
+    return new ArrayExpression(elements);
+  }
+
+  private elementList(): Expression[] {
+    const expressions = [this.singleExpression()];
+    while (this.currentToken.is(TokenType.COMMA)) {
+      this.eat(TokenType.COMMA);
+      expressions.push(this.singleExpression());
+    }
+
+    return expressions;
+  }
+
+  private objectLiteral(): ObjectExpression {
+    this.eat(TokenType.LEFT_CURLY_BRACES);
+    if (this.currentToken.is(TokenType.RIGHT_CURLY_BRACES)) {
+      this.eat(TokenType.RIGHT_CURLY_BRACES);
+      return new ObjectExpression([]);
+    }
+
+    const properties = [this.propertyAssignment()];
+    while (this.currentToken.is(TokenType.COMMA)) {
+      this.eat(TokenType.COMMA);
+      properties.push(this.propertyAssignment());
+    }
+
+    this.eat(TokenType.RIGHT_CURLY_BRACES);
+    return new ObjectExpression(properties);
+  }
+
+  private propertyAssignment(): Property {
+    if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      const identifier = this.identifierName();
+      return new Property(identifier, identifier);
+    } else {
+      const key = this.propertyName();
+      this.eat(TokenType.COLON);
+      const value = this.singleExpression();
+
+      return new Property(key, value);
+    }
+  }
+
+  private propertyName(): Identifier | Literal {
+    if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      return this.identifierName();
+    } else {
+      return this.literal();
+    }
+  }
+
+  private arguments(): Expression[] {
+    this.eat(TokenType.LEFT_PARENTHESIS);
+    if (this.currentToken.is(TokenType.RIGHT_PARENTHESIS)) {
+      this.eat(TokenType.RIGHT_PARENTHESIS);
+      return [];
+    }
+
+    const args = [this.singleExpression()];
+    while (this.currentToken.is(TokenType.COMMA)) {
+      this.eat(TokenType.COMMA);
+      args.push(this.singleExpression());
+    }
+
+    this.eat(TokenType.RIGHT_PARENTHESIS);
+
+    return args;
+  }
+
   private primaryExpression(): Expression {
+    const LITERAL_TOKENS = [
+      TokenType.BINARY_LITERAL,
+      TokenType.BOOLEAN_LITERAL,
+      TokenType.DECIMAL_LITERAL,
+      TokenType.NULL_LITERAL,
+      TokenType.HEXADECIMAL_LITERAL,
+      TokenType.OCTAL_LITERAL,
+      TokenType.STRING_LITERAL,
+    ];
+
     if (this.currentToken.is(TokenType.THIS)) {
       this.eat(TokenType.THIS);
       return new ThisExpression();
     } else if (this.currentToken.is(TokenType.IDENTIFIER)) {
       return this.identifierName();
-    } else if (this.currentToken.isSomeOf([
-      TokenType.NULL_LITERAL,
-      TokenType.BOOLEAN_LITERAL,
-      TokenType.DECIMAL_LITERAL,
-      TokenType.STRING_LITERAL])
-    ) {
+    } else if (this.currentToken.isSomeOf(LITERAL_TOKENS)) {
       return this.literal();
     } else if (this.currentToken.is(TokenType.LEFT_SQUARE_BRACKETS)) {
       return this.arrayLiteral();
     } else if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
       return this.objectLiteral();
     } else if (this.currentToken.is(TokenType.FUNCTION)) {
-      // TODO: impl
+      // TODO: implement
       // return this.functionExpression();
     } else if (this.currentToken.is(TokenType.CLASS)) {
-      // TODO: impl
+      // TODO: implement
       // return this.classExpression();
     } else if (this.currentToken.is(TokenType.LEFT_PARENTHESIS)) {
       this.eat(TokenType.LEFT_PARENTHESIS);
@@ -127,92 +217,12 @@ export class Parser {
     );
   }
 
-  private literal(): Literal {
-    const token = this.currentToken;
-
-    if (token.is(TokenType.NULL_LITERAL)) {
-      this.eat(TokenType.NULL_LITERAL);
-      return new Literal(null, "null");
-    } else if (token.is(TokenType.BOOLEAN_LITERAL)) {
-      this.eat(TokenType.BOOLEAN_LITERAL);
-      return new Literal(token.code === "true" ? true : false, token.code);
-    } else if (token.is(TokenType.DECIMAL_LITERAL)) {
-      this.eat(TokenType.DECIMAL_LITERAL);
-      return new Literal(parseFloat(token.code), token.code);
-    } else {
-      this.eat(TokenType.STRING_LITERAL);
-      return new Literal(token.code, token.code);
-    }
-  }
-
-  private arrayLiteral(): ArrayExpression {
-    this.eat(TokenType.LEFT_SQUARE_BRACKETS);
-    const elements = this.elementList();
-    this.eat(TokenType.RIGHT_SQUARE_BRACKETS);
-
-    return new ArrayExpression(elements);
-  }
-
-  private elementList(): Expression[] {
-    const expressions = [this.assignmentExpression()];
-    while (this.currentToken.is(TokenType.COMMA)) {
-      this.eat(TokenType.COMMA);
-      expressions.push(this.assignmentExpression());
-    }
-
-    return expressions;
-  }
-
-  private objectLiteral(): ObjectExpression {
-    this.eat(TokenType.LEFT_CURLY_BRACES);
-    const properties = this.propertyDefinitionList();
-    this.eat(TokenType.RIGHT_CURLY_BRACES);
-
-    return new ObjectExpression(properties);
-  }
-
-  private propertyDefinitionList(): Property[] {
-    const properties = [this.propertyDefinition()];
-    while (this.currentToken.is(TokenType.COMMA)) {
-      this.eat(TokenType.COMMA);
-      properties.push(this.propertyDefinition());
-    }
-
-    return properties;
-  }
-
-  private propertyDefinition(): Property {
-    if (this.currentToken.is(TokenType.IDENTIFIER)) {
-      const identifier = this.identifierName();
-      return new Property(identifier, identifier);
-    } else {
-      const key = this.literal();
-      this.eat(TokenType.COLON);
-      const value = this.assignmentExpression();
-
-      return new Property(key, value);
-    }
-  }
-
-  private propertyName(): Identifier | Literal {
-    if (this.currentToken.is(TokenType.IDENTIFIER)) {
-      return this.identifierName();
-    } else {
-      return this.literal();
-    }
-  }
-
   private memberExpression(): MemberExpression | Expression {
-    if (this.currentToken.is(TokenType.NEW)) {
-      this.eat(TokenType.NEW);
-      return new NewExpression(this.memberExpression(), this.arguments());
-    }
-
     const object = this.primaryExpression();
 
     if (this.currentToken.is(TokenType.LEFT_SQUARE_BRACKETS)) {
       this.eat(TokenType.LEFT_SQUARE_BRACKETS);
-      const property = this.expression();
+      const property = this.singleExpression();
       this.eat(TokenType.RIGHT_SQUARE_BRACKETS);
       return new MemberExpression(this.memberExpression(), property);
     } else if (this.currentToken.is(TokenType.DOT)) {
@@ -229,46 +239,22 @@ export class Parser {
 
     if (this.currentToken.is(TokenType.LEFT_PARENTHESIS)) {
       return new CallExpression(this.callExpression(), this.arguments());
-    } else if (this.currentToken.is(TokenType.LEFT_SQUARE_BRACKETS)) {
-      this.eat(TokenType.LEFT_SQUARE_BRACKETS);
-      const property = this.expression();
-      this.eat(TokenType.RIGHT_SQUARE_BRACKETS);
-
-      return new MemberExpression(this.callExpression(), property);
-    } else if (this.currentToken.is(TokenType.DOT)) {
-      this.eat(TokenType.DOT);
-
-      return new MemberExpression(this.callExpression(), this.identifierName());
     }
 
     return callee;
   }
 
-  private arguments(): Expression[] {
-    this.eat(TokenType.LEFT_PARENTHESIS);
-    if (this.currentToken.is(TokenType.RIGHT_PARENTHESIS)) {
-      this.eat(TokenType.RIGHT_PARENTHESIS);
-      return [];
+  private newExpression(): NewExpression | Expression {
+    if (this.currentToken.is(TokenType.NEW)) {
+      this.eat(TokenType.NEW);
+      return new NewExpression(this.newExpression(), this.arguments());
+    } else {
+      return this.callExpression();
     }
-
-    const args = this.argumentList();
-    this.eat(TokenType.RIGHT_PARENTHESIS);
-
-    return args;
-  }
-
-  private argumentList(): Expression[] {
-    const args = [this.assignmentExpression()];
-    while (this.currentToken.is(TokenType.COMMA)) {
-      this.eat(TokenType.COMMA);
-      args.push(this.assignmentExpression());
-    }
-
-    return args;
   }
 
   private postfixExpression(): UpdateExpression | Expression {
-    const argument = this.callExpression();
+    const argument = this.newExpression();
 
     if (this.currentToken.is(TokenType.PLUS_PLUS)) {
       this.eat(TokenType.PLUS_PLUS);
@@ -315,149 +301,152 @@ export class Parser {
   }
 
   private multiplicativeExpression(): BinaryExpression | Expression {
-    const right = this.unaryExpression();
+    const left = this.unaryExpression();
 
     if (this.currentToken.is(TokenType.MULTIPLY)) {
       this.eat(TokenType.MULTIPLY);
-      return new BinaryExpression(this.multiplicativeExpression(), "*", right);
+      return new BinaryExpression(left, "*", this.multiplicativeExpression());
     } else if (this.currentToken.is(TokenType.DIVIDE)) {
       this.eat(TokenType.DIVIDE);
-      return new BinaryExpression(this.multiplicativeExpression(), "/", right);
+      return new BinaryExpression(left, "/", this.multiplicativeExpression());
     } else if (this.currentToken.is(TokenType.MODULUS)) {
       this.eat(TokenType.MODULUS);
-      return new BinaryExpression(this.multiplicativeExpression(), "%", right);
+      return new BinaryExpression(left, "%", this.multiplicativeExpression());
     }
 
-    return right;
+    return left;
   }
 
   private additiveExpression(): BinaryExpression | Expression {
-    const right = this.multiplicativeExpression();
+    const left = this.multiplicativeExpression();
 
     if (this.currentToken.is(TokenType.MINUS)) {
       this.eat(TokenType.MINUS);
-      return new BinaryExpression(this.additiveExpression(), "-", right);
+      return new BinaryExpression(left, "-", this.additiveExpression());
     } else if (this.currentToken.is(TokenType.PLUS)) {
       this.eat(TokenType.PLUS);
-      return new BinaryExpression(this.additiveExpression(), "+", right);
+      return new BinaryExpression(left, "+", this.additiveExpression());
     }
 
-    return right;
+    return left;
   }
 
   private shiftExpression(): BinaryExpression | Expression {
-    const right = this.additiveExpression();
+    const left = this.additiveExpression();
 
     if (this.currentToken.is(TokenType.BITWISE_RIGHT_SHIFT_ZERO)) {
       this.eat(TokenType.BITWISE_RIGHT_SHIFT_ZERO);
-      return new BinaryExpression(this.shiftExpression(), ">>>", right);
+      return new BinaryExpression(left, ">>>", this.shiftExpression());
     } else if (this.currentToken.is(TokenType.BITWISE_RIGHT_SHIFT)) {
       this.eat(TokenType.BITWISE_RIGHT_SHIFT);
-      return new BinaryExpression(this.shiftExpression(), ">>", right);
+      return new BinaryExpression(left, ">>", this.shiftExpression());
     } else if (this.currentToken.is(TokenType.BITWISE_LEFT_SHIFT)) {
       this.eat(TokenType.BITWISE_LEFT_SHIFT);
-      return new BinaryExpression(this.shiftExpression(), "<<", right);
+      return new BinaryExpression(left, "<<", this.shiftExpression());
     }
 
-    return right;
+    return left;
   }
 
   private relationalExpression(): BinaryExpression | Expression {
-    const right = this.shiftExpression();
+    const left = this.shiftExpression();
 
     if (this.currentToken.is(TokenType.LESS_THAN)) {
       this.eat(TokenType.LESS_THAN);
-      return new BinaryExpression(this.relationalExpression(), "<", right);
+      return new BinaryExpression(left, "<", this.relationalExpression());
     } else if (this.currentToken.is(TokenType.GREATER_THAN)) {
       this.eat(TokenType.GREATER_THAN);
-      return new BinaryExpression(this.relationalExpression(), ">", right);
+      return new BinaryExpression(left, ">", this.relationalExpression());
     } else if (this.currentToken.is(TokenType.LESS_THAN_OR_EQUAL)) {
       this.eat(TokenType.LESS_THAN_OR_EQUAL);
-      return new BinaryExpression(this.relationalExpression(), "<=", right);
+      return new BinaryExpression(left, "<=", this.relationalExpression());
     } else if (this.currentToken.is(TokenType.GREATER_THAN_OR_EQUAL)) {
       this.eat(TokenType.GREATER_THAN_OR_EQUAL);
-      return new BinaryExpression(this.relationalExpression(), ">=", right);
+      return new BinaryExpression(left, ">=", this.relationalExpression());
     } else if (this.currentToken.is(TokenType.INSTANCE_OF)) {
       this.eat(TokenType.INSTANCE_OF);
-      return new BinaryExpression(this.relationalExpression(), "instanceof", right);
+      return new BinaryExpression(left, "instanceof", this.relationalExpression());
+    } else if (this.currentToken.is(TokenType.IN)) {
+      this.eat(TokenType.IN);
+      return new BinaryExpression(left, "in", this.relationalExpression());
     }
 
-    return right;
+    return left;
   }
 
   private equalityExpression(): BinaryExpression | Expression {
-    const right = this.relationalExpression();
+    const left = this.relationalExpression();
 
     if (this.currentToken.is(TokenType.EQUAL)) {
       this.eat(TokenType.EQUAL);
-      return new BinaryExpression(this.equalityExpression(), "==", right);
+      return new BinaryExpression(left, "==", this.equalityExpression());
     } else if (this.currentToken.is(TokenType.NOT_EQUAL)) {
       this.eat(TokenType.NOT_EQUAL);
-      return new BinaryExpression(this.equalityExpression(), "!=", right);
+      return new BinaryExpression(left, "!=", this.equalityExpression());
     } else if (this.currentToken.is(TokenType.STRICT_EQUAL)) {
       this.eat(TokenType.STRICT_EQUAL);
-      return new BinaryExpression(this.equalityExpression(), "===", right);
+      return new BinaryExpression(left, "===", this.equalityExpression());
     } else if (this.currentToken.is(TokenType.NOT_STRICT_EQUAL)) {
       this.eat(TokenType.NOT_STRICT_EQUAL);
-      return new BinaryExpression(this.equalityExpression(), "!==", right);
+      return new BinaryExpression(left, "!==", this.equalityExpression());
     }
 
-    return right;
+    return left;
   }
 
   private bitwiseAndExpression(): BinaryExpression | Expression {
-    const right = this.equalityExpression();
+    const left = this.equalityExpression();
 
     if (this.currentToken.is(TokenType.BITWISE_AND)) {
       this.eat(TokenType.BITWISE_AND);
-      return new BinaryExpression(this.bitwiseAndExpression(), "&", right);
+      return new BinaryExpression(left, "&", this.bitwiseAndExpression());
     }
 
-    return right;
+    return left;
   }
 
   private bitwiseXorExpression(): BinaryExpression | Expression {
-    const right = this.bitwiseAndExpression();
+    const left = this.bitwiseAndExpression();
 
     if (this.currentToken.is(TokenType.BITWISE_XOR)) {
       this.eat(TokenType.BITWISE_XOR);
-      return new BinaryExpression(this.bitwiseXorExpression(), "^", right);
+      return new BinaryExpression(left, "^", this.bitwiseXorExpression());
     }
 
-    return right;
+    return left;
   }
 
   private bitwiseOrExpression(): BinaryExpression | Expression {
-    const right = this.bitwiseXorExpression();
+    const left = this.bitwiseXorExpression();
 
     if (this.currentToken.is(TokenType.BITWISE_OR)) {
       this.eat(TokenType.BITWISE_OR);
-      return new BinaryExpression(this.bitwiseOrExpression(), "|", right);
+      return new BinaryExpression(left, "|", this.bitwiseOrExpression());
     }
 
-    return right;
+    return left;
   }
 
   private logicalAndExpression(): BinaryExpression | Expression {
-    const right = this.bitwiseOrExpression();
+    const left = this.bitwiseOrExpression();
 
     if (this.currentToken.is(TokenType.AND)) {
       this.eat(TokenType.AND);
-      return new BinaryExpression(this.logicalAndExpression(), "&&", right);
+      return new BinaryExpression(left, "&&", this.logicalAndExpression());
     }
 
-    return right;
+    return left;
   }
 
   private logicalOrExpression(): BinaryExpression | Expression {
-    const right = this.logicalAndExpression();
+    const left = this.logicalAndExpression();
 
     if (this.currentToken.is(TokenType.OR)) {
       this.eat(TokenType.OR);
-      return new BinaryExpression(this.logicalOrExpression(), "||", right);
+      return new BinaryExpression(left, "||", this.logicalOrExpression());
     }
 
-    return right;
+    return left;
   }
 
   private conditionalExpression(): ConditionalExpression | Expression {
@@ -465,9 +454,9 @@ export class Parser {
 
     if (this.currentToken.is(TokenType.QUESTION_MARK)) {
       this.eat(TokenType.QUESTION_MARK);
-      const consequent = this.assignmentExpression();
+      const consequent = this.singleExpression();
       this.eat(TokenType.COLON);
-      const alternate = this.assignmentExpression();
+      const alternate = this.singleExpression();
 
       return new ConditionalExpression(test, consequent, alternate);
     }
@@ -476,17 +465,94 @@ export class Parser {
   }
 
   private assignmentExpression(): AssignmentExpression | Expression {
-    return this.conditionalExpression();
+    const left = this.conditionalExpression();
+
+    if (this.currentToken.is(TokenType.ASSIGN)) {
+      this.eat(TokenType.ASSIGN);
+      return new AssignmentExpression(left, "=", this.assignmentExpression());
+    } else if (this.currentToken.is(TokenType.MULTIPLY_ASSIGN)) {
+      this.eat(TokenType.MULTIPLY_ASSIGN);
+      return new AssignmentExpression(left, "*=", this.assignmentExpression());
+    } else if (this.currentToken.is(TokenType.DIVIDE_ASSIGN)) {
+      this.eat(TokenType.DIVIDE_ASSIGN);
+      return new AssignmentExpression(left, "/=", this.assignmentExpression());
+    } else if (this.currentToken.is(TokenType.MODULUS_ASSIGN)) {
+      this.eat(TokenType.MODULUS_ASSIGN);
+      return new AssignmentExpression(left, "%=", this.assignmentExpression());
+    } else if (this.currentToken.is(TokenType.PLUS_ASSIGN)) {
+      this.eat(TokenType.PLUS_ASSIGN);
+      return new AssignmentExpression(left, "+=", this.assignmentExpression());
+    } else if (this.currentToken.is(TokenType.MINUS_ASSIGN)) {
+      this.eat(TokenType.MINUS_ASSIGN);
+      return new AssignmentExpression(left, "-=", this.assignmentExpression());
+    } else if (this.currentToken.is(TokenType.BITWISE_LEFT_SHIFT_ASSIGN)) {
+      this.eat(TokenType.BITWISE_LEFT_SHIFT_ASSIGN);
+      return new AssignmentExpression(left, "<<=", this.assignmentExpression());
+    } else if (this.currentToken.is(TokenType.BITWISE_RIGHT_SHIFT_ASSIGN)) {
+      this.eat(TokenType.BITWISE_RIGHT_SHIFT_ASSIGN);
+      return new AssignmentExpression(left, ">>=", this.assignmentExpression());
+    } else if (this.currentToken.is(TokenType.BITWISE_RIGHT_SHIFT_ZERO_ASSIGN)) {
+      this.eat(TokenType.BITWISE_RIGHT_SHIFT_ZERO_ASSIGN);
+      return new AssignmentExpression(left, ">>>=", this.assignmentExpression());
+    } else if (this.currentToken.is(TokenType.BITWISE_AND_ASSIGN)) {
+      this.eat(TokenType.BITWISE_AND_ASSIGN);
+      return new AssignmentExpression(left, "&=", this.assignmentExpression());
+    } else if (this.currentToken.is(TokenType.BITWISE_XOR_ASSIGN)) {
+      this.eat(TokenType.BITWISE_XOR_ASSIGN);
+      return new AssignmentExpression(left, "^=", this.assignmentExpression());
+    } else if (this.currentToken.is(TokenType.BITWISE_OR_ASSIGN)) {
+      this.eat(TokenType.BITWISE_OR_ASSIGN);
+      return new AssignmentExpression(left, "|=", this.assignmentExpression());
+    }
+
+    return left;
+  }
+
+  private singleExpression(): Expression {
+    return this.assignmentExpression();
   }
 
   private expression(): Expression {
-    const expression = this.assignmentExpression();
+    const expressions = [this.singleExpression()];
 
     if (this.currentToken.is(TokenType.COMMA)) {
-      this.eat(TokenType.COMMA);
-      return new SequenceExpression([expression].concat(this.expression()));
+      while (this.currentToken.is(TokenType.COMMA)) {
+        this.eat(TokenType.COMMA);
+        expressions.push(this.singleExpression());
+      }
+
+      return new SequenceExpression(expressions);
     }
 
-    return expression;
+    return expressions[0];
+  }
+
+  // ---------------------------- //
+  // --- GRAMMAR (STATEMENTS) --- //
+  // ---------------------------- //
+  private expressionStatement(): ExpressionStatement {
+    const statement = new ExpressionStatement(this.expression());
+    this.eat(TokenType.SEMICOLON);
+    return statement;
+  }
+
+  private statement() {
+    const BLACKLIST_TOKENS = [
+      TokenType.LEFT_CURLY_BRACES,
+      TokenType.FUNCTION,
+      TokenType.CLASS,
+      TokenType.LET,
+      TokenType.LEFT_SQUARE_BRACKETS,
+    ];
+
+    if (!this.currentToken.isSomeOf(BLACKLIST_TOKENS)) {
+      return this.expressionStatement();
+    }
+
+    return this.expressionStatement();
+  }
+
+  private program(): Program {
+    return new Program([this.statement()]);
   }
 }

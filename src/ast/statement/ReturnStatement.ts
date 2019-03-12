@@ -1,4 +1,4 @@
-import { Node } from "./Node";
+import { Node } from "../Node";
 
 export class ReturnStatement extends Node {
   public argument: Node;

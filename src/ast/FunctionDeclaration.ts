@@ -1,6 +1,6 @@
-import { BlockStatement } from "./BlockStatement";
 import { Identifier } from "./Identifier";
 import { Node } from "./Node";
+import { BlockStatement } from "./statement/BlockStatement";
 
 export class FunctionDeclaration extends Node {
   public id: Identifier;

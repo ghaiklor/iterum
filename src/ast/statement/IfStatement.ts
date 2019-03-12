@@ -1,5 +1,5 @@
+import { Node } from "../Node";
 import { BlockStatement } from "./BlockStatement";
-import { Node } from "./Node";
 
 export class IfStatement extends Node {
   public test: Node;
