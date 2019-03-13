@@ -223,11 +223,11 @@ export class Parser {
       this.eat(TokenType.LEFT_SQUARE_BRACKETS);
       const property = this.singleExpression();
       this.eat(TokenType.RIGHT_SQUARE_BRACKETS);
-      return new MemberExpression(object, property);
+      return new MemberExpression(this.memberExpression(), property);
     } else if (this.currentToken.is(TokenType.DOT)) {
       this.eat(TokenType.DOT);
       const property = this.identifierName();
-      return new MemberExpression(object, property);
+      return new MemberExpression(this.memberExpression(), property);
     }
 
     return object;

@@ -317,7 +317,24 @@ describe("Iterum::Parser", () => {
     } as Program);
   });
 
-  it("Should properly parse member expression with dot notation", () => {
+  it("Should properly parse member expression with single dot notation", () => {
+    const source = `foo.bar`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          object: { name: "foo", type: "Identifer" } as Identifier,
+          property: { name: "bar", type: "Identifier" } as Identifier,
+          type: "MemberExpression",
+        } as MemberExpression,
+        type: "ExpressionStatement",
+      } as ExpressionStatement],
+      type: "Program",
+    } as Program);
+  });
+
+  it("Should properly parse member expression with dot notations", () => {
     const source = `foo.bar.baz`;
     const ast = Parser.parse(source);
 
