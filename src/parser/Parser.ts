@@ -532,7 +532,10 @@ export class Parser {
   // ---------------------------- //
   private expressionStatement(): ExpressionStatement {
     const statement = new ExpressionStatement(this.expression());
-    this.eat(TokenType.SEMICOLON);
+    if (this.currentToken.is(TokenType.SEMICOLON)) {
+      this.eat(TokenType.SEMICOLON);
+    }
+
     return statement;
   }
 
