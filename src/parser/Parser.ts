@@ -70,13 +70,13 @@ export class Parser {
       return new Literal(parseFloat(token.code), token.code);
     } else if (token.is(TokenType.HEXADECIMAL_LITERAL)) {
       this.eat(TokenType.HEXADECIMAL_LITERAL);
-      return new Literal(parseInt(token.code, 16), token.code);
+      return new Literal(parseInt(token.code.slice(2), 16), token.code);
     } else if (token.is(TokenType.OCTAL_LITERAL)) {
       this.eat(TokenType.OCTAL_LITERAL);
-      return new Literal(parseInt(token.code, 8), token.code);
+      return new Literal(parseInt(token.code.slice(2), 8), token.code);
     } else {
       this.eat(TokenType.BINARY_LITERAL);
-      return new Literal(parseInt(token.code, 2), token.code);
+      return new Literal(parseInt(token.code.slice(2), 2), token.code);
     }
   }
 
@@ -137,16 +137,15 @@ export class Parser {
   }
 
   private propertyAssignment(): Property {
-    if (this.currentToken.is(TokenType.IDENTIFIER)) {
-      const identifier = this.identifierName();
-      return new Property(identifier, identifier);
-    } else {
-      const key = this.propertyName();
+    const key = this.propertyName();
+
+    if (this.currentToken.is(TokenType.COLON)) {
       this.eat(TokenType.COLON);
       const value = this.singleExpression();
-
       return new Property(key, value);
     }
+
+    return new Property(key, key);
   }
 
   private propertyName(): Identifier | Literal {
@@ -224,11 +223,11 @@ export class Parser {
       this.eat(TokenType.LEFT_SQUARE_BRACKETS);
       const property = this.singleExpression();
       this.eat(TokenType.RIGHT_SQUARE_BRACKETS);
-      return new MemberExpression(this.memberExpression(), property);
+      return new MemberExpression(object, property);
     } else if (this.currentToken.is(TokenType.DOT)) {
       this.eat(TokenType.DOT);
       const property = this.identifierName();
-      return new MemberExpression(this.memberExpression(), property);
+      return new MemberExpression(object, property);
     }
 
     return object;
@@ -363,19 +362,35 @@ export class Parser {
     } else if (this.currentToken.is(TokenType.GREATER_THAN_OR_EQUAL)) {
       this.eat(TokenType.GREATER_THAN_OR_EQUAL);
       return new BinaryExpression(left, ">=", this.relationalExpression());
-    } else if (this.currentToken.is(TokenType.INSTANCE_OF)) {
+    }
+
+    return left;
+  }
+
+  private instanceofExpression(): BinaryExpression | Expression {
+    const left = this.relationalExpression();
+
+    if (this.currentToken.is(TokenType.INSTANCE_OF)) {
       this.eat(TokenType.INSTANCE_OF);
-      return new BinaryExpression(left, "instanceof", this.relationalExpression());
-    } else if (this.currentToken.is(TokenType.IN)) {
+      return new BinaryExpression(left, "instanceof", this.instanceofExpression());
+    }
+
+    return left;
+  }
+
+  private inExpression(): BinaryExpression | Expression {
+    const left = this.instanceofExpression();
+
+    if (this.currentToken.is(TokenType.IN)) {
       this.eat(TokenType.IN);
-      return new BinaryExpression(left, "in", this.relationalExpression());
+      return new BinaryExpression(left, "in", this.inExpression());
     }
 
     return left;
   }
 
   private equalityExpression(): BinaryExpression | Expression {
-    const left = this.relationalExpression();
+    const left = this.inExpression();
 
     if (this.currentToken.is(TokenType.EQUAL)) {
       this.eat(TokenType.EQUAL);
