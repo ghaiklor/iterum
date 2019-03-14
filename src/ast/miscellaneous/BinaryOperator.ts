@@ -15,6 +15,7 @@ export const enum BinaryOperator {
   MULTIPLY = "*",
   DIVIDE = "/",
   MODULUS = "%",
+  BINARY_AND = "&",
   BINARY_OR = "|",
   BINARY_XOR = "^",
   IN = "in",

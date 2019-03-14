@@ -1,15 +1,15 @@
-import { ArrayExpression } from "../../src/ast/expression/ArrayExpression";
-import { BinaryExpression } from "../../src/ast/expression/BinaryExpression";
-import { ConditionalExpression } from "../../src/ast/expression/ConditionalExpression";
-import { ObjectExpression } from "../../src/ast/expression/ObjectExpression";
-import { SequenceExpression } from "../../src/ast/expression/SequenceExpression";
-import { Identifier } from "../../src/ast/Identifier";
-import { Literal } from "../../src/ast/Literal";
-import { Program } from "../../src/ast/Program";
-import { Property } from "../../src/ast/Property";
-import { ExpressionStatement } from "../../src/ast/statement/ExpressionStatement";
+import { IBinaryExpression } from "../../src/ast/expressions/BinaryExpression";
+import { ILiteral } from "../../src/ast/miscellaneous/Literal";
+import { IProgram } from "../../src/ast/programs/Program";
+import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
 import { Parser } from "../../src/parser/Parser";
-import { MemberExpression } from "../../src/ast/expression/MemberExpression";
+import { IIdentifer } from "../../src/ast/miscellaneous/Identifier";
+import { ISequenceExpression } from "../../src/ast/expressions/SequenceExpression";
+import { IConditionalExpression } from "../../src/ast/expressions/ConditionalExpression";
+import { IArrayExpression } from "../../src/ast/expressions/ArrayExpression";
+import { IObjectExpression } from "../../src/ast/expressions/ObjectExpression";
+import { IProperty } from "../../src/ast/miscellaneous/Property";
+import { IMemberExpression } from "../../src/ast/expressions/MemberExpression";
 
 describe("Iterum::Parser", () => {
   it("Should properly parse the simplest expression with +", () => {
@@ -19,15 +19,18 @@ describe("Iterum::Parser", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
-          left: { value: 5, raw: "5" } as Literal,
+          left: { value: 5, raw: "5", loc: null, type: "Literal" } as ILiteral,
+          loc: null,
           operator: "+",
-          right: { value: 2, raw: "2" } as Literal,
+          right: { value: 2, raw: "2", loc: null, type: "Literal" } as ILiteral,
           type: "BinaryExpression",
-        } as BinaryExpression,
+        } as IBinaryExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse the simplest expression with the correct precedence", () => {
@@ -37,20 +40,24 @@ describe("Iterum::Parser", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
-          left: { value: 5, raw: "5" } as Literal,
+          left: { value: 5, raw: "5", loc: null, type: "Literal" } as ILiteral,
+          loc: null,
           operator: "+",
           right: {
-            left: { value: 10, raw: "10" } as Literal,
+            left: { value: 10, raw: "10", loc: null, type: "Literal" } as ILiteral,
+            loc: null,
             operator: "/",
-            right: { value: 2, raw: "2" } as Literal,
+            right: { value: 2, raw: "2", loc: null, type: "Literal" } as ILiteral,
             type: "BinaryExpression",
-          } as BinaryExpression,
+          } as IBinaryExpression,
           type: "BinaryExpression",
-        } as BinaryExpression,
+        } as IBinaryExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse expression within parenthesis", () => {
@@ -60,20 +67,24 @@ describe("Iterum::Parser", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
-          left: { value: 5, raw: "5" } as Literal,
+          left: { value: 5, raw: "5", type: "Literal", loc: null } as ILiteral,
+          loc: null,
           operator: "*",
           right: {
-            left: { value: 10, raw: "10" } as Literal,
+            left: { value: 10, raw: "10", type: "Literal", loc: null } as ILiteral,
+            loc: null,
             operator: "+",
-            right: { value: 2, raw: "2" } as Literal,
+            right: { value: 2, raw: "2", type: "Literal", loc: null } as ILiteral,
             type: "BinaryExpression",
-          } as BinaryExpression,
+          } as IBinaryExpression,
           type: "BinaryExpression",
-        } as BinaryExpression,
+        } as IBinaryExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse string literals", () => {
@@ -82,11 +93,13 @@ describe("Iterum::Parser", () => {
 
     expect(ast).toMatchObject({
       body: [{
-        expression: { value: "Hello, World!", raw: "Hello, World!" } as Literal,
+        expression: { value: "Hello, World!", raw: "Hello, World!", type: "Literal", loc: null } as ILiteral,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly throw an error if unexpected token met to eat", () => {
@@ -107,15 +120,18 @@ describe("Iterum::Parser", () => {
       body: [{
         expression: {
           expressions: [
-            { name: "foo", type: "Identifier" } as Identifier,
-            { name: "bar", type: "Identifier" } as Identifier,
+            { name: "foo", type: "Identifier" } as IIdentifer,
+            { name: "bar", type: "Identifier" } as IIdentifer,
           ],
+          loc: null,
           type: "SequenceExpression",
-        } as SequenceExpression,
+        } as ISequenceExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse conditional expression", () => {
@@ -125,15 +141,18 @@ describe("Iterum::Parser", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
-          alternate: { value: false, raw: "false" } as Literal,
-          consequent: { value: true, raw: "true" } as Literal,
-          test: { name: "foo" } as Identifier,
+          alternate: { value: false, raw: "false", type: "Literal", loc: null } as ILiteral,
+          consequent: { value: true, raw: "true", type: "Literal", loc: null } as ILiteral,
+          loc: null,
+          test: { name: "foo" } as IIdentifer,
           type: "ConditionalExpression",
-        } as ConditionalExpression,
+        } as IConditionalExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse binary expression with hexadecimal literals", () => {
@@ -143,15 +162,18 @@ describe("Iterum::Parser", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
-          left: { value: 16, raw: "0x10", type: "Literal" } as Literal,
+          left: { value: 16, raw: "0x10", type: "Literal", loc: null } as ILiteral,
+          loc: null,
           operator: "+",
-          right: { value: 15, raw: "0xF", type: "Literal" } as Literal,
+          right: { value: 15, raw: "0xF", type: "Literal", loc: null } as ILiteral,
           type: "BinaryExpression",
-        } as BinaryExpression,
+        } as IBinaryExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse binary expression with octal literals", () => {
@@ -161,15 +183,18 @@ describe("Iterum::Parser", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
-          left: { value: 8, raw: "0o10", type: "Literal" } as Literal,
+          left: { value: 8, raw: "0o10", type: "Literal", loc: null } as ILiteral,
+          loc: null,
           operator: "+",
-          right: { value: 13, raw: "0o15", type: "Literal" } as Literal,
+          right: { value: 13, raw: "0o15", type: "Literal", loc: null } as ILiteral,
           type: "BinaryExpression",
-        } as BinaryExpression,
+        } as IBinaryExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse binary expression with binary literals", () => {
@@ -179,15 +204,18 @@ describe("Iterum::Parser", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
-          left: { value: 2, raw: "0b10", type: "Literal" } as Literal,
+          left: { value: 2, raw: "0b10", type: "Literal", loc: null } as ILiteral,
+          loc: null,
           operator: "+",
-          right: { value: 4, raw: "0b100", type: "Literal" } as Literal,
+          right: { value: 4, raw: "0b100", type: "Literal", loc: null } as ILiteral,
           type: "BinaryExpression",
-        } as BinaryExpression,
+        } as IBinaryExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse array literals with multiply elements", () => {
@@ -198,16 +226,19 @@ describe("Iterum::Parser", () => {
       body: [{
         expression: {
           elements: [
-            { value: null, raw: "null", type: "Literal" } as Literal,
-            { value: true, raw: "true", type: "Literal" } as Literal,
-            { value: false, raw: "false", type: "Literal" } as Literal,
+            { value: null, raw: "null", type: "Literal", loc: null } as ILiteral,
+            { value: true, raw: "true", type: "Literal", loc: null } as ILiteral,
+            { value: false, raw: "false", type: "Literal", loc: null } as ILiteral,
           ],
+          loc: null,
           type: "ArrayExpression",
-        } as ArrayExpression,
+        } as IArrayExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse array literals with no elements", () => {
@@ -218,12 +249,15 @@ describe("Iterum::Parser", () => {
       body: [{
         expression: {
           elements: [],
+          loc: null,
           type: "ArrayExpression",
-        } as ArrayExpression,
+        } as IArrayExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse object literals with multiply properties", () => {
@@ -235,22 +269,28 @@ describe("Iterum::Parser", () => {
         expression: {
           properties: [
             {
-              key: { name: "foo", type: "Identifier" } as Identifier,
+              key: { name: "foo", type: "Identifier" } as IIdentifer,
+              kind: "init",
+              loc: null,
               type: "Property",
-              value: { value: "bar", raw: "bar", type: "Literal" } as Literal,
-            } as Property,
+              value: { value: "bar", raw: "bar", type: "Literal", loc: null } as ILiteral,
+            } as IProperty,
             {
-              key: { name: "bar", type: "Identifier" } as Identifier,
+              key: { name: "bar", type: "Identifier", loc: null } as IIdentifer,
+              kind: "init",
+              loc: null,
               type: "Property",
-              value: { value: 2, raw: "2", type: "Literal" } as Literal,
-            } as Property,
+              value: { value: 2, raw: "2", type: "Literal", loc: null } as ILiteral,
+            } as IProperty,
           ],
           type: "ObjectExpression",
-        } as ObjectExpression,
+        } as IObjectExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse object literals with no properties", () => {
@@ -260,13 +300,16 @@ describe("Iterum::Parser", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
+          loc: null,
           properties: [],
           type: "ObjectExpression",
-        } as ObjectExpression,
+        } as IObjectExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse object literals with destructuring properties", () => {
@@ -276,23 +319,30 @@ describe("Iterum::Parser", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
+          loc: null,
           properties: [
             {
-              key: { name: "foo", type: "Identifier" } as Identifier,
+              key: { name: "foo", type: "Identifier" } as IIdentifer,
+              kind: "init",
+              loc: null,
               type: "Property",
-              value: { name: "foo", type: "Identifier" } as Identifier,
-            } as Property,
+              value: { name: "foo", type: "Identifier" } as IIdentifer,
+            } as IProperty,
             {
-              key: { name: "bar", type: "Identifier" } as Identifier,
+              key: { name: "bar", type: "Identifier" } as IIdentifer,
+              kind: "init",
+              loc: null,
               type: "Property",
-              value: { name: "bar", type: "Identifier" } as Identifier,
-            } as Property],
+              value: { name: "bar", type: "Identifier" } as IIdentifer,
+            } as IProperty],
           type: "ObjectExpression",
-        } as ObjectExpression,
+        } as IObjectExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse object literals with literal properties", () => {
@@ -304,17 +354,21 @@ describe("Iterum::Parser", () => {
         expression: {
           properties: [
             {
-              key: { value: 5, raw: "5", type: "Literal" } as Literal,
+              key: { value: 5, raw: "5", type: "Literal", loc: null } as ILiteral,
+              kind: "init",
+              loc: null,
               type: "Property",
-              value: { value: "foo", raw: "foo", type: "Literal" } as Literal,
-            } as Property,
+              value: { value: "foo", raw: "foo", type: "Literal", loc: null } as ILiteral,
+            } as IProperty,
           ],
           type: "ObjectExpression",
-        } as ObjectExpression,
+        } as IObjectExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse member expression with single dot notation", () => {
@@ -324,14 +378,18 @@ describe("Iterum::Parser", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
-          object: { name: "foo", type: "Identifer" } as Identifier,
-          property: { name: "bar", type: "Identifier" } as Identifier,
+          computed: false,
+          loc: null,
+          object: { name: "foo", type: "Identifier", loc: null } as IIdentifer,
+          property: { name: "bar", type: "Identifier" } as IIdentifer,
           type: "MemberExpression",
-        } as MemberExpression,
+        } as IMemberExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 
   it("Should properly parse member expression with dot notations", () => {
@@ -341,17 +399,23 @@ describe("Iterum::Parser", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
+          computed: false,
+          loc: null,
           object: {
-            object: { name: "foo", type: "Identifer" } as Identifier,
-            property: { name: "bar", type: "Identifier" } as Identifier,
+            computed: false,
+            loc: null,
+            object: { name: "foo", type: "Identifier", loc: null } as IIdentifer,
+            property: { name: "bar", type: "Identifier" } as IIdentifer,
             type: "MemberExpression",
-          } as MemberExpression,
-          property: { name: "baz", type: "Identifier" } as Identifier,
+          } as IMemberExpression,
+          property: { name: "baz", type: "Identifier" } as IIdentifer,
           type: "MemberExpression",
-        } as MemberExpression,
+        } as IMemberExpression,
+        loc: null,
         type: "ExpressionStatement",
-      } as ExpressionStatement],
+      } as IExpressionStatement],
+      loc: null,
       type: "Program",
-    } as Program);
+    } as IProgram);
   });
 });
