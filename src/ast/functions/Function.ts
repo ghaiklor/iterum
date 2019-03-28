@@ -1,14 +1,14 @@
 import { IExpression } from "../expressions/Expression";
-import { IIdentifer } from "../miscellaneous/Identifier";
+import { IIdentifier } from "../miscellaneous/Identifier";
 import { INode } from "../node/Node";
 import { IPattern } from "../patterns/Pattern";
 import { IBlockStatement } from "../statements/BlockStatement";
 
 export interface IFunction extends INode {
-  id: IIdentifer | null;
+  id: IIdentifier | null;
   params: IPattern[];
   defaults: IExpression[];
-  rest: IIdentifer | null;
+  rest: IIdentifier | null;
   body: IBlockStatement | IExpression;
   generator: boolean;
   expression: boolean;

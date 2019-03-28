@@ -12,7 +12,7 @@ import { ISequenceExpression } from "../ast/expressions/SequenceExpression";
 import { IThisExpression } from "../ast/expressions/ThisExpression";
 import { IUnaryExpression } from "../ast/expressions/UnaryExpression";
 import { IUpdateExpression } from "../ast/expressions/UpdateExpression";
-import { IIdentifer } from "../ast/miscellaneous/Identifier";
+import { IIdentifier } from "../ast/miscellaneous/Identifier";
 import { ILiteral } from "../ast/miscellaneous/Literal";
 import { IProperty } from "../ast/miscellaneous/Property";
 import { IProgram } from "../ast/programs/Program";
@@ -56,8 +56,8 @@ export class Parser {
   // ----------------------------- //
   // --- GRAMMAR (EXPRESSIONS) --- //
   // ----------------------------- //
-  private identifierName(): IIdentifer {
-    const identifier = { name: this.currentToken.code } as IIdentifer;
+  private identifierName(): IIdentifier {
+    const identifier = { name: this.currentToken.code } as IIdentifier;
     this.eat(TokenType.IDENTIFIER);
 
     return identifier;
@@ -149,7 +149,7 @@ export class Parser {
     return { key, value: key, loc: null, type: "Property", kind: "init" } as IProperty;
   }
 
-  private propertyName(): IIdentifer | ILiteral {
+  private propertyName(): IIdentifier | ILiteral {
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
       return this.identifierName();
     } else {

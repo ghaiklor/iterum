@@ -1,9 +1,8 @@
-import { IExpression } from "../expressions/Expression";
-import { IPattern } from "../patterns/Pattern";
+import { IVariableDeclarator } from "../declarations/VariableDeclarator";
 import { IStatement } from "./Statement";
 
 export interface ILetStatement extends IStatement {
   type: "LetStatement";
-  head: Array<{ id: IPattern, init: IExpression | null }>;
+  head: IVariableDeclarator[];
   body: IStatement;
 }

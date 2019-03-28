@@ -1,8 +1,8 @@
-import { IPattern } from "../patterns/Pattern";
+import { IVariableDeclarator } from "../declarations/VariableDeclarator";
 import { IExpression } from "./Expression";
 
 export interface ILetExpression extends IExpression {
   type: "LetExpression";
-  head: Array<{ id: IPattern, init: IExpression | null }>;
+  head: IVariableDeclarator[];
   body: IExpression;
 }
