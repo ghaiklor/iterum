@@ -1,15 +1,15 @@
+import { IArrayExpression } from "../../src/ast/expressions/ArrayExpression";
 import { IBinaryExpression } from "../../src/ast/expressions/BinaryExpression";
+import { IConditionalExpression } from "../../src/ast/expressions/ConditionalExpression";
+import { IMemberExpression } from "../../src/ast/expressions/MemberExpression";
+import { IObjectExpression } from "../../src/ast/expressions/ObjectExpression";
+import { ISequenceExpression } from "../../src/ast/expressions/SequenceExpression";
+import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
 import { ILiteral } from "../../src/ast/miscellaneous/Literal";
+import { IProperty } from "../../src/ast/miscellaneous/Property";
 import { IProgram } from "../../src/ast/programs/Program";
 import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
 import { Parser } from "../../src/parser/Parser";
-import { IIdentifer } from "../../src/ast/miscellaneous/Identifier";
-import { ISequenceExpression } from "../../src/ast/expressions/SequenceExpression";
-import { IConditionalExpression } from "../../src/ast/expressions/ConditionalExpression";
-import { IArrayExpression } from "../../src/ast/expressions/ArrayExpression";
-import { IObjectExpression } from "../../src/ast/expressions/ObjectExpression";
-import { IProperty } from "../../src/ast/miscellaneous/Property";
-import { IMemberExpression } from "../../src/ast/expressions/MemberExpression";
 
 describe("Iterum::Parser", () => {
   it("Should properly parse the simplest expression with +", () => {
@@ -120,8 +120,8 @@ describe("Iterum::Parser", () => {
       body: [{
         expression: {
           expressions: [
-            { name: "foo", type: "Identifier" } as IIdentifer,
-            { name: "bar", type: "Identifier" } as IIdentifer,
+            { name: "foo", type: "Identifier" } as IIdentifier,
+            { name: "bar", type: "Identifier" } as IIdentifier,
           ],
           loc: null,
           type: "SequenceExpression",
@@ -144,7 +144,7 @@ describe("Iterum::Parser", () => {
           alternate: { value: false, raw: "false", type: "Literal", loc: null } as ILiteral,
           consequent: { value: true, raw: "true", type: "Literal", loc: null } as ILiteral,
           loc: null,
-          test: { name: "foo" } as IIdentifer,
+          test: { name: "foo" } as IIdentifier,
           type: "ConditionalExpression",
         } as IConditionalExpression,
         loc: null,
@@ -269,14 +269,14 @@ describe("Iterum::Parser", () => {
         expression: {
           properties: [
             {
-              key: { name: "foo", type: "Identifier" } as IIdentifer,
+              key: { name: "foo", type: "Identifier" } as IIdentifier,
               kind: "init",
               loc: null,
               type: "Property",
               value: { value: "bar", raw: "bar", type: "Literal", loc: null } as ILiteral,
             } as IProperty,
             {
-              key: { name: "bar", type: "Identifier", loc: null } as IIdentifer,
+              key: { name: "bar", type: "Identifier", loc: null } as IIdentifier,
               kind: "init",
               loc: null,
               type: "Property",
@@ -322,18 +322,18 @@ describe("Iterum::Parser", () => {
           loc: null,
           properties: [
             {
-              key: { name: "foo", type: "Identifier" } as IIdentifer,
+              key: { name: "foo", type: "Identifier" } as IIdentifier,
               kind: "init",
               loc: null,
               type: "Property",
-              value: { name: "foo", type: "Identifier" } as IIdentifer,
+              value: { name: "foo", type: "Identifier" } as IIdentifier,
             } as IProperty,
             {
-              key: { name: "bar", type: "Identifier" } as IIdentifer,
+              key: { name: "bar", type: "Identifier" } as IIdentifier,
               kind: "init",
               loc: null,
               type: "Property",
-              value: { name: "bar", type: "Identifier" } as IIdentifer,
+              value: { name: "bar", type: "Identifier" } as IIdentifier,
             } as IProperty],
           type: "ObjectExpression",
         } as IObjectExpression,
@@ -380,8 +380,8 @@ describe("Iterum::Parser", () => {
         expression: {
           computed: false,
           loc: null,
-          object: { name: "foo", type: "Identifier", loc: null } as IIdentifer,
-          property: { name: "bar", type: "Identifier" } as IIdentifer,
+          object: { name: "foo", type: "Identifier", loc: null } as IIdentifier,
+          property: { name: "bar", type: "Identifier" } as IIdentifier,
           type: "MemberExpression",
         } as IMemberExpression,
         loc: null,
@@ -404,11 +404,11 @@ describe("Iterum::Parser", () => {
           object: {
             computed: false,
             loc: null,
-            object: { name: "foo", type: "Identifier", loc: null } as IIdentifer,
-            property: { name: "bar", type: "Identifier" } as IIdentifer,
+            object: { name: "foo", type: "Identifier", loc: null } as IIdentifier,
+            property: { name: "bar", type: "Identifier" } as IIdentifier,
             type: "MemberExpression",
           } as IMemberExpression,
-          property: { name: "baz", type: "Identifier" } as IIdentifer,
+          property: { name: "baz", type: "Identifier" } as IIdentifier,
           type: "MemberExpression",
         } as IMemberExpression,
         loc: null,
