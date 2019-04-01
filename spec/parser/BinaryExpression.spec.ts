@@ -1,4 +1,5 @@
 import { IBinaryExpression } from "../../src/ast/expressions/BinaryExpression";
+import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
 import { ILiteral } from "../../src/ast/miscellaneous/Literal";
 import { IProgram } from "../../src/ast/programs/Program";
 import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
@@ -133,6 +134,447 @@ describe("Iterum::Parser::BinaryExpression", () => {
           loc: null,
           operator: "+",
           right: { value: 4, raw: "0b100", type: "Literal", loc: null } as ILiteral,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse bitwise OR expression", () => {
+    const source = `a | b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "|",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse bitwise XOR expression", () => {
+    const source = `a ^ b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "^",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse bitwise AND expression", () => {
+    const source = `a & b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "&",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse non strict equality expression", () => {
+    const source = `a == b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "==",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse non strict equality expression", () => {
+    const source = `a != b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "!=",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse strict equality expression", () => {
+    const source = `a === b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "===",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse strict equality expression", () => {
+    const source = `a !== b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "!==",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse in expression", () => {
+    const source = `a in b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "in",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse instanceof expression", () => {
+    const source = `a instanceof b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "instanceof",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse < expression", () => {
+    const source = `a < b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "<",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse <= expression", () => {
+    const source = `a <= b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "<=",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse > expression", () => {
+    const source = `a > b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: ">",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse >= expression", () => {
+    const source = `a >= b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: ">=",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse logical bitwise right shift expression", () => {
+    const source = `a >>> b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: ">>>",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse arithmetic bitwise right shift expression", () => {
+    const source = `a >> b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: ">>",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse bitwise left shift expression", () => {
+    const source = `a << b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "<<",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse minus expression", () => {
+    const source = `a - b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "-",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse add expression", () => {
+    const source = `a + b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "+",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse multiply expression", () => {
+    const source = `a * b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "*",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse divide expression", () => {
+    const source = `a / b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "/",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+          type: "BinaryExpression",
+        } as IBinaryExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse modulus expression", () => {
+    const source = `a % b`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "%",
+          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
           type: "BinaryExpression",
         } as IBinaryExpression,
         loc: null,
