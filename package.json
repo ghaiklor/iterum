@@ -1,6 +1,6 @@
 {
   "name": "iterum",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Yet another attempt to create VM with its own language and intermediate representation",
   "license": "MIT",
   "main": "index.js",

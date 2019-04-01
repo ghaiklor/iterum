@@ -1,9 +1,14 @@
 # Iterum
 
-[![Build Status](https://travis-ci.com/ghaiklor/iterum.svg?branch=master)](https://travis-ci.com/ghaiklor/iterum)
-[![codecov](https://codecov.io/gh/ghaiklor/iterum/branch/master/graph/badge.svg)](https://codecov.io/gh/ghaiklor/iterum)
-[![BCH compliance](https://bettercodehub.com/edge/badge/ghaiklor/iterum?branch=master)](https://bettercodehub.com/)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/315a0c481bd74165bc0c64597d893f32)](https://www.codacy.com/app/ghaiklor/iterum)
+![Travis (.com) branch](https://img.shields.io/travis/com/ghaiklor/iterum/master.svg)
+![Codecov branch](https://img.shields.io/codecov/c/github/ghaiklor/iterum/master.svg)
+![Codacy branch grade](https://img.shields.io/codacy/grade/315a0c481bd74165bc0c64597d893f32/master.svg)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ghaiklor/iterum.svg)
+![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/ghaiklor/iterum/master.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/ghaiklor/iterum.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
+![GitHub followers](https://img.shields.io/github/followers/ghaiklor.svg?label=Follow&style=social)
+![Twitter Follow](https://img.shields.io/twitter/follow/ghaiklor.svg?label=Follow&style=social)
 
 _Iterum (latin) means "again, a second time, repeatedly, once more, for the second time, anew"._
 
