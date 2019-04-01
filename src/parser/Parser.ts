@@ -79,7 +79,7 @@ export class Parser {
    *
    * @param type Node type
    */
-  private openNode<T extends INode>(type: string): T {
+  private openNode<T extends INode>(type: T["type"]): T {
     return { type, loc: null } as T;
   }
 
@@ -331,49 +331,56 @@ export class Parser {
   }
 
   private unaryExpression(): IUnaryExpression | IUpdateExpression | IExpression {
-    const node = this.openNode<IUnaryExpression>("UnaryExpression");
-
     if (this.eat(TokenType.NOT)) {
+      const node = this.openNode<IUnaryExpression>("UnaryExpression");
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.NOT;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.BITWISE_NOT)) {
+      const node = this.openNode<IUnaryExpression>("UnaryExpression");
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.BITWISE_NOT;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.MINUS)) {
+      const node = this.openNode<IUnaryExpression>("UnaryExpression");
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.MINUS;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.PLUS)) {
+      const node = this.openNode<IUnaryExpression>("UnaryExpression");
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.PLUS;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.MINUS_MINUS)) {
+      const node = this.openNode<IUpdateExpression>("UpdateExpression");
       node.argument = this.unaryExpression();
-      node.operator = UnaryOperator.MINUS;
+      node.operator = UpdateOperator.MINUS_MINUS;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.PLUS_PLUS)) {
+      const node = this.openNode<IUpdateExpression>("UpdateExpression");
       node.argument = this.unaryExpression();
-      node.operator = UnaryOperator.PLUS;
+      node.operator = UpdateOperator.PLUS_PLUS;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.TYPE_OF)) {
+      const node = this.openNode<IUnaryExpression>("UnaryExpression");
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.TYPE_OF;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.VOID)) {
+      const node = this.openNode<IUnaryExpression>("UnaryExpression");
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.VOID;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.DELETE)) {
+      const node = this.openNode<IUnaryExpression>("UnaryExpression");
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.DELETE;
       node.prefix = true;
