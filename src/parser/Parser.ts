@@ -331,7 +331,7 @@ export class Parser {
   }
 
   private unaryExpression(): IUnaryExpression | IUpdateExpression | IExpression {
-    if (this.eat(TokenType.NOT)) {
+    if (this.eat(TokenType.LOGICAL_NOT)) {
       const node = this.openNode<IUnaryExpression>("UnaryExpression");
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.NOT;
@@ -436,15 +436,15 @@ export class Parser {
     const left = this.additiveExpression();
 
     node.left = left;
-    if (this.eat(TokenType.BITWISE_RIGHT_SHIFT_ZERO)) {
+    if (this.eat(TokenType.BITWISE_LOGICAL_SHIFT_TO_RIGHT)) {
       node.operator = BinaryOperator.BITWISE_SHIFT_RIGHT_ZERO;
       node.right = this.shiftExpression();
       return this.closeNode(node);
-    } else if (this.eat(TokenType.BITWISE_RIGHT_SHIFT)) {
+    } else if (this.eat(TokenType.BITWISE_SHIFT_TO_RIGHT)) {
       node.operator = BinaryOperator.BITWISE_SHIFT_RIGHT;
       node.right = this.shiftExpression();
       return this.closeNode(node);
-    } else if (this.eat(TokenType.BITWISE_LEFT_SHIFT)) {
+    } else if (this.eat(TokenType.BITWISE_SHIFT_TO_LEFT)) {
       node.operator = BinaryOperator.BITWISE_SHIFT_LEFT;
       node.right = this.shiftExpression();
       return this.closeNode(node);
@@ -580,7 +580,7 @@ export class Parser {
     const left = this.bitwiseOrExpression();
 
     node.left = left;
-    if (this.eat(TokenType.AND)) {
+    if (this.eat(TokenType.LOGICAL_AND)) {
       node.operator = LogicalOperator.AND;
       node.right = this.logicalAndExpression();
       return this.closeNode(node);
@@ -594,7 +594,7 @@ export class Parser {
     const left = this.logicalAndExpression();
 
     node.left = left;
-    if (this.eat(TokenType.OR)) {
+    if (this.eat(TokenType.LOGICAL_OR)) {
       node.operator = LogicalOperator.OR;
       node.right = this.logicalOrExpression();
       return this.closeNode(node);
@@ -648,15 +648,15 @@ export class Parser {
       node.operator = AssignmentOperator.MINUS_ASSIGN;
       node.right = this.assignmentExpression();
       return this.closeNode(node);
-    } else if (this.eat(TokenType.BITWISE_LEFT_SHIFT_ASSIGN)) {
+    } else if (this.eat(TokenType.BITWISE_SHIFT_TO_LEFT_ASSIGN)) {
       node.operator = AssignmentOperator.BITWISE_SHIFT_LEFT_ASSIGN;
       node.right = this.assignmentExpression();
       return this.closeNode(node);
-    } else if (this.eat(TokenType.BITWISE_RIGHT_SHIFT_ASSIGN)) {
+    } else if (this.eat(TokenType.BITWISE_SHIFT_TO_RIGHT_ASSIGN)) {
       node.operator = AssignmentOperator.BITWISE_SHIFT_RIGHT_ASSIGN;
       node.right = this.assignmentExpression();
       return this.closeNode(node);
-    } else if (this.eat(TokenType.BITWISE_RIGHT_SHIFT_ZERO_ASSIGN)) {
+    } else if (this.eat(TokenType.BITWISE_LOGICAL_SHIFT_TO_RIGHT_ASSIGN)) {
       node.operator = AssignmentOperator.BITWISE_SHIFT_RIGHT_ZERO_ASSIGN;
       node.right = this.assignmentExpression();
       return this.closeNode(node);

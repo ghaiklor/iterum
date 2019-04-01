@@ -190,15 +190,15 @@ describe("Iterum::Lexer", () => {
     const source = `&& == >= > < <= != || !`;
     const lexer = new Scanner(source);
 
-    expect(lexer.next()).toMatchObject({ type: TokenType.AND, code: "&&" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LOGICAL_AND, code: "&&" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EQUAL, code: "==" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.GREATER_THAN_OR_EQUAL, code: ">=" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.GREATER_THAN, code: ">" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LESS_THAN, code: "<" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LESS_THAN_OR_EQUAL, code: "<=" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.NOT_EQUAL, code: "!=" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.OR, code: "||" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.NOT, code: "!" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LOGICAL_OR, code: "||" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LOGICAL_NOT, code: "!" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
@@ -253,7 +253,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "foo" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.STRICT_EQUAL, code: "===" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.BOOLEAN_LITERAL, code: "true" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.AND, code: "&&" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.LOGICAL_AND, code: "&&" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "bar" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.NOT_STRICT_EQUAL, code: "!==" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.BOOLEAN_LITERAL, code: "false" } as Token);

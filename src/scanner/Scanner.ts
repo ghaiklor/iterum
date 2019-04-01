@@ -16,24 +16,16 @@ export class Scanner {
 
   public next(): Token {
     while (this.char.isWhitespace()) {
-      this.skipWhitespace();
-      this.skipComments();
+      this.whitespace();
+      this.comment();
     }
 
     if (this.char.isAlpha()) {
       return this.identifierOrKeyword();
-    } else if (this.char.is("0") && this.peek().isSomeOf(["x", "X"]) && this.peek(2).isHexDigit()) {
-      return this.hexadecimalLiteral();
-    } else if (this.char.is("0") && this.peek().isSomeOf(["o", "O"]) && this.peek(2).isOctalDigit()) {
-      return this.octalLiteral();
-    } else if (this.char.is("0") && this.peek().isSomeOf(["b", "B"]) && this.peek(2).isBinaryDigit()) {
-      return this.binaryLiteral();
     } else if (this.char.isDigit()) {
-      return this.decimalLiteral();
-    } else if (this.char.is('"')) {
-      return this.stringLiteral('"');
-    } else if (this.char.is("'")) {
-      return this.stringLiteral("'");
+      return this.numericLiteral();
+    } else if (this.char.isSomeOf(["'", '"'])) {
+      return this.stringLiteral();
     } else if (Scanner.PUNCTUATION[this.slice(4)]) {
       const token = Scanner.PUNCTUATION[this.slice(4)];
       this.advance(this.slice(4).length);
@@ -94,7 +86,7 @@ export class Scanner {
     this.location.column = 0;
   }
 
-  private skipWhitespace(): void {
+  private whitespace(): void {
     while (this.char.isWhitespace()) {
       if (this.char.isLineTerminator()) {
         this.incrementLineLocation();
@@ -104,7 +96,14 @@ export class Scanner {
     }
   }
 
-  private skipComments(): void {
+  private comment(): Scanner {
+    this.multiLineComment();
+    this.singleLineComment();
+
+    return this;
+  }
+
+  private multiLineComment(): Scanner {
     if (this.char.is("/") && this.peek().is("*")) {
       this.advance(2);
 
@@ -121,9 +120,12 @@ export class Scanner {
       }
 
       this.advance(2);
-      return;
     }
 
+    return this;
+  }
+
+  private singleLineComment(): Scanner {
     if (this.char.is("/") && this.peek().is("/")) {
       this.advance(2);
 
@@ -136,7 +138,20 @@ export class Scanner {
       }
 
       this.advance();
-      return;
+    }
+
+    return this;
+  }
+
+  private numericLiteral(): Token {
+    if (this.char.is("0") && this.peek().isSomeOf(["x", "X"]) && this.peek(2).isHexDigit()) {
+      return this.hexadecimalIntegerLiteral();
+    } else if (this.char.is("0") && this.peek().isSomeOf(["o", "O"]) && this.peek(2).isOctalDigit()) {
+      return this.octalIntegerLiteral();
+    } else if (this.char.is("0") && this.peek().isSomeOf(["b", "B"]) && this.peek(2).isBinaryDigit()) {
+      return this.binaryIntegerLiteral();
+    } else {
+      return this.decimalLiteral();
     }
   }
 
@@ -161,7 +176,7 @@ export class Scanner {
     return new Token(TokenType.DECIMAL_LITERAL, buffer);
   }
 
-  private hexadecimalLiteral(): Token {
+  private hexadecimalIntegerLiteral(): Token {
     let buffer: string = "0x";
     this.advance(2);
 
@@ -173,7 +188,7 @@ export class Scanner {
     return new Token(TokenType.HEXADECIMAL_LITERAL, buffer);
   }
 
-  private octalLiteral(): Token {
+  private octalIntegerLiteral(): Token {
     let buffer: string = "0o";
     this.advance(2);
 
@@ -185,7 +200,7 @@ export class Scanner {
     return new Token(TokenType.OCTAL_LITERAL, buffer);
   }
 
-  private binaryLiteral(): Token {
+  private binaryIntegerLiteral(): Token {
     let buffer: string = "0b";
     this.advance(2);
 
@@ -197,8 +212,10 @@ export class Scanner {
     return new Token(TokenType.BINARY_LITERAL, buffer);
   }
 
-  private stringLiteral(quoteType: string): Token {
+  private stringLiteral(): Token {
     let buffer: string = "";
+
+    const quoteType: string = this.char.toString();
     this.advance();
 
     while (!this.char.is(quoteType)) {
@@ -227,17 +244,19 @@ export class Scanner {
 
   static get PUNCTUATION(): Record<string, Token> {
     return {
-      "!": new Token(TokenType.NOT, "!"),
+      "!": new Token(TokenType.LOGICAL_NOT, "!"),
       "!=": new Token(TokenType.NOT_EQUAL, "!="),
       "!==": new Token(TokenType.NOT_STRICT_EQUAL, "!=="),
       "%": new Token(TokenType.MODULUS, "%"),
       "%=": new Token(TokenType.MODULUS_ASSIGN, "%="),
       "&": new Token(TokenType.BITWISE_AND, "&"),
-      "&&": new Token(TokenType.AND, "&&"),
+      "&&": new Token(TokenType.LOGICAL_AND, "&&"),
       "&=": new Token(TokenType.BITWISE_AND_ASSIGN, "&="),
       "(": new Token(TokenType.LEFT_PARENTHESIS, "("),
       ")": new Token(TokenType.RIGHT_PARENTHESIS, ")"),
       "*": new Token(TokenType.MULTIPLY, "*"),
+      "**": new Token(TokenType.EXPONENTIATION, "**"),
+      "**=": new Token(TokenType.EXPONENTIATION_ASSIGN, "**="),
       "*=": new Token(TokenType.MULTIPLY_ASSIGN, "*="),
       "+": new Token(TokenType.PLUS, "+"),
       "++": new Token(TokenType.PLUS_PLUS, "++"),
@@ -253,8 +272,8 @@ export class Scanner {
       ":": new Token(TokenType.COLON, ":"),
       ";": new Token(TokenType.SEMICOLON, ";"),
       "<": new Token(TokenType.LESS_THAN, "<"),
-      "<<": new Token(TokenType.BITWISE_LEFT_SHIFT, "<<"),
-      "<<=": new Token(TokenType.BITWISE_LEFT_SHIFT_ASSIGN, "<<="),
+      "<<": new Token(TokenType.BITWISE_SHIFT_TO_LEFT, "<<"),
+      "<<=": new Token(TokenType.BITWISE_SHIFT_TO_LEFT_ASSIGN, "<<="),
       "<=": new Token(TokenType.LESS_THAN_OR_EQUAL, "<="),
       "=": new Token(TokenType.ASSIGN, "="),
       "==": new Token(TokenType.EQUAL, "=="),
@@ -262,10 +281,10 @@ export class Scanner {
       "=>": new Token(TokenType.ARROW, "=>"),
       ">": new Token(TokenType.GREATER_THAN, ">"),
       ">=": new Token(TokenType.GREATER_THAN_OR_EQUAL, ">="),
-      ">>": new Token(TokenType.BITWISE_RIGHT_SHIFT, ">>"),
-      ">>=": new Token(TokenType.BITWISE_RIGHT_SHIFT_ASSIGN, ">>="),
-      ">>>": new Token(TokenType.BITWISE_RIGHT_SHIFT_ZERO, ">>>"),
-      ">>>=": new Token(TokenType.BITWISE_RIGHT_SHIFT_ZERO_ASSIGN, ">>>="),
+      ">>": new Token(TokenType.BITWISE_SHIFT_TO_RIGHT, ">>"),
+      ">>=": new Token(TokenType.BITWISE_SHIFT_TO_RIGHT_ASSIGN, ">>="),
+      ">>>": new Token(TokenType.BITWISE_LOGICAL_SHIFT_TO_RIGHT, ">>>"),
+      ">>>=": new Token(TokenType.BITWISE_LOGICAL_SHIFT_TO_RIGHT_ASSIGN, ">>>="),
       "?": new Token(TokenType.QUESTION_MARK, "?"),
       "[": new Token(TokenType.LEFT_SQUARE_BRACKETS, "["),
       "]": new Token(TokenType.RIGHT_SQUARE_BRACKETS, "]"),
@@ -274,7 +293,7 @@ export class Scanner {
       "{": new Token(TokenType.LEFT_CURLY_BRACES, "{"),
       "|": new Token(TokenType.BITWISE_OR, "|"),
       "|=": new Token(TokenType.BITWISE_OR_ASSIGN, "|="),
-      "||": new Token(TokenType.OR, "||"),
+      "||": new Token(TokenType.LOGICAL_OR, "||"),
       "}": new Token(TokenType.RIGHT_CURLY_BRACES, "}"),
       "~": new Token(TokenType.BITWISE_NOT, "~"),
     };
