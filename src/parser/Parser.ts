@@ -292,7 +292,7 @@ export class Parser {
     const callee = this.memberExpression();
 
     if (this.currentToken.is(TokenType.LEFT_PARENTHESIS)) {
-      node.callee = this.callExpression();
+      node.callee = callee;
       node.arguments = this.arguments();
 
       return this.closeNode(node);
