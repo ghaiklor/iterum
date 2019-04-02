@@ -117,4 +117,9 @@ describe("Iterum::Parser::ObjectExpression", () => {
       type: "Program",
     } as IProgram);
   });
+
+  it("Should properly throw an error when unexpected token at key", () => {
+    const source = `({ instanceof: 5 })`;
+    expect(() => Parser.parse(source)).toThrowError(`Unexpected instanceof at 1:14`);
+  });
 });

@@ -3,9 +3,10 @@ import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
 import { IProgram } from "../../src/ast/programs/Program";
 import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
 import { Parser } from "../../src/parser/Parser";
+import { ILiteral } from "../../src/ast/miscellaneous/Literal";
 
 describe("Iterum::Parser::MemberExpression", () => {
-  it("Should properly parse member expression with single dot notation", () => {
+  it("Should properly parse member expression with dot notation", () => {
     const source = `foo.bar`;
     const ast = Parser.parse(source);
 
@@ -26,8 +27,8 @@ describe("Iterum::Parser::MemberExpression", () => {
     } as IProgram);
   });
 
-  it("Should properly parse member expression with dot notations", () => {
-    const source = `foo.bar.baz`;
+  it("Should properly parse member expression with square brackets", () => {
+    const source = `foo["bar"]`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -35,14 +36,8 @@ describe("Iterum::Parser::MemberExpression", () => {
         expression: {
           computed: false,
           loc: null,
-          object: {
-            computed: false,
-            loc: null,
-            object: { name: "foo", type: "Identifier", loc: null } as IIdentifier,
-            property: { name: "bar", type: "Identifier" } as IIdentifier,
-            type: "MemberExpression",
-          } as IMemberExpression,
-          property: { name: "baz", type: "Identifier" } as IIdentifier,
+          object: { name: "foo", type: "Identifier", loc: null } as IIdentifier,
+          property: { raw: "bar", value: "bar", type: "Literal", loc: null } as ILiteral,
           type: "MemberExpression",
         } as IMemberExpression,
         loc: null,

@@ -1,7 +1,7 @@
 export const enum UnaryOperator {
   MINUS = "-",
   PLUS = "+",
-  NOT = "!",
+  LOGICAL_NOT = "!",
   BITWISE_NOT = "~",
   TYPE_OF = "typeof",
   VOID = "void",

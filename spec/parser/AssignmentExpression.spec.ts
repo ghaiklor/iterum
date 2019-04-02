@@ -257,4 +257,25 @@ describe("Iterum::Parser::AssignmentExpression", () => {
       type: "Program",
     } as IProgram);
   });
+
+  it("Should properly parse exponentiation expression", () => {
+    const source = "a **= 5";
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          loc: null,
+          operator: "**=",
+          right: { type: "Literal", value: 5, raw: "5" } as ILiteral,
+          type: "AssignmentExpression",
+        } as IAssignmentExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
 });

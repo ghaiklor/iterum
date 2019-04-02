@@ -75,6 +75,18 @@ export class Parser {
   }
 
   /**
+   * Throws an error about unexpected token.
+   *
+   * @throws {Error}
+   */
+  private unexpected<T>(): T {
+    throw new Error(
+      `Unexpected ${this.currentToken.code} ` +
+      `at ${this.scanner.location.line}:${this.scanner.location.column}`,
+    );
+  }
+
+  /**
    * Creates a new AST node and fills in required properties.
    *
    * @param type Node type
@@ -95,33 +107,53 @@ export class Parser {
   // ----------------------------- //
   // --- GRAMMAR (EXPRESSIONS) --- //
   // ----------------------------- //
-  private identifierName(): IIdentifier {
-    const node = this.openNode<IIdentifier>("Identifier");
-    node.name = this.currentToken.code;
+  private identifier(): IIdentifier {
+    const token = this.currentToken;
     this.expect(TokenType.IDENTIFIER);
+
+    const node = this.openNode<IIdentifier>("Identifier");
+    node.name = token.code;
 
     return this.closeNode(node);
   }
 
-  private numericLiteral(): ILiteral {
-    const node = this.openNode<ILiteral>("Literal");
-    const token = this.currentToken;
+  private primaryExpression(): IExpression {
+    const LITERAL_TOKENS = [
+      TokenType.BINARY_LITERAL,
+      TokenType.BOOLEAN_LITERAL,
+      TokenType.DECIMAL_LITERAL,
+      TokenType.NULL_LITERAL,
+      TokenType.HEXADECIMAL_LITERAL,
+      TokenType.OCTAL_LITERAL,
+      TokenType.STRING_LITERAL,
+    ];
 
-    node.raw = token.code;
-    if (this.eat(TokenType.DECIMAL_LITERAL)) {
-      node.value = parseFloat(token.code);
+    if (this.eat(TokenType.THIS)) {
+      const node = this.openNode<IThisExpression>("ThisExpression");
       return this.closeNode(node);
-    } else if (this.eat(TokenType.HEXADECIMAL_LITERAL)) {
-      node.value = parseInt(token.code.slice(2), 16);
-      return this.closeNode(node);
-    } else if (this.eat(TokenType.OCTAL_LITERAL)) {
-      node.value = parseInt(token.code.slice(2), 8);
-      return this.closeNode(node);
-    } else {
-      this.expect(TokenType.BINARY_LITERAL);
-      node.value = parseInt(token.code.slice(2), 2);
-      return this.closeNode(node);
+    } else if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      return this.identifier();
+    } else if (this.currentToken.isSomeOf(LITERAL_TOKENS)) {
+      return this.literal();
+    } else if (this.currentToken.is(TokenType.LEFT_SQUARE_BRACKETS)) {
+      return this.arrayLiteral();
+    } else if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
+      return this.objectLiteral();
+    } else if (this.currentToken.is(TokenType.FUNCTION)) {
+      // TODO: implement
+      // return this.functionExpression();
+    } else if (this.currentToken.is(TokenType.CLASS)) {
+      // TODO: implement
+      // return this.classExpression();
+    } else if (this.currentToken.is(TokenType.LEFT_PARENTHESIS)) {
+      this.expect(TokenType.LEFT_PARENTHESIS);
+      const expression = this.expression();
+      this.expect(TokenType.RIGHT_PARENTHESIS);
+
+      return expression;
     }
+
+    return this.unexpected();
   }
 
   private literal(): ILiteral {
@@ -138,8 +170,19 @@ export class Parser {
     } else if (this.eat(TokenType.STRING_LITERAL)) {
       node.value = token.code;
       return this.closeNode(node);
+    } else if (this.eat(TokenType.DECIMAL_LITERAL)) {
+      node.value = parseFloat(token.code);
+      return this.closeNode(node);
+    } else if (this.eat(TokenType.HEXADECIMAL_LITERAL)) {
+      node.value = parseInt(token.code.slice(2), 16);
+      return this.closeNode(node);
+    } else if (this.eat(TokenType.OCTAL_LITERAL)) {
+      node.value = parseInt(token.code.slice(2), 8);
+      return this.closeNode(node);
     } else {
-      return this.numericLiteral();
+      this.expect(TokenType.BINARY_LITERAL);
+      node.value = parseInt(token.code.slice(2), 2);
+      return this.closeNode(node);
     }
   }
 
@@ -159,9 +202,9 @@ export class Parser {
   }
 
   private elementList(): IExpression[] {
-    const expressions = [this.singleExpression()];
+    const expressions = [this.assignmentExpression()];
     while (this.eat(TokenType.COMMA)) {
-      expressions.push(this.singleExpression());
+      expressions.push(this.assignmentExpression());
     }
 
     return expressions;
@@ -176,92 +219,53 @@ export class Parser {
       return this.closeNode(node);
     }
 
-    node.properties = [this.propertyAssignment()];
-    while (this.eat(TokenType.COMMA)) {
-      node.properties.push(this.propertyAssignment());
-    }
-
+    node.properties = this.propertyDefinitionList();
     this.expect(TokenType.RIGHT_CURLY_BRACES);
-    return this.closeNode(node);
-  }
-
-  private propertyAssignment(): IProperty {
-    const node = this.openNode<IProperty>("Property");
-    node.key = this.propertyName();
-    node.value = node.key;
-    node.kind = "init";
-
-    if (this.eat(TokenType.COLON)) {
-      node.value = this.singleExpression();
-      return this.closeNode(node);
-    }
 
     return this.closeNode(node);
   }
 
-  private propertyName(): IIdentifier | ILiteral {
-    if (this.currentToken.is(TokenType.IDENTIFIER)) {
-      return this.identifierName();
-    } else {
-      return this.literal();
-    }
-  }
+  private propertyDefinitionList(): IProperty[] {
+    const properties = [this.propertyDefinition()];
 
-  private arguments(): IExpression[] {
-    this.expect(TokenType.LEFT_PARENTHESIS);
-    if (this.eat(TokenType.RIGHT_PARENTHESIS)) {
-      return [];
-    }
-
-    const args = [this.singleExpression()];
     while (this.eat(TokenType.COMMA)) {
-      args.push(this.singleExpression());
+      properties.push(this.propertyDefinition());
     }
 
-    this.expect(TokenType.RIGHT_PARENTHESIS);
-
-    return args;
+    return properties;
   }
 
-  private primaryExpression(): IExpression {
-    const LITERAL_TOKENS = [
-      TokenType.BINARY_LITERAL,
-      TokenType.BOOLEAN_LITERAL,
+  private propertyDefinition(): IProperty {
+    const LITERAL_PROPERTY_NAME = [
+      TokenType.STRING_LITERAL,
       TokenType.DECIMAL_LITERAL,
-      TokenType.NULL_LITERAL,
       TokenType.HEXADECIMAL_LITERAL,
       TokenType.OCTAL_LITERAL,
-      TokenType.STRING_LITERAL,
+      TokenType.BINARY_LITERAL,
     ];
 
-    if (this.eat(TokenType.THIS)) {
-      const node = this.openNode<IThisExpression>("ThisExpression");
-      return this.closeNode(node);
-    } else if (this.currentToken.is(TokenType.IDENTIFIER)) {
-      return this.identifierName();
-    } else if (this.currentToken.isSomeOf(LITERAL_TOKENS)) {
-      return this.literal();
-    } else if (this.currentToken.is(TokenType.LEFT_SQUARE_BRACKETS)) {
-      return this.arrayLiteral();
-    } else if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
-      return this.objectLiteral();
-    } else if (this.currentToken.is(TokenType.FUNCTION)) {
-      // TODO: implement
-      // return this.functionExpression();
-    } else if (this.currentToken.is(TokenType.CLASS)) {
-      // TODO: implement
-      // return this.classExpression();
-    } else if (this.eat(TokenType.LEFT_PARENTHESIS)) {
-      const expression = this.expression();
-      this.expect(TokenType.RIGHT_PARENTHESIS);
+    const node = this.openNode<IProperty>("Property");
 
-      return expression;
+    node.kind = "init";
+    if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      const identifierReference = this.identifier();
+      node.key = identifierReference;
+      node.value = identifierReference;
+
+      if (this.eat(TokenType.COLON)) {
+        node.value = this.assignmentExpression();
+        return this.closeNode(node);
+      }
+    } else if (this.currentToken.isSomeOf(LITERAL_PROPERTY_NAME)) {
+      node.key = this.literal();
+      this.expect(TokenType.COLON);
+      node.value = this.assignmentExpression();
+      return this.closeNode(node);
+    } else {
+      return this.unexpected();
     }
 
-    throw new Error(
-      `Unexpected ${this.currentToken.code} ` +
-      `at ${this.scanner.location.line}:${this.scanner.location.column}`,
-    );
+    return node;
   }
 
   private memberExpression(): IMemberExpression | IExpression {
@@ -269,22 +273,27 @@ export class Parser {
     const object = this.primaryExpression();
 
     node.object = object;
+    node.computed = false;
     if (this.eat(TokenType.LEFT_SQUARE_BRACKETS)) {
-      node.property = this.singleExpression();
-      node.computed = false;
+      node.property = this.expression();
       this.expect(TokenType.RIGHT_SQUARE_BRACKETS);
-      node.object = this.memberExpression();
-
       return this.closeNode(node);
     } else if (this.eat(TokenType.DOT)) {
-      node.property = this.identifierName();
-      node.computed = false;
-      node.object = this.memberExpression();
-
+      node.property = this.identifier();
       return this.closeNode(node);
     }
 
     return object;
+  }
+
+  private newExpression(): INewExpression | IExpression {
+    this.expect(TokenType.NEW);
+
+    const node = this.openNode<INewExpression>("NewExpression");
+    node.callee = this.memberExpression();
+    node.arguments = this.arguments();
+
+    return this.closeNode(node);
   }
 
   private callExpression(): ICallExpression | IExpression {
@@ -294,47 +303,79 @@ export class Parser {
     if (this.currentToken.is(TokenType.LEFT_PARENTHESIS)) {
       node.callee = callee;
       node.arguments = this.arguments();
-
       return this.closeNode(node);
     }
 
     return callee;
   }
 
-  private newExpression(): INewExpression | IExpression {
-    if (this.eat(TokenType.NEW)) {
-      const node = this.openNode<INewExpression>("NewExpression");
-      node.callee = this.newExpression();
-      node.arguments = this.arguments();
-      return this.closeNode(node);
+  private arguments(): IExpression[] {
+    this.expect(TokenType.LEFT_PARENTHESIS);
+    if (this.eat(TokenType.RIGHT_PARENTHESIS)) {
+      return [];
+    }
+
+    const args = this.argumentList();
+    this.expect(TokenType.RIGHT_PARENTHESIS);
+
+    return args;
+  }
+
+  private argumentList(): IExpression[] {
+    const args = [this.assignmentExpression()];
+
+    while (this.eat(TokenType.COMMA)) {
+      args.push(this.assignmentExpression());
+    }
+
+    return args;
+  }
+
+  private leftHandSideExpression(): IExpression {
+    if (this.currentToken.is(TokenType.NEW)) {
+      return this.newExpression();
     } else {
       return this.callExpression();
     }
   }
 
-  private postfixExpression(): IUpdateExpression | IExpression {
+  private updateExpression(): IUpdateExpression | IExpression {
     const node = this.openNode<IUpdateExpression>("UpdateExpression");
-    const argument = this.newExpression();
 
-    node.argument = argument;
-    if (this.eat(TokenType.PLUS_PLUS)) {
-      node.operator = UpdateOperator.PLUS_PLUS;
-      node.prefix = false;
-      return this.closeNode(node);
-    } else if (this.eat(TokenType.MINUS_MINUS)) {
+    if (this.eat(TokenType.MINUS_MINUS)) {
+      node.argument = this.unaryExpression();
       node.operator = UpdateOperator.MINUS_MINUS;
-      node.prefix = false;
+      node.prefix = true;
       return this.closeNode(node);
-    }
+    } else if (this.eat(TokenType.PLUS_PLUS)) {
+      node.argument = this.unaryExpression();
+      node.operator = UpdateOperator.PLUS_PLUS;
+      node.prefix = true;
+      return this.closeNode(node);
+    } else {
+      const argument = this.leftHandSideExpression();
 
-    return argument;
+      if (this.eat(TokenType.MINUS_MINUS)) {
+        node.argument = argument;
+        node.operator = UpdateOperator.MINUS_MINUS;
+        node.prefix = false;
+        return this.closeNode(node);
+      } else if (this.eat(TokenType.PLUS_PLUS)) {
+        node.argument = argument;
+        node.operator = UpdateOperator.PLUS_PLUS;
+        node.prefix = false;
+        return this.closeNode(node);
+      } else {
+        return argument;
+      }
+    }
   }
 
-  private unaryExpression(): IUnaryExpression | IUpdateExpression | IExpression {
+  private unaryExpression(): IUnaryExpression | IExpression {
     if (this.eat(TokenType.LOGICAL_NOT)) {
       const node = this.openNode<IUnaryExpression>("UnaryExpression");
       node.argument = this.unaryExpression();
-      node.operator = UnaryOperator.NOT;
+      node.operator = UnaryOperator.LOGICAL_NOT;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.BITWISE_NOT)) {
@@ -353,18 +394,6 @@ export class Parser {
       const node = this.openNode<IUnaryExpression>("UnaryExpression");
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.PLUS;
-      node.prefix = true;
-      return this.closeNode(node);
-    } else if (this.eat(TokenType.MINUS_MINUS)) {
-      const node = this.openNode<IUpdateExpression>("UpdateExpression");
-      node.argument = this.unaryExpression();
-      node.operator = UpdateOperator.MINUS_MINUS;
-      node.prefix = true;
-      return this.closeNode(node);
-    } else if (this.eat(TokenType.PLUS_PLUS)) {
-      const node = this.openNode<IUpdateExpression>("UpdateExpression");
-      node.argument = this.unaryExpression();
-      node.operator = UpdateOperator.PLUS_PLUS;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.TYPE_OF)) {
@@ -386,13 +415,27 @@ export class Parser {
       node.prefix = true;
       return this.closeNode(node);
     } else {
-      return this.postfixExpression();
+      return this.updateExpression();
     }
+  }
+
+  private exponentiationExpression(): IBinaryExpression | IExpression {
+    const node = this.openNode<IBinaryExpression>("BinaryExpression");
+    const left = this.unaryExpression();
+
+    node.left = left;
+    if (this.eat(TokenType.EXPONENTIATION)) {
+      node.operator = BinaryOperator.EXPONENTIATION;
+      node.right = this.exponentiationExpression();
+      return this.closeNode(node);
+    }
+
+    return left;
   }
 
   private multiplicativeExpression(): IBinaryExpression | IExpression {
     const node = this.openNode<IBinaryExpression>("BinaryExpression");
-    const left = this.unaryExpression();
+    const left = this.exponentiationExpression();
 
     node.left = left;
     if (this.eat(TokenType.MULTIPLY)) {
@@ -416,13 +459,12 @@ export class Parser {
     const node = this.openNode<IBinaryExpression>("BinaryExpression");
     const left = this.multiplicativeExpression();
 
+    node.left = left;
     if (this.eat(TokenType.MINUS)) {
-      node.left = left;
       node.operator = BinaryOperator.MINUS;
       node.right = this.additiveExpression();
       return this.closeNode(node);
     } else if (this.eat(TokenType.PLUS)) {
-      node.left = left;
       node.operator = BinaryOperator.PLUS;
       node.right = this.additiveExpression();
       return this.closeNode(node);
@@ -474,33 +516,13 @@ export class Parser {
       node.operator = BinaryOperator.GREATER_THAN_OR_EQUAL;
       node.right = this.relationalExpression();
       return this.closeNode(node);
-    }
-
-    return left;
-  }
-
-  private instanceofExpression(): IBinaryExpression | IExpression {
-    const node = this.openNode<IBinaryExpression>("BinaryExpression");
-    const left = this.relationalExpression();
-
-    node.left = left;
-    if (this.eat(TokenType.INSTANCE_OF)) {
+    } else if (this.eat(TokenType.INSTANCE_OF)) {
       node.operator = BinaryOperator.INSTANCE_OF;
-      node.right = this.instanceofExpression();
+      node.right = this.relationalExpression();
       return this.closeNode(node);
-    }
-
-    return left;
-  }
-
-  private inExpression(): IBinaryExpression | IExpression {
-    const node = this.openNode<IBinaryExpression>("BinaryExpression");
-    const left = this.instanceofExpression();
-
-    node.left = left;
-    if (this.eat(TokenType.IN)) {
+    } else if (this.eat(TokenType.IN)) {
       node.operator = BinaryOperator.IN;
-      node.right = this.inExpression();
+      node.right = this.relationalExpression();
       return this.closeNode(node);
     }
 
@@ -509,7 +531,7 @@ export class Parser {
 
   private equalityExpression(): IBinaryExpression | IExpression {
     const node = this.openNode<IBinaryExpression>("BinaryExpression");
-    const left = this.inExpression();
+    const left = this.relationalExpression();
 
     node.left = left;
     if (this.eat(TokenType.EQUAL)) {
@@ -539,7 +561,7 @@ export class Parser {
 
     node.left = left;
     if (this.eat(TokenType.BITWISE_AND)) {
-      node.operator = BinaryOperator.BINARY_AND;
+      node.operator = BinaryOperator.BITWISE_AND;
       node.right = this.bitwiseAndExpression();
       return this.closeNode(node);
     }
@@ -553,7 +575,7 @@ export class Parser {
 
     node.left = left;
     if (this.eat(TokenType.BITWISE_XOR)) {
-      node.operator = BinaryOperator.BINARY_XOR;
+      node.operator = BinaryOperator.BITWISE_XOR;
       node.right = this.bitwiseXorExpression();
       return this.closeNode(node);
     }
@@ -567,7 +589,7 @@ export class Parser {
 
     node.left = left;
     if (this.eat(TokenType.BITWISE_OR)) {
-      node.operator = BinaryOperator.BINARY_OR;
+      node.operator = BinaryOperator.BITWISE_OR;
       node.right = this.bitwiseOrExpression();
       return this.closeNode(node);
     }
@@ -609,10 +631,9 @@ export class Parser {
 
     node.test = test;
     if (this.eat(TokenType.QUESTION_MARK)) {
-      node.consequent = this.singleExpression();
+      node.consequent = this.assignmentExpression();
       this.expect(TokenType.COLON);
-      node.alternate = this.singleExpression();
-
+      node.alternate = this.assignmentExpression();
       return this.closeNode(node);
     }
 
@@ -649,15 +670,15 @@ export class Parser {
       node.right = this.assignmentExpression();
       return this.closeNode(node);
     } else if (this.eat(TokenType.BITWISE_SHIFT_TO_LEFT_ASSIGN)) {
-      node.operator = AssignmentOperator.BITWISE_SHIFT_LEFT_ASSIGN;
+      node.operator = AssignmentOperator.BITWISE_SHIFT_TO_LEFT_ASSIGN;
       node.right = this.assignmentExpression();
       return this.closeNode(node);
     } else if (this.eat(TokenType.BITWISE_SHIFT_TO_RIGHT_ASSIGN)) {
-      node.operator = AssignmentOperator.BITWISE_SHIFT_RIGHT_ASSIGN;
+      node.operator = AssignmentOperator.BITWISE_SHIFT_TO_RIGHT_ASSIGN;
       node.right = this.assignmentExpression();
       return this.closeNode(node);
     } else if (this.eat(TokenType.BITWISE_LOGICAL_SHIFT_TO_RIGHT_ASSIGN)) {
-      node.operator = AssignmentOperator.BITWISE_SHIFT_RIGHT_ZERO_ASSIGN;
+      node.operator = AssignmentOperator.BITWISE_LOGICAL_SHIFT_TO_RIGHT_ASSIGN;
       node.right = this.assignmentExpression();
       return this.closeNode(node);
     } else if (this.eat(TokenType.BITWISE_AND_ASSIGN)) {
@@ -672,21 +693,21 @@ export class Parser {
       node.operator = AssignmentOperator.BITWISE_OR_ASSIGN;
       node.right = this.assignmentExpression();
       return this.closeNode(node);
+    } else if (this.eat(TokenType.EXPONENTIATION_ASSIGN)) {
+      node.operator = AssignmentOperator.EXPONENTIATION_ASSIGN;
+      node.right = this.assignmentExpression();
+      return this.closeNode(node);
     }
 
     return left;
   }
 
-  private singleExpression(): IExpression {
-    return this.assignmentExpression();
-  }
-
-  private expression(): IExpression {
+  private expression(): ISequenceExpression | IExpression {
     const node = this.openNode<ISequenceExpression>("SequenceExpression");
-    node.expressions = [this.singleExpression()];
+    node.expressions = [this.assignmentExpression()];
 
     while (this.eat(TokenType.COMMA)) {
-      node.expressions.push(this.singleExpression());
+      node.expressions.push(this.assignmentExpression());
     }
 
     return node.expressions.length === 1 ? node.expressions[0] : this.closeNode(node);
