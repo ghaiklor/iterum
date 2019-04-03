@@ -27,6 +27,20 @@ import { IStatement } from "../ast/statements/Statement";
 import { Scanner } from "../scanner/Scanner";
 import { Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
+import { IObjectPattern } from "../ast/patterns/ObjectPattern";
+import { IArrayPattern } from "../ast/patterns/ArrayPattern";
+import { IEmptyStatement } from "../ast/statements/EmptyStatement";
+import { thisExpression } from "@babel/types";
+import { IIfStatement } from "../ast/statements/IfStatement";
+import { IVariableDeclarator } from "../ast/declarations/VariableDeclarator";
+import { IVariableDeclaration } from "../ast/declarations/VariableDeclaration";
+import { IDeclaration } from "../ast/declarations/Declaration";
+import { IBlockStatement } from "../ast/statements/BlockStatement";
+import { IDoWhileStatement } from "../ast/statements/DoWhileStatement";
+import { IForStatement } from "../ast/statements/ForStatement";
+import { IForInStatement } from "../ast/statements/ForInStatement";
+import { IForOfStatement } from "../ast/statements/ForOfStatement";
+import { ISwitchStatement } from "../ast/statements/SwitchStatement";
 
 export class Parser {
   public static parse(source: string): IProgram {
@@ -117,6 +131,18 @@ export class Parser {
     return this.closeNode(node);
   }
 
+  private identifierReference(): IIdentifier {
+    return this.identifier();
+  }
+
+  private bindingIdentifier(): IIdentifier {
+    return this.identifier();
+  }
+
+  private labelIdentifier(): IIdentifier {
+    return this.identifier();
+  }
+
   private primaryExpression(): IExpression {
     const LITERAL_TOKENS = [
       TokenType.BINARY_LITERAL,
@@ -132,7 +158,7 @@ export class Parser {
       const node = this.openNode<IThisExpression>("ThisExpression");
       return this.closeNode(node);
     } else if (this.currentToken.is(TokenType.IDENTIFIER)) {
-      return this.identifier();
+      return this.identifierReference();
     } else if (this.currentToken.isSomeOf(LITERAL_TOKENS)) {
       return this.literal();
     } else if (this.currentToken.is(TokenType.LEFT_SQUARE_BRACKETS)) {
@@ -248,7 +274,7 @@ export class Parser {
 
     node.kind = "init";
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
-      const identifierReference = this.identifier();
+      const identifierReference = this.identifierReference();
       node.key = identifierReference;
       node.value = identifierReference;
 
@@ -733,28 +759,275 @@ export class Parser {
   // ---------------------------- //
   // --- GRAMMAR (STATEMENTS) --- //
   // ---------------------------- //
-  private expressionStatement(): IExpressionStatement {
-    const node = this.openNode<IExpressionStatement>("ExpressionStatement");
-    node.expression = this.expression();
-    this.eat(TokenType.SEMICOLON);
+  private statement(): IStatement {
+    this.blockStatement();
+    this.variableStatement();
+    this.emptyStatement();
+    this.expressionStatement();
+    this.ifStatement();
+    this.breakableStatement();
+    this.continueStatement();
+    this.breakStatement();
+    this.returnStatement();
+    this.withStatement();
+    this.labelledStatement();
+    this.throwStatement();
+    this.tryStatement();
+    this.debuggerStatement();
+  }
+
+  private declaration(): IDeclaration {
+    if (this.currentToken.is(TokenType.FUNCTION)) {
+      return this.hoistableDeclaration();
+    } else if (this.currentToken.is(TokenType.CLASS)) {
+      return this.classDeclaration();
+    } else {
+      return this.lexicalDeclaration();
+    }
+  }
+
+  private hoistableDeclaration(): IDeclaration {
+    return this.functionDeclaration();
+  }
+
+  private breakableStatement(): IDoWhileStatement | IForStatement | IForInStatement | IForOfStatement {
+    const ITERATION_TOKENS = [
+      TokenType.DO,
+      TokenType.WHILE,
+      TokenType.FOR,
+    ];
+
+    if (this.currentToken.isSomeOf(ITERATION_TOKENS)) {
+      return this.iterationStatement();
+    } else {
+      return this.switchStatement();
+    }
+  }
+
+  private blockStatement(): IBlockStatement {
+    const node = this.openNode<IBlockStatement>("BlockStatement");
+    node.body = this.block();
 
     return this.closeNode(node);
   }
 
-  private statement(): IStatement {
-    const BLACKLIST_TOKENS = [
-      TokenType.LEFT_CURLY_BRACES,
+  private block(): Array<IStatement | IDeclaration> {
+    this.expect(TokenType.LEFT_CURLY_BRACES);
+    const statementList = this.statementList();
+    this.expect(TokenType.RIGHT_CURLY_BRACES);
+
+    return statementList;
+  }
+
+  private statementList(): Array<IStatement | IDeclaration> {
+    const items = [this.statementListItem()];
+
+    while (!this.currentToken.is(TokenType.EOF)) {
+      items.push(this.statementListItem());
+    }
+
+    return items;
+  }
+
+  private statementListItem(): IStatement | IDeclaration {
+    const DECLARATION_TOKENS = [
       TokenType.FUNCTION,
       TokenType.CLASS,
       TokenType.LET,
-      TokenType.LEFT_SQUARE_BRACKETS,
+      TokenType.CONST,
     ];
 
-    if (!this.currentToken.isSomeOf(BLACKLIST_TOKENS)) {
-      return this.expressionStatement();
+    if (this.currentToken.isSomeOf(DECLARATION_TOKENS)) {
+      return this.declaration();
+    } else {
+      return this.statement();
+    }
+  }
+
+  private lexicalDeclaration(): IVariableDeclaration {
+    const node = this.openNode<IVariableDeclaration>("VariableDeclaration");
+
+    if (this.eat(TokenType.LET)) {
+      node.declarations = this.bindingList();
+      node.kind = "let";
+      return this.closeNode(node);
+    } else {
+      this.expect(TokenType.CONST);
+      node.declarations = this.bindingList();
+      node.kind = "const";
+      return this.closeNode(node);
+    }
+  }
+
+  private bindingList(): IVariableDeclarator[] {
+    const bindings = [this.lexicalBinding()];
+
+    while (this.eat(TokenType.COMMA)) {
+      bindings.push(this.lexicalBinding());
     }
 
-    return this.expressionStatement();
+    return bindings;
+  }
+
+  private lexicalBinding(): IVariableDeclarator {
+    const node = this.openNode<IVariableDeclarator>("VariableDeclarator");
+
+    if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      node.id = this.bindingIdentifier();
+      if (this.eat(TokenType.ASSIGN)) {
+        node.init = this.assignmentExpression();
+      }
+
+      return this.closeNode(node);
+    } else {
+      node.id = this.bindingPattern();
+      this.expect(TokenType.ASSIGN);
+      node.init = this.assignmentExpression();
+
+      return this.closeNode(node);
+    }
+  }
+
+  private variableStatement(): IVariableDeclaration {
+    const node = this.openNode<IVariableDeclaration>("VariableDeclaration");
+    this.expect(TokenType.VAR);
+
+    node.kind = "var";
+    node.declarations = this.variableDeclarationList();
+
+    return this.closeNode(node);
+  }
+
+  private variableDeclarationList(): IVariableDeclarator[] {
+    const declarations = [this.variableDeclaration()];
+
+    while (this.eat(TokenType.COMMA)) {
+      declarations.push(this.variableDeclaration());
+    }
+
+    return declarations;
+  }
+
+  private variableDeclaration(): IVariableDeclarator {
+    const node = this.openNode<IVariableDeclarator>("VariableDeclarator");
+
+    if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      node.id = this.bindingIdentifier();
+      if (this.eat(TokenType.ASSIGN)) {
+        node.init = this.assignmentExpression();
+      }
+
+      return this.closeNode(node);
+    } else {
+      node.id = this.bindingPattern();
+      this.expect(TokenType.ASSIGN);
+      node.init = this.assignmentExpression();
+
+      return this.closeNode(node);
+    }
+  }
+
+  private bindingPattern(): IObjectPattern | IArrayPattern {
+    if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
+      return this.objectBindingPattern();
+    } else {
+      return this.arrayBindingPattern();
+    }
+  }
+
+  private objectBindingPattern(): IObjectPattern {
+    const node = this.openNode<IObjectPattern>("ObjectPattern");
+    node.properties = [];
+
+    this.expect(TokenType.LEFT_CURLY_BRACES);
+    if (this.eat(TokenType.RIGHT_CURLY_BRACES)) {
+      return this.closeNode(node);
+    }
+
+    node.properties = this.bindingPropertyList();
+    return this.closeNode(node);
+  }
+
+  private arrayBindingPattern(): IArrayPattern {
+    const node = this.openNode<IArrayPattern>("ArrayPattern");
+    node.elements = [];
+
+    this.expect(TokenType.LEFT_SQUARE_BRACKETS);
+    if (this.eat(TokenType.RIGHT_SQUARE_BRACKETS)) {
+      return this.closeNode(node);
+    }
+
+    node.elements = this.bindingElementList();
+    return this.closeNode(node);
+  }
+
+  private bindingPropertyList(): IProperty[] {
+    const properties = [this.bindingProperty()];
+
+    while (this.eat(TokenType.COMMA)) {
+      properties.push(this.bindingProperty());
+    }
+
+    return properties;
+  }
+
+  private bindingElementList(): IIdentifier[] {
+    const expressions = [this.bindingElement()];
+
+    while (this.eat(TokenType.COMMA)) {
+      expressions.push(this.bindingElement());
+    }
+
+    return expressions;
+  }
+
+  private bindingProperty(): IProperty {
+    const node = this.openNode<IProperty>("Property");
+    const identifier = this.bindingIdentifier();
+
+    node.key = identifier;
+    node.kind = "init";
+    node.value = identifier;
+    if (this.eat(TokenType.COLON)) {
+      node.value = this.bindingElement();
+      return this.closeNode(node);
+    }
+
+    return this.closeNode(node);
+  }
+
+  private bindingElement(): IIdentifier {
+    return this.bindingIdentifier();
+  }
+
+  private emptyStatement(): IEmptyStatement {
+    const node = this.openNode<IEmptyStatement>("EmptyStatement");
+    this.expect(TokenType.SEMICOLON);
+    return this.closeNode(node);
+  }
+
+  private expressionStatement(): IExpressionStatement {
+    const node = this.openNode<IExpressionStatement>("ExpressionStatement");
+    node.expression = this.expression();
+    this.expect(TokenType.SEMICOLON);
+
+    return this.closeNode(node);
+  }
+
+  private ifStatement(): IIfStatement {
+    const node = this.openNode<IIfStatement>("IfStatement");
+
+    this.expect(TokenType.IF);
+    this.expect(TokenType.LEFT_PARENTHESIS);
+    node.test = this.expression();
+    this.expect(TokenType.RIGHT_PARENTHESIS);
+    node.consequent = this.statement();
+
+    if (this.eat(TokenType.ELSE)) {
+      node.alternate = this.statement();
+    }
+
+    return this.closeNode(node);
   }
 
   private program(): IProgram {
