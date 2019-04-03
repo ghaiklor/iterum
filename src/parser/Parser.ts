@@ -274,12 +274,29 @@ export class Parser {
 
     node.object = object;
     node.computed = false;
-    if (this.eat(TokenType.LEFT_SQUARE_BRACKETS)) {
-      node.property = this.expression();
-      this.expect(TokenType.RIGHT_SQUARE_BRACKETS);
-      return this.closeNode(node);
-    } else if (this.eat(TokenType.DOT)) {
-      node.property = this.identifier();
+
+    if (this.currentToken.isSomeOf([TokenType.LEFT_SQUARE_BRACKETS, TokenType.DOT])) {
+      if (this.eat(TokenType.LEFT_SQUARE_BRACKETS)) {
+        node.property = this.expression();
+        this.expect(TokenType.RIGHT_SQUARE_BRACKETS);
+      } else {
+        this.expect(TokenType.DOT);
+        node.property = this.identifier();
+      }
+
+      while (this.currentToken.isSomeOf([TokenType.LEFT_SQUARE_BRACKETS, TokenType.DOT])) {
+        if (this.eat(TokenType.LEFT_SQUARE_BRACKETS)) {
+          node.object = { ...node };
+          node.property = this.expression();
+          this.expect(TokenType.RIGHT_SQUARE_BRACKETS);
+        } else {
+          this.expect(TokenType.DOT);
+
+          node.object = { ...node };
+          node.property = this.identifier();
+        }
+      }
+
       return this.closeNode(node);
     }
 
