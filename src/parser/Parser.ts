@@ -845,9 +845,15 @@ export class Parser {
   }
 
   private statementList(): Array<IStatement | IDeclaration> {
+    const END_OF_STATEMENT_TOKENS = [
+      TokenType.RIGHT_CURLY_BRACES,
+      TokenType.CASE,
+      TokenType.DEFAULT,
+    ];
+
     const items = [this.statementListItem()];
 
-    while (!this.currentToken.is(TokenType.RIGHT_CURLY_BRACES)) {
+    while (!this.currentToken.isSomeOf(END_OF_STATEMENT_TOKENS)) {
       items.push(this.statementListItem());
     }
 
@@ -1156,6 +1162,7 @@ export class Parser {
     node.discriminant = this.expression();
     this.expect(TokenType.RIGHT_PARENTHESIS);
     node.cases = this.caseBlock();
+    node.lexical = true;
 
     return this.closeNode(node);
   }
