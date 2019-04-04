@@ -6,7 +6,7 @@ import { Parser } from "../../src/parser/Parser";
 
 describe("Iterum::Parser::UpdateExpression", () => {
   it("Should properly parse increment expression", () => {
-    const source = `a++`;
+    const source = `a++;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -27,7 +27,7 @@ describe("Iterum::Parser::UpdateExpression", () => {
   });
 
   it("Should properly parse decrement expression", () => {
-    const source = `a--`;
+    const source = `a--;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -48,7 +48,7 @@ describe("Iterum::Parser::UpdateExpression", () => {
   });
 
   it("Should properly parse decrement expression", () => {
-    const source = `--a`;
+    const source = `--a;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -69,7 +69,7 @@ describe("Iterum::Parser::UpdateExpression", () => {
   });
 
   it("Should properly parse increment expression", () => {
-    const source = `++a`;
+    const source = `++a;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({

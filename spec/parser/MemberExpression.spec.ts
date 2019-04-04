@@ -7,7 +7,7 @@ import { Parser } from "../../src/parser/Parser";
 
 describe("Iterum::Parser::MemberExpression", () => {
   it("Should properly parse member expression with dot notation", () => {
-    const source = `foo.bar`;
+    const source = `foo.bar;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -28,7 +28,7 @@ describe("Iterum::Parser::MemberExpression", () => {
   });
 
   it("Should properly parse member expression with square brackets", () => {
-    const source = `foo["bar"]`;
+    const source = `foo["bar"];`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -49,7 +49,7 @@ describe("Iterum::Parser::MemberExpression", () => {
   });
 
   it("Should properly parse member expression with several square brackets", () => {
-    const source = `foo["bar"]["baz"]`;
+    const source = `foo["bar"]["baz"];`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -76,7 +76,7 @@ describe("Iterum::Parser::MemberExpression", () => {
   });
 
   it("Should properly parse member expression with several dots", () => {
-    const source = `foo.bar.baz`;
+    const source = `foo.bar.baz;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -103,7 +103,7 @@ describe("Iterum::Parser::MemberExpression", () => {
   });
 
   it("Should properly parse member expression with different combinations of accessors", () => {
-    const source = `foo["bar"].baz.baa[1]`;
+    const source = `foo["bar"].baz.baa[1];`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -142,7 +142,7 @@ describe("Iterum::Parser::MemberExpression", () => {
   });
 
   it("Should properly parse member expression with different combinations of accessors", () => {
-    const source = `foo.bar.baz.baa[1]`;
+    const source = `foo.bar.baz.baa[1];`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({

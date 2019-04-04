@@ -7,7 +7,7 @@ import { Parser } from "../../src/parser/Parser";
 
 describe("Iterum::Parser::CallExpression", () => {
   it("Should properly parse call expression without arguments", () => {
-    const source = `a()`;
+    const source = `a();`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -27,7 +27,7 @@ describe("Iterum::Parser::CallExpression", () => {
   });
 
   it("Should properly parse call expression with arguments", () => {
-    const source = `a(b, 5)`;
+    const source = `a(b, 5);`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({

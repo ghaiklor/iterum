@@ -6,7 +6,7 @@ import { Parser } from "../../src/parser/Parser";
 
 describe("Iterum::Parser::ArrayExpression", () => {
   it("Should properly parse array literals with multiply elements", () => {
-    const source = `[null, true, false]`;
+    const source = `[null, true, false];`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -29,7 +29,7 @@ describe("Iterum::Parser::ArrayExpression", () => {
   });
 
   it("Should properly parse array literals with no elements", () => {
-    const source = `[]`;
+    const source = `[];`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({

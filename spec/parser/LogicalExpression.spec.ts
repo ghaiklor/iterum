@@ -6,7 +6,7 @@ import { Parser } from "../../src/parser/Parser";
 
 describe("Iterum::Parser::LogicalExpression", () => {
   it("Should properly parse logical OR expression", () => {
-    const source = `a || b`;
+    const source = `a || b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -27,7 +27,7 @@ describe("Iterum::Parser::LogicalExpression", () => {
   });
 
   it("Should properly parse logical AND expression", () => {
-    const source = `a && b`;
+    const source = `a && b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({

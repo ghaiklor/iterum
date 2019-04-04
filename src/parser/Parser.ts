@@ -1,3 +1,10 @@
+import { ICatchClause } from "../ast/clauses/CatchClause";
+import { ISwitchCase } from "../ast/clauses/SwitchCase";
+import { IClassDeclaration } from "../ast/declarations/ClassDeclaration";
+import { IDeclaration } from "../ast/declarations/Declaration";
+import { IFunctionDeclaration } from "../ast/declarations/FunctionDeclaration";
+import { IVariableDeclaration } from "../ast/declarations/VariableDeclaration";
+import { IVariableDeclarator } from "../ast/declarations/VariableDeclarator";
 import { IArrayExpression } from "../ast/expressions/ArrayExpression";
 import { IAssignmentExpression } from "../ast/expressions/AssignmentExpression";
 import { IBinaryExpression } from "../ast/expressions/BinaryExpression";
@@ -21,26 +28,29 @@ import { IProperty } from "../ast/miscellaneous/Property";
 import { UnaryOperator } from "../ast/miscellaneous/UnaryOperator";
 import { UpdateOperator } from "../ast/miscellaneous/UpdateOperator";
 import { INode } from "../ast/node/Node";
+import { IArrayPattern } from "../ast/patterns/ArrayPattern";
+import { IObjectPattern } from "../ast/patterns/ObjectPattern";
 import { IProgram } from "../ast/programs/Program";
+import { IBlockStatement } from "../ast/statements/BlockStatement";
+import { IBreakStatement } from "../ast/statements/BreakStatement";
+import { IContinueStatement } from "../ast/statements/ContinueStatement";
+import { IDebuggerStatement } from "../ast/statements/DebuggerStatement";
+import { IDoWhileStatement } from "../ast/statements/DoWhileStatement";
+import { IEmptyStatement } from "../ast/statements/EmptyStatement";
 import { IExpressionStatement } from "../ast/statements/ExpressionStatement";
+import { IForInStatement } from "../ast/statements/ForInStatement";
+import { IForOfStatement } from "../ast/statements/ForOfStatement";
+import { IForStatement } from "../ast/statements/ForStatement";
+import { IIfStatement } from "../ast/statements/IfStatement";
+import { IReturnStatement } from "../ast/statements/ReturnStatement";
 import { IStatement } from "../ast/statements/Statement";
+import { ISwitchStatement } from "../ast/statements/SwitchStatement";
+import { IThrowStatement } from "../ast/statements/ThrowStatement";
+import { ITryStatement } from "../ast/statements/TryStatement";
+import { IWithStatement } from "../ast/statements/WithStatement";
 import { Scanner } from "../scanner/Scanner";
 import { Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
-import { IObjectPattern } from "../ast/patterns/ObjectPattern";
-import { IArrayPattern } from "../ast/patterns/ArrayPattern";
-import { IEmptyStatement } from "../ast/statements/EmptyStatement";
-import { thisExpression } from "@babel/types";
-import { IIfStatement } from "../ast/statements/IfStatement";
-import { IVariableDeclarator } from "../ast/declarations/VariableDeclarator";
-import { IVariableDeclaration } from "../ast/declarations/VariableDeclaration";
-import { IDeclaration } from "../ast/declarations/Declaration";
-import { IBlockStatement } from "../ast/statements/BlockStatement";
-import { IDoWhileStatement } from "../ast/statements/DoWhileStatement";
-import { IForStatement } from "../ast/statements/ForStatement";
-import { IForInStatement } from "../ast/statements/ForInStatement";
-import { IForOfStatement } from "../ast/statements/ForOfStatement";
-import { ISwitchStatement } from "../ast/statements/SwitchStatement";
 
 export class Parser {
   public static parse(source: string): IProgram {
@@ -760,20 +770,33 @@ export class Parser {
   // --- GRAMMAR (STATEMENTS) --- //
   // ---------------------------- //
   private statement(): IStatement {
-    this.blockStatement();
-    this.variableStatement();
-    this.emptyStatement();
-    this.expressionStatement();
-    this.ifStatement();
-    this.breakableStatement();
-    this.continueStatement();
-    this.breakStatement();
-    this.returnStatement();
-    this.withStatement();
-    this.labelledStatement();
-    this.throwStatement();
-    this.tryStatement();
-    this.debuggerStatement();
+    if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
+      return this.blockStatement();
+    } else if (this.currentToken.is(TokenType.VAR)) {
+      return this.variableStatement();
+    } else if (this.currentToken.is(TokenType.SEMICOLON)) {
+      return this.emptyStatement();
+    } else if (this.currentToken.is(TokenType.IF)) {
+      return this.ifStatement();
+    } else if (this.currentToken.is(TokenType.CONTINUE)) {
+      return this.continueStatement();
+    } else if (this.currentToken.is(TokenType.DEBUGGER)) {
+      return this.debuggerStatement();
+    } else if (this.currentToken.is(TokenType.TRY)) {
+      return this.tryStatement();
+    } else if (this.currentToken.is(TokenType.THROW)) {
+      return this.throwStatement();
+    } else if (this.currentToken.is(TokenType.WITH)) {
+      return this.withStatement();
+    } else if (this.currentToken.is(TokenType.RETURN)) {
+      return this.returnStatement();
+    } else if (this.currentToken.is(TokenType.BREAK)) {
+      return this.breakStatement();
+    } else if (this.currentToken.isSomeOf([TokenType.DO, TokenType.WHILE, TokenType.FOR, TokenType.SWITCH])) {
+      return this.breakableStatement();
+    } else {
+      return this.expressionStatement();
+    }
   }
 
   private declaration(): IDeclaration {
@@ -790,7 +813,9 @@ export class Parser {
     return this.functionDeclaration();
   }
 
-  private breakableStatement(): IDoWhileStatement | IForStatement | IForInStatement | IForOfStatement {
+  // FIXME: make a composite type perhaps
+  // tslint:disable-next-line: max-line-length
+  private breakableStatement(): IDoWhileStatement | IForStatement | IForInStatement | IForOfStatement | ISwitchStatement {
     const ITERATION_TOKENS = [
       TokenType.DO,
       TokenType.WHILE,
@@ -1027,6 +1052,219 @@ export class Parser {
       node.alternate = this.statement();
     }
 
+    return this.closeNode(node);
+  }
+
+  private iterationStatement(): IDoWhileStatement | IForStatement | IForInStatement | IForOfStatement {
+    if (this.eat(TokenType.DO)) {
+      const node = this.openNode<IDoWhileStatement>("DoWhileStatement");
+      node.body = this.statement();
+      this.expect(TokenType.WHILE);
+      this.expect(TokenType.LEFT_PARENTHESIS);
+      node.test = this.expression();
+      this.expect(TokenType.RIGHT_PARENTHESIS);
+      this.expect(TokenType.SEMICOLON);
+
+      return this.closeNode(node);
+    } else if (this.eat(TokenType.WHILE)) {
+      const node = this.openNode<IDoWhileStatement>("DoWhileStatement");
+
+      this.expect(TokenType.LEFT_PARENTHESIS);
+      node.test = this.expression();
+      this.expect(TokenType.RIGHT_PARENTHESIS);
+      node.body = this.statement();
+
+      return this.closeNode(node);
+    } else {
+      const node = this.openNode<IForStatement>("ForStatement");
+
+      this.expect(TokenType.FOR);
+      this.expect(TokenType.LEFT_PARENTHESIS);
+
+      if (this.eat(TokenType.VAR)) {
+        node.init = this.variableStatement();
+      } else if (this.currentToken.isSomeOf([TokenType.LET, TokenType.CONST])) {
+        node.init = this.lexicalDeclaration();
+      } else {
+        node.init = this.expression();
+      }
+
+      this.expect(TokenType.SEMICOLON);
+      node.test = this.expression();
+      this.expect(TokenType.SEMICOLON);
+      node.update = this.expression();
+      this.expect(TokenType.RIGHT_PARENTHESIS);
+      node.body = this.statement();
+
+      return this.closeNode(node);
+    }
+  }
+
+  private continueStatement(): IContinueStatement {
+    const node = this.openNode<IContinueStatement>("ContinueStatement");
+
+    this.expect(TokenType.CONTINUE);
+    if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      node.label = this.labelIdentifier();
+    }
+
+    this.expect(TokenType.SEMICOLON);
+    return this.closeNode(node);
+  }
+
+  private breakStatement(): IBreakStatement {
+    const node = this.openNode<IBreakStatement>("BreakStatement");
+
+    this.expect(TokenType.BREAK);
+    if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      node.label = this.labelIdentifier();
+    }
+
+    this.expect(TokenType.SEMICOLON);
+    return this.closeNode(node);
+  }
+
+  private returnStatement(): IReturnStatement {
+    const node = this.openNode<IReturnStatement>("ReturnStatement");
+
+    this.expect(TokenType.RETURN);
+    if (!this.currentToken.is(TokenType.SEMICOLON)) {
+      node.argument = this.expression();
+    }
+
+    this.expect(TokenType.SEMICOLON);
+    return this.closeNode(node);
+  }
+
+  private withStatement(): IWithStatement {
+    const node = this.openNode<IWithStatement>("WithStatement");
+
+    this.expect(TokenType.WITH);
+    this.expect(TokenType.LEFT_PARENTHESIS);
+    node.object = this.expression();
+    this.expect(TokenType.RIGHT_PARENTHESIS);
+    node.body = this.statement();
+
+    return this.closeNode(node);
+  }
+
+  private switchStatement(): ISwitchStatement {
+    const node = this.openNode<ISwitchStatement>("SwitchStatement");
+
+    this.expect(TokenType.SWITCH);
+    this.expect(TokenType.LEFT_PARENTHESIS);
+    node.discriminant = this.expression();
+    this.expect(TokenType.RIGHT_PARENTHESIS);
+    node.cases = this.caseBlock();
+
+    return this.closeNode(node);
+  }
+
+  private caseBlock(): ISwitchCase[] {
+    this.expect(TokenType.LEFT_CURLY_BRACES);
+    const clauses = this.caseClauses();
+    clauses.push(this.defaultClause());
+    this.expect(TokenType.RIGHT_CURLY_BRACES);
+
+    return clauses;
+  }
+
+  private caseClauses(): ISwitchCase[] {
+    const clauses = [this.caseClause()];
+
+    while (this.currentToken.is(TokenType.CASE)) {
+      clauses.push(this.caseClause());
+    }
+
+    return clauses;
+  }
+
+  private caseClause(): ISwitchCase {
+    const node = this.openNode<ISwitchCase>("SwitchCase");
+
+    this.expect(TokenType.CASE);
+    node.test = this.expression();
+    this.expect(TokenType.COLON);
+    node.consequent = this.statementList();
+
+    return this.closeNode(node);
+  }
+
+  private defaultClause(): ISwitchCase {
+    const node = this.openNode<ISwitchCase>("SwitchCase");
+
+    this.expect(TokenType.DEFAULT);
+    this.expect(TokenType.COLON);
+
+    node.consequent = this.statementList();
+    node.test = null;
+
+    return this.closeNode(node);
+  }
+
+  private throwStatement(): IThrowStatement {
+    const node = this.openNode<IThrowStatement>("ThrowStatement");
+
+    this.expect(TokenType.THROW);
+    node.argument = this.expression();
+    this.expect(TokenType.SEMICOLON);
+
+    return this.closeNode(node);
+  }
+
+  private tryStatement(): ITryStatement {
+    const node = this.openNode<ITryStatement>("TryStatement");
+
+    this.expect(TokenType.TRY);
+    node.block = this.blockStatement();
+
+    if (this.currentToken.is(TokenType.CATCH)) {
+      node.handler = this.catch();
+    }
+
+    if (this.currentToken.is(TokenType.FINALLY)) {
+      node.finalizer = this.finally();
+    }
+
+    return this.closeNode(node);
+  }
+
+  private catch(): ICatchClause {
+    const node = this.openNode<ICatchClause>("CatchClause");
+
+    this.expect(TokenType.CATCH);
+    this.expect(TokenType.LEFT_PARENTHESIS);
+    node.param = this.bindingIdentifier();
+    this.expect(TokenType.RIGHT_PARENTHESIS);
+    node.body = this.blockStatement();
+
+    return this.closeNode(node);
+  }
+
+  private finally(): IBlockStatement {
+    this.expect(TokenType.FINALLY);
+    return this.blockStatement();
+  }
+
+  private debuggerStatement(): IDebuggerStatement {
+    const node = this.openNode<IDebuggerStatement>("DebuggerStatement");
+    this.expect(TokenType.DEBUGGER);
+    this.expect(TokenType.SEMICOLON);
+    return this.closeNode(node);
+  }
+
+  // -------------------------------------- //
+  // --- GRAMMAR (FUNCTION AND CLASSES) --- //
+  // -------------------------------------- //
+  private functionDeclaration(): IFunctionDeclaration {
+    const node = this.openNode<IFunctionDeclaration>("FunctionDeclaration");
+    // TODO: implement
+    return this.closeNode(node);
+  }
+
+  private classDeclaration(): IClassDeclaration {
+    const node = this.openNode<IClassDeclaration>("ClassDeclaration");
+    // TODO: implement
     return this.closeNode(node);
   }
 

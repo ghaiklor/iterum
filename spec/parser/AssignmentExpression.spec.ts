@@ -7,7 +7,7 @@ import { Parser } from "../../src/parser/Parser";
 
 describe("Iterum::Parser::AssignmentExpression", () => {
   it("Should properly parse assign expression", () => {
-    const source = "a = 5";
+    const source = "a = 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -28,7 +28,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse multiply assign expression", () => {
-    const source = "a *= 5";
+    const source = "a *= 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -49,7 +49,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse divide assign expression", () => {
-    const source = "a /= 5";
+    const source = "a /= 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -70,7 +70,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse modulus assign expression", () => {
-    const source = "a %= 5";
+    const source = "a %= 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -91,7 +91,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse plus assign expression", () => {
-    const source = "a += 5";
+    const source = "a += 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -112,7 +112,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse minus assign expression", () => {
-    const source = "a -= 5";
+    const source = "a -= 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -133,7 +133,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse bitwise left shift assign expression", () => {
-    const source = "a <<= 5";
+    const source = "a <<= 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -154,7 +154,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse arithmetic bitwise right shift assign expression", () => {
-    const source = "a >>= 5";
+    const source = "a >>= 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -175,7 +175,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse logical bitwise right shift assign expression", () => {
-    const source = "a >>>= 5";
+    const source = "a >>>= 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -196,7 +196,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse bitwise and expression", () => {
-    const source = "a &= 5";
+    const source = "a &= 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -217,7 +217,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse bitwise xor expression", () => {
-    const source = "a ^= 5";
+    const source = "a ^= 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -238,7 +238,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse bitwise or expression", () => {
-    const source = "a |= 5";
+    const source = "a |= 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -259,7 +259,7 @@ describe("Iterum::Parser::AssignmentExpression", () => {
   });
 
   it("Should properly parse exponentiation expression", () => {
-    const source = "a **= 5";
+    const source = "a **= 5;";
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({

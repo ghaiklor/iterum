@@ -5,7 +5,7 @@ import { Parser } from "../../src/parser/Parser";
 
 describe("Iterum::Parser::ThisExpression", () => {
   it("Should properly parse this expression", () => {
-    const source = `this`;
+    const source = `this;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({

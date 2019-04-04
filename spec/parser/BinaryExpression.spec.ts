@@ -82,7 +82,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse binary expression with hexadecimal literals", () => {
-    const source = `0x10 + 0xF`;
+    const source = `0x10 + 0xF;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -103,7 +103,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse binary expression with octal literals", () => {
-    const source = `0o10 + 0o15`;
+    const source = `0o10 + 0o15;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -124,7 +124,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse binary expression with binary literals", () => {
-    const source = `0b10 + 0b100`;
+    const source = `0b10 + 0b100;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -145,7 +145,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse bitwise OR expression", () => {
-    const source = `a | b`;
+    const source = `a | b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -166,7 +166,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse bitwise XOR expression", () => {
-    const source = `a ^ b`;
+    const source = `a ^ b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -187,7 +187,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse bitwise AND expression", () => {
-    const source = `a & b`;
+    const source = `a & b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -208,7 +208,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse non strict equality expression", () => {
-    const source = `a == b`;
+    const source = `a == b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -229,7 +229,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse non strict equality expression", () => {
-    const source = `a != b`;
+    const source = `a != b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -250,7 +250,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse strict equality expression", () => {
-    const source = `a === b`;
+    const source = `a === b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -271,7 +271,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse strict equality expression", () => {
-    const source = `a !== b`;
+    const source = `a !== b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -292,7 +292,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse in expression", () => {
-    const source = `a in b`;
+    const source = `a in b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -313,7 +313,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse instanceof expression", () => {
-    const source = `a instanceof b`;
+    const source = `a instanceof b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -334,7 +334,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse < expression", () => {
-    const source = `a < b`;
+    const source = `a < b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -355,7 +355,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse <= expression", () => {
-    const source = `a <= b`;
+    const source = `a <= b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -376,7 +376,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse > expression", () => {
-    const source = `a > b`;
+    const source = `a > b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -397,7 +397,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse >= expression", () => {
-    const source = `a >= b`;
+    const source = `a >= b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -418,7 +418,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse logical bitwise right shift expression", () => {
-    const source = `a >>> b`;
+    const source = `a >>> b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -439,7 +439,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse arithmetic bitwise right shift expression", () => {
-    const source = `a >> b`;
+    const source = `a >> b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -460,7 +460,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse bitwise left shift expression", () => {
-    const source = `a << b`;
+    const source = `a << b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -481,7 +481,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse minus expression", () => {
-    const source = `a - b`;
+    const source = `a - b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -502,7 +502,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse add expression", () => {
-    const source = `a + b`;
+    const source = `a + b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -523,7 +523,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse multiply expression", () => {
-    const source = `a * b`;
+    const source = `a * b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -544,7 +544,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse divide expression", () => {
-    const source = `a / b`;
+    const source = `a / b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -565,7 +565,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse modulus expression", () => {
-    const source = `a % b`;
+    const source = `a % b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -586,7 +586,7 @@ describe("Iterum::Parser::BinaryExpression", () => {
   });
 
   it("Should properly parse exponentiation expression", () => {
-    const source = `a ** b`;
+    const source = `a ** b;`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({

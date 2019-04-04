@@ -8,7 +8,7 @@ import { Parser } from "../../src/parser/Parser";
 
 describe("Iterum::Parser::ObjectExpression", () => {
   it("Should properly parse object literals with multiply properties", () => {
-    const source = `({ foo: "bar", bar: 2 })`;
+    const source = `({ foo: "bar", bar: 2 });`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -41,7 +41,7 @@ describe("Iterum::Parser::ObjectExpression", () => {
   });
 
   it("Should properly parse object literals with no properties", () => {
-    const source = `({ })`;
+    const source = `({ });`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -60,7 +60,7 @@ describe("Iterum::Parser::ObjectExpression", () => {
   });
 
   it("Should properly parse object literals with destructuring properties", () => {
-    const source = `({ foo, bar })`;
+    const source = `({ foo, bar });`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -93,7 +93,7 @@ describe("Iterum::Parser::ObjectExpression", () => {
   });
 
   it("Should properly parse object literals with literal properties", () => {
-    const source = `({ 5: "foo" })`;
+    const source = `({ 5: "foo" });`;
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -119,7 +119,7 @@ describe("Iterum::Parser::ObjectExpression", () => {
   });
 
   it("Should properly throw an error when unexpected token at key", () => {
-    const source = `({ instanceof: 5 })`;
+    const source = `({ instanceof: 5 });`;
     expect(() => Parser.parse(source)).toThrowError(`Unexpected instanceof at 1:14`);
   });
 });
