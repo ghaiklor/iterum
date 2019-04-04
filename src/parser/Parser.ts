@@ -847,7 +847,7 @@ export class Parser {
   private statementList(): Array<IStatement | IDeclaration> {
     const items = [this.statementListItem()];
 
-    while (!this.currentToken.is(TokenType.EOF)) {
+    while (!this.currentToken.is(TokenType.RIGHT_CURLY_BRACES)) {
       items.push(this.statementListItem());
     }
 
@@ -1217,6 +1217,8 @@ export class Parser {
 
     this.expect(TokenType.TRY);
     node.block = this.blockStatement();
+    node.handler = null;
+    node.finalizer = null;
 
     if (this.currentToken.is(TokenType.CATCH)) {
       node.handler = this.catch();
@@ -1237,6 +1239,7 @@ export class Parser {
     node.param = this.bindingIdentifier();
     this.expect(TokenType.RIGHT_PARENTHESIS);
     node.body = this.blockStatement();
+    node.guard = null;
 
     return this.closeNode(node);
   }
