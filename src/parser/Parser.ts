@@ -1047,6 +1047,7 @@ export class Parser {
 
   private ifStatement(): IIfStatement {
     const node = this.openNode<IIfStatement>("IfStatement");
+    node.alternate = null;
 
     this.expect(TokenType.IF);
     this.expect(TokenType.LEFT_PARENTHESIS);
