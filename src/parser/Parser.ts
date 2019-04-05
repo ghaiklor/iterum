@@ -1120,6 +1120,7 @@ export class Parser {
 
   private breakStatement(): IBreakStatement {
     const node = this.openNode<IBreakStatement>("BreakStatement");
+    node.label = null;
 
     this.expect(TokenType.BREAK);
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
