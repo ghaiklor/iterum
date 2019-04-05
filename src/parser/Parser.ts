@@ -1108,6 +1108,7 @@ export class Parser {
 
   private continueStatement(): IContinueStatement {
     const node = this.openNode<IContinueStatement>("ContinueStatement");
+    node.label = null;
 
     this.expect(TokenType.CONTINUE);
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
