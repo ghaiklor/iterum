@@ -1,6 +1,10 @@
 import { Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
 import { Character } from "./Character";
+import { KEYWORDS } from "./Keywords";
+import { PUNCTUATION } from "./Punctuation";
+
+const CHARACTERS_LOOKAHEAD = 4;
 
 export class Scanner {
   public location: { line: number, column: number };
@@ -26,27 +30,20 @@ export class Scanner {
       return this.numericLiteral();
     } else if (this.char.isSomeOf(["'", '"'])) {
       return this.stringLiteral();
-    } else if (Scanner.PUNCTUATION[this.slice(4)]) {
-      const token = Scanner.PUNCTUATION[this.slice(4)];
-      this.advance(this.slice(4).length);
-      return token;
-    } else if (Scanner.PUNCTUATION[this.slice(3)]) {
-      const token = Scanner.PUNCTUATION[this.slice(3)];
-      this.advance(this.slice(3).length);
-      return token;
-    } else if (Scanner.PUNCTUATION[this.slice(2)]) {
-      const token = Scanner.PUNCTUATION[this.slice(2)];
-      this.advance(this.slice(2).length);
-      return token;
-    } else if (Scanner.PUNCTUATION[this.slice()]) {
-      const token = Scanner.PUNCTUATION[this.slice()];
-      this.advance();
-      return token;
     } else if (this.char.isEOF()) {
       return new Token(TokenType.EOF, "EOF");
-    }
+    } else {
+      for (let i = CHARACTERS_LOOKAHEAD; i > 0; i--) {
+        const lookahead = this.slice(i);
+        const token = PUNCTUATION.get(lookahead);
+        if (token) {
+          this.advance(lookahead.length);
+          return token;
+        }
+      }
 
-    throw new Error(`Unrecognized character ${this.char} at ${this.location.line}:${this.location.column}`);
+      throw new Error(`Unrecognized character ${this.char} at ${this.location.line}:${this.location.column}`);
+    }
   }
 
   /**
@@ -239,117 +236,6 @@ export class Scanner {
       this.advance();
     }
 
-    return Scanner.KEYWORDS[buffer] || new Token(TokenType.IDENTIFIER, buffer);
-  }
-
-  static get PUNCTUATION(): Record<string, Token> {
-    return {
-      "!": new Token(TokenType.LOGICAL_NOT, "!"),
-      "!=": new Token(TokenType.NOT_EQUAL, "!="),
-      "!==": new Token(TokenType.NOT_STRICT_EQUAL, "!=="),
-      "%": new Token(TokenType.MODULUS, "%"),
-      "%=": new Token(TokenType.MODULUS_ASSIGN, "%="),
-      "&": new Token(TokenType.BITWISE_AND, "&"),
-      "&&": new Token(TokenType.LOGICAL_AND, "&&"),
-      "&=": new Token(TokenType.BITWISE_AND_ASSIGN, "&="),
-      "(": new Token(TokenType.LEFT_PARENTHESIS, "("),
-      ")": new Token(TokenType.RIGHT_PARENTHESIS, ")"),
-      "*": new Token(TokenType.MULTIPLY, "*"),
-      "**": new Token(TokenType.EXPONENTIATION, "**"),
-      "**=": new Token(TokenType.EXPONENTIATION_ASSIGN, "**="),
-      "*=": new Token(TokenType.MULTIPLY_ASSIGN, "*="),
-      "+": new Token(TokenType.PLUS, "+"),
-      "++": new Token(TokenType.PLUS_PLUS, "++"),
-      "+=": new Token(TokenType.PLUS_ASSIGN, "+="),
-      ",": new Token(TokenType.COMMA, ","),
-      "-": new Token(TokenType.MINUS, "-"),
-      "--": new Token(TokenType.MINUS_MINUS, "--"),
-      "-=": new Token(TokenType.MINUS_ASSIGN, "-="),
-      ".": new Token(TokenType.DOT, "."),
-      "...": new Token(TokenType.ELLIPSIS, "..."),
-      "/": new Token(TokenType.DIVIDE, "/"),
-      "/=": new Token(TokenType.DIVIDE_ASSIGN, "/="),
-      ":": new Token(TokenType.COLON, ":"),
-      ";": new Token(TokenType.SEMICOLON, ";"),
-      "<": new Token(TokenType.LESS_THAN, "<"),
-      "<<": new Token(TokenType.BITWISE_SHIFT_TO_LEFT, "<<"),
-      "<<=": new Token(TokenType.BITWISE_SHIFT_TO_LEFT_ASSIGN, "<<="),
-      "<=": new Token(TokenType.LESS_THAN_OR_EQUAL, "<="),
-      "=": new Token(TokenType.ASSIGN, "="),
-      "==": new Token(TokenType.EQUAL, "=="),
-      "===": new Token(TokenType.STRICT_EQUAL, "==="),
-      "=>": new Token(TokenType.ARROW, "=>"),
-      ">": new Token(TokenType.GREATER_THAN, ">"),
-      ">=": new Token(TokenType.GREATER_THAN_OR_EQUAL, ">="),
-      ">>": new Token(TokenType.BITWISE_SHIFT_TO_RIGHT, ">>"),
-      ">>=": new Token(TokenType.BITWISE_SHIFT_TO_RIGHT_ASSIGN, ">>="),
-      ">>>": new Token(TokenType.BITWISE_LOGICAL_SHIFT_TO_RIGHT, ">>>"),
-      ">>>=": new Token(TokenType.BITWISE_LOGICAL_SHIFT_TO_RIGHT_ASSIGN, ">>>="),
-      "?": new Token(TokenType.QUESTION_MARK, "?"),
-      "[": new Token(TokenType.LEFT_SQUARE_BRACKETS, "["),
-      "]": new Token(TokenType.RIGHT_SQUARE_BRACKETS, "]"),
-      "^": new Token(TokenType.BITWISE_XOR, "^"),
-      "^=": new Token(TokenType.BITWISE_XOR_ASSIGN, "^="),
-      "{": new Token(TokenType.LEFT_CURLY_BRACES, "{"),
-      "|": new Token(TokenType.BITWISE_OR, "|"),
-      "|=": new Token(TokenType.BITWISE_OR_ASSIGN, "|="),
-      "||": new Token(TokenType.LOGICAL_OR, "||"),
-      "}": new Token(TokenType.RIGHT_CURLY_BRACES, "}"),
-      "~": new Token(TokenType.BITWISE_NOT, "~"),
-    };
-  }
-
-  static get KEYWORDS(): Record<string, Token> {
-    return {
-      async: new Token(TokenType.ASYNC, "async"),
-      await: new Token(TokenType.AWAIT, "await"),
-      break: new Token(TokenType.BREAK, "break"),
-      case: new Token(TokenType.CASE, "case"),
-      catch: new Token(TokenType.CATCH, "catch"),
-      class: new Token(TokenType.CLASS, "class"),
-      const: new Token(TokenType.CONST, "const"),
-      continue: new Token(TokenType.CONTINUE, "continue"),
-      debugger: new Token(TokenType.DEBUGGER, "debugger"),
-      default: new Token(TokenType.DEFAULT, "default"),
-      delete: new Token(TokenType.DELETE, "delete"),
-      do: new Token(TokenType.DO, "do"),
-      else: new Token(TokenType.ELSE, "else"),
-      enum: new Token(TokenType.ENUM, "enum"),
-      export: new Token(TokenType.EXPORT, "export"),
-      extends: new Token(TokenType.EXTENDS, "extends"),
-      false: new Token(TokenType.BOOLEAN_LITERAL, "false"),
-      finally: new Token(TokenType.FINALLY, "finally"),
-      for: new Token(TokenType.FOR, "for"),
-      function: new Token(TokenType.FUNCTION, "function"),
-      get: new Token(TokenType.GET, "get"),
-      if: new Token(TokenType.IF, "if"),
-      implements: new Token(TokenType.IMPLEMENTS, "implements"),
-      import: new Token(TokenType.IMPORT, "import"),
-      in: new Token(TokenType.IN, "in"),
-      instanceof: new Token(TokenType.INSTANCE_OF, "instanceof"),
-      interface: new Token(TokenType.INTERFACE, "interface"),
-      let: new Token(TokenType.LET, "let"),
-      new: new Token(TokenType.NEW, "new"),
-      null: new Token(TokenType.NULL_LITERAL, "null"),
-      package: new Token(TokenType.PACKAGE, "package"),
-      private: new Token(TokenType.PRIVATE, "private"),
-      protected: new Token(TokenType.PROTECTED, "protected"),
-      public: new Token(TokenType.PUBLIC, "public"),
-      return: new Token(TokenType.RETURN, "return"),
-      set: new Token(TokenType.SET, "set"),
-      static: new Token(TokenType.STATIC, "static"),
-      super: new Token(TokenType.SUPER, "super"),
-      switch: new Token(TokenType.SWITCH, "switch"),
-      this: new Token(TokenType.THIS, "this"),
-      throw: new Token(TokenType.THROW, "throw"),
-      true: new Token(TokenType.BOOLEAN_LITERAL, "true"),
-      try: new Token(TokenType.TRY, "try"),
-      typeof: new Token(TokenType.TYPE_OF, "typeof"),
-      var: new Token(TokenType.VAR, "var"),
-      void: new Token(TokenType.VOID, "void"),
-      while: new Token(TokenType.WHILE, "while"),
-      with: new Token(TokenType.WITH, "with"),
-      yield: new Token(TokenType.YIELD, "yield"),
-    };
+    return KEYWORDS.get(buffer) || new Token(TokenType.IDENTIFIER, buffer);
   }
 }
