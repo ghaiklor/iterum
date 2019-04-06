@@ -8,7 +8,7 @@ export interface IFunctionExpression extends IFunction, IExpression {
   type: "FunctionExpression";
   id: IIdentifier | null;
   params: IPattern[];
-  defaults: IExpression[];
+  defaults: IExpression[] | null;
   rest: IIdentifier | null;
   body: IBlockStatement | IExpression;
   generator: boolean;

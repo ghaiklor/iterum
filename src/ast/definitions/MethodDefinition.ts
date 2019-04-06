@@ -4,7 +4,7 @@ import { IDefinition } from "./Definition";
 
 export interface IMethodDefinition extends IDefinition {
   type: "MethodDefinition";
-  kind: "constructor" | "method";
+  kind: "constructor" | "method" | "set" | "get";
   static: boolean;
   computed: boolean;
   key: IIdentifier;

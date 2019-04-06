@@ -1,16 +1,20 @@
 import { ICatchClause } from "../ast/clauses/CatchClause";
 import { ISwitchCase } from "../ast/clauses/SwitchCase";
+import { IClassBody } from "../ast/declarations/ClassBody";
 import { IClassDeclaration } from "../ast/declarations/ClassDeclaration";
 import { IDeclaration } from "../ast/declarations/Declaration";
 import { IFunctionDeclaration } from "../ast/declarations/FunctionDeclaration";
 import { IVariableDeclaration } from "../ast/declarations/VariableDeclaration";
 import { IVariableDeclarator } from "../ast/declarations/VariableDeclarator";
+import { IMethodDefinition } from "../ast/definitions/MethodDefinition";
 import { IArrayExpression } from "../ast/expressions/ArrayExpression";
+import { IArrowExpression } from "../ast/expressions/ArrowExpression";
 import { IAssignmentExpression } from "../ast/expressions/AssignmentExpression";
 import { IBinaryExpression } from "../ast/expressions/BinaryExpression";
 import { ICallExpression } from "../ast/expressions/CallExpression";
 import { IConditionalExpression } from "../ast/expressions/ConditionalExpression";
 import { IExpression } from "../ast/expressions/Expression";
+import { IFunctionExpression } from "../ast/expressions/FunctionExpression";
 import { ILogicalExpression } from "../ast/expressions/LogicalExpression";
 import { IMemberExpression } from "../ast/expressions/MemberExpression";
 import { INewExpression } from "../ast/expressions/NewExpression";
@@ -180,8 +184,7 @@ export class Parser {
     } else if (this.currentToken.is(TokenType.FUNCTION)) {
       return this.functionExpression();
     } else if (this.currentToken.is(TokenType.CLASS)) {
-      // TODO: implement
-      // return this.classExpression();
+      return this.classExpression();
     } else if (this.currentToken.is(TokenType.LEFT_PARENTHESIS)) {
       this.expect(TokenType.LEFT_PARENTHESIS);
       const expression = this.expression();
@@ -751,6 +754,8 @@ export class Parser {
       node.operator = AssignmentOperator.EXPONENTIATION_ASSIGN;
       node.right = this.assignmentExpression();
       return this.closeNode(node);
+    } else if (this.currentToken.is(TokenType.LEFT_PARENTHESIS)) {
+      return this.arrowFunction();
     }
 
     return left;
@@ -1308,8 +1313,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private functionExpression(): IFunctionDeclaration {
-    const node = this.openNode<IFunctionDeclaration>("FunctionDeclaration");
+  private functionExpression(): IFunctionExpression {
+    const node = this.openNode<IFunctionExpression>("FunctionExpression");
     node.defaults = null;
     node.expression = false;
     node.generator = false;
@@ -1358,10 +1363,121 @@ export class Parser {
     return this.blockStatement();
   }
 
+  private arrowFunction(): IArrowExpression {
+    const node = this.openNode<IArrowExpression>("ArrowExpression");
+
+    node.params = this.arrowParameters();
+    this.expect(TokenType.ARROW);
+    node.body = this.conciseBody();
+
+    return this.closeNode(node);
+  }
+
+  private arrowParameters(): IIdentifier[] {
+    this.expect(TokenType.LEFT_PARENTHESIS);
+    const parameters = this.formalParameters();
+    this.expect(TokenType.RIGHT_PARENTHESIS);
+
+    return parameters;
+  }
+
+  private conciseBody(): IBlockStatement | IExpression {
+    if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
+      return this.functionBody();
+    } else {
+      return this.assignmentExpression();
+    }
+  }
+
+  private methodDefinition(): IMethodDefinition {
+    const node = this.openNode<IMethodDefinition>("MethodDefinition");
+
+    if (this.eat(TokenType.SET)) {
+      node.kind = "set";
+    } else if (this.eat(TokenType.GET)) {
+      node.kind = "get";
+    } else {
+      node.kind = "method";
+    }
+
+    node.key = this.identifier();
+    node.value = this.functionExpression();
+
+    return this.closeNode(node);
+  }
+
   private classDeclaration(): IClassDeclaration {
     const node = this.openNode<IClassDeclaration>("ClassDeclaration");
-    // TODO: implement
+
+    this.expect(TokenType.CLASS);
+    node.id = this.bindingIdentifier();
+    node.superClass = this.classHeritage();
+
+    this.expect(TokenType.LEFT_CURLY_BRACES);
+    node.body = this.classBody();
+    this.expect(TokenType.RIGHT_CURLY_BRACES);
+
     return this.closeNode(node);
+  }
+
+  private classExpression(): IClassDeclaration {
+    const node = this.openNode<IClassDeclaration>("ClassDeclaration");
+
+    this.expect(TokenType.CLASS);
+    node.id = this.bindingIdentifier();
+    node.superClass = this.classHeritage();
+
+    this.expect(TokenType.LEFT_CURLY_BRACES);
+    node.body = this.classBody();
+    this.expect(TokenType.RIGHT_CURLY_BRACES);
+
+    return this.closeNode(node);
+  }
+
+  private classHeritage(): IExpression | null {
+    if (this.eat(TokenType.EXTENDS)) {
+      return this.leftHandSideExpression();
+    } else {
+      return null;
+    }
+  }
+
+  private classBody(): IClassBody {
+    const node = this.openNode<IClassBody>("ClassBody");
+
+    node.body = this.classElementList();
+
+    return this.closeNode(node);
+  }
+
+  private classElementList(): IMethodDefinition[] {
+    const METHOD_DEFINITION_TOKENS = [
+      TokenType.SEMICOLON,
+      TokenType.STATIC,
+      TokenType.SET,
+      TokenType.GET,
+      TokenType.IDENTIFIER,
+    ];
+
+    const elements = [this.classElement()];
+
+    while (this.currentToken.isSomeOf(METHOD_DEFINITION_TOKENS)) {
+      elements.push(this.classElement());
+    }
+
+    return elements;
+  }
+
+  private classElement(): IMethodDefinition {
+    const node = this.openNode<IMethodDefinition>("MethodDefinition");
+
+    if (this.eat(TokenType.SEMICOLON)) {
+      return this.closeNode(node);
+    } else if (this.eat(TokenType.STATIC)) {
+      return this.methodDefinition();
+    } else {
+      return this.methodDefinition();
+    }
   }
 
   private program(): IProgram {
