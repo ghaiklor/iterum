@@ -838,6 +838,10 @@ export class Parser {
 
   private block(): Array<IStatement | IDeclaration> {
     this.expect(TokenType.LEFT_CURLY_BRACES);
+    if (this.eat(TokenType.RIGHT_CURLY_BRACES)) {
+      return [];
+    }
+
     const statementList = this.statementList();
     this.expect(TokenType.RIGHT_CURLY_BRACES);
 
@@ -1088,7 +1092,7 @@ export class Parser {
       this.expect(TokenType.FOR);
       this.expect(TokenType.LEFT_PARENTHESIS);
 
-      if (this.eat(TokenType.VAR)) {
+      if (this.currentToken.is(TokenType.VAR)) {
         node.init = this.variableStatement();
       } else if (this.currentToken.isSomeOf([TokenType.LET, TokenType.CONST])) {
         node.init = this.lexicalDeclaration();
