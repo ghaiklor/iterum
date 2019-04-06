@@ -1396,6 +1396,8 @@ export class Parser {
       node.kind = "set";
     } else if (this.eat(TokenType.GET)) {
       node.kind = "get";
+    } else if (this.currentToken.code === "constructor") {
+      node.kind = "constructor";
     } else {
       node.kind = "method";
     }

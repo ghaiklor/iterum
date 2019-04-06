@@ -463,4 +463,14 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
   });
+
+  it("Should properly parse the identifier, which uses JS run-time property names", () => {
+    const source = `constructor isPrototypeOf`;
+    const lexer = new Scanner(source);
+
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "constructor" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "isPrototypeOf" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+  });
 });
