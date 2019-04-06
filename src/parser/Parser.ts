@@ -52,6 +52,8 @@ import { Scanner } from "../scanner/Scanner";
 import { Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
 
+type IBreakableStatement = IDoWhileStatement | IForStatement | IForInStatement | IForOfStatement | ISwitchStatement;
+
 export class Parser {
   public static parse(source: string): IProgram {
     return new Parser(source).program();
@@ -813,9 +815,7 @@ export class Parser {
     return this.functionDeclaration();
   }
 
-  // FIXME: make a composite type perhaps
-  // tslint:disable-next-line: max-line-length
-  private breakableStatement(): IDoWhileStatement | IForStatement | IForInStatement | IForOfStatement | ISwitchStatement {
+  private breakableStatement(): IBreakableStatement {
     const ITERATION_TOKENS = [
       TokenType.DO,
       TokenType.WHILE,
