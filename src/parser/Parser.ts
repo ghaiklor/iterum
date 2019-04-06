@@ -772,7 +772,7 @@ export class Parser {
   private statement(): IStatement {
     if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
       return this.blockStatement();
-    } else if (this.currentToken.is(TokenType.VAR)) {
+    } else if (this.currentToken.isSomeOf([TokenType.VAR, TokenType.LET, TokenType.CONST])) {
       return this.variableStatement();
     } else if (this.currentToken.is(TokenType.SEMICOLON)) {
       return this.emptyStatement();
@@ -906,6 +906,7 @@ export class Parser {
 
   private lexicalBinding(): IVariableDeclarator {
     const node = this.openNode<IVariableDeclarator>("VariableDeclarator");
+    node.init = null;
 
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
       node.id = this.bindingIdentifier();
@@ -925,9 +926,15 @@ export class Parser {
 
   private variableStatement(): IVariableDeclaration {
     const node = this.openNode<IVariableDeclaration>("VariableDeclaration");
-    this.expect(TokenType.VAR);
 
-    node.kind = "var";
+    if (this.eat(TokenType.VAR)) {
+      node.kind = "var";
+    } else if (this.eat(TokenType.LET)) {
+      node.kind = "let";
+    } else if (this.eat(TokenType.CONST)) {
+      node.kind = "const";
+    }
+
     node.declarations = this.variableDeclarationList();
 
     return this.closeNode(node);
@@ -945,6 +952,7 @@ export class Parser {
 
   private variableDeclaration(): IVariableDeclarator {
     const node = this.openNode<IVariableDeclarator>("VariableDeclarator");
+    node.init = null;
 
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
       node.id = this.bindingIdentifier();
@@ -980,6 +988,8 @@ export class Parser {
     }
 
     node.properties = this.bindingPropertyList();
+    this.expect(TokenType.RIGHT_CURLY_BRACES);
+
     return this.closeNode(node);
   }
 
@@ -993,6 +1003,8 @@ export class Parser {
     }
 
     node.elements = this.bindingElementList();
+    this.expect(TokenType.RIGHT_SQUARE_BRACKETS);
+
     return this.closeNode(node);
   }
 
