@@ -178,8 +178,7 @@ export class Parser {
     } else if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
       return this.objectLiteral();
     } else if (this.currentToken.is(TokenType.FUNCTION)) {
-      // TODO: implement
-      // return this.functionExpression();
+      return this.functionExpression();
     } else if (this.currentToken.is(TokenType.CLASS)) {
       // TODO: implement
       // return this.classExpression();
@@ -1286,13 +1285,77 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  // -------------------------------------- //
-  // --- GRAMMAR (FUNCTION AND CLASSES) --- //
-  // -------------------------------------- //
+  // --------------------------------------- //
+  // --- GRAMMAR (FUNCTIONS AND CLASSES) --- //
+  // --------------------------------------- //
   private functionDeclaration(): IFunctionDeclaration {
     const node = this.openNode<IFunctionDeclaration>("FunctionDeclaration");
-    // TODO: implement
+    node.defaults = null;
+    node.expression = false;
+    node.generator = false;
+    node.rest = null;
+
+    this.expect(TokenType.FUNCTION);
+    if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      node.id = this.bindingIdentifier();
+    }
+
+    this.expect(TokenType.LEFT_PARENTHESIS);
+    node.params = this.formalParameters();
+    this.expect(TokenType.RIGHT_PARENTHESIS);
+    node.body = this.functionBody();
+
     return this.closeNode(node);
+  }
+
+  private functionExpression(): IFunctionDeclaration {
+    const node = this.openNode<IFunctionDeclaration>("FunctionDeclaration");
+    node.defaults = null;
+    node.expression = false;
+    node.generator = false;
+    node.rest = null;
+
+    this.expect(TokenType.FUNCTION);
+    if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      node.id = this.bindingIdentifier();
+    }
+
+    this.expect(TokenType.LEFT_PARENTHESIS);
+    node.params = this.formalParameters();
+    this.expect(TokenType.RIGHT_PARENTHESIS);
+    node.body = this.functionBody();
+
+    return this.closeNode(node);
+  }
+
+  private formalParameters(): IIdentifier[] {
+    if (this.currentToken.is(TokenType.RIGHT_PARENTHESIS)) {
+      return [];
+    }
+
+    return this.formalParameterList();
+  }
+
+  private formalParameterList(): IIdentifier[] {
+    const parameters = [this.formalParameter()];
+
+    while (this.eat(TokenType.COMMA)) {
+      parameters.push(this.formalParameter());
+    }
+
+    return parameters;
+  }
+
+  private formalParameter(): IIdentifier {
+    return this.bindingElement();
+  }
+
+  private functionBody(): IBlockStatement {
+    return this.functionStatementList();
+  }
+
+  private functionStatementList(): IBlockStatement {
+    return this.blockStatement();
   }
 
   private classDeclaration(): IClassDeclaration {

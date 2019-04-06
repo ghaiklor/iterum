@@ -9,7 +9,7 @@ export interface IFunctionDeclaration extends IFunction, IDeclaration {
   type: "FunctionDeclaration";
   id: IIdentifier;
   params: IPattern[];
-  defaults: IExpression[];
+  defaults: IExpression[] | null;
   rest: IIdentifier | null;
   body: IBlockStatement | IExpression;
   generator: boolean;
