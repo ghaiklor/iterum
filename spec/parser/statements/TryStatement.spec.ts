@@ -1,12 +1,12 @@
-import { ICatchClause } from "../../src/ast/clauses/CatchClause";
-import { IBinaryExpression } from "../../src/ast/expressions/BinaryExpression";
-import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../src/ast/miscellaneous/Literal";
-import { IProgram } from "../../src/ast/programs/Program";
-import { IBlockStatement } from "../../src/ast/statements/BlockStatement";
-import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
-import { ITryStatement } from "../../src/ast/statements/TryStatement";
-import { Parser } from "../../src/parser/Parser";
+import { ICatchClause } from "../../../src/ast/clauses/CatchClause";
+import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
+import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
+import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
+import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
+import { ITryStatement } from "../../../src/ast/statements/TryStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::TryStatement", () => {
   it("Should properly parse catch/finally block", () => {

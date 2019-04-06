@@ -1,9 +1,9 @@
-import { IAssignmentExpression } from "../../src/ast/expressions/AssignmentExpression";
-import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../src/ast/miscellaneous/Literal";
-import { IProgram } from "../../src/ast/programs/Program";
-import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
-import { Parser } from "../../src/parser/Parser";
+import { IAssignmentExpression } from "../../../src/ast/expressions/AssignmentExpression";
+import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
+import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::AssignmentExpression", () => {
   it("Should properly parse assign expression", () => {

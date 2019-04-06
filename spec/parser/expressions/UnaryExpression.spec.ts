@@ -1,9 +1,9 @@
-import { IMemberExpression } from "../../src/ast/expressions/MemberExpression";
-import { IUnaryExpression } from "../../src/ast/expressions/UnaryExpression";
-import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
-import { IProgram } from "../../src/ast/programs/Program";
-import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
-import { Parser } from "../../src/parser/Parser";
+import { IMemberExpression } from "../../../src/ast/expressions/MemberExpression";
+import { IUnaryExpression } from "../../../src/ast/expressions/UnaryExpression";
+import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::UnaryExpression", () => {
   it("Should properly parse NOT expression", () => {

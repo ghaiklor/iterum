@@ -1,15 +1,15 @@
-import { IVariableDeclaration } from "../../src/ast/declarations/VariableDeclaration";
-import { IVariableDeclarator } from "../../src/ast/declarations/VariableDeclarator";
-import { IArrayExpression } from "../../src/ast/expressions/ArrayExpression";
-import { IObjectExpression } from "../../src/ast/expressions/ObjectExpression";
-import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../src/ast/miscellaneous/Literal";
-import { IProperty } from "../../src/ast/miscellaneous/Property";
-import { IArrayPattern } from "../../src/ast/patterns/ArrayPattern";
-import { IObjectPattern } from "../../src/ast/patterns/ObjectPattern";
-import { IProgram } from "../../src/ast/programs/Program";
-import { IBlockStatement } from "../../src/ast/statements/BlockStatement";
-import { Parser } from "../../src/parser/Parser";
+import { IVariableDeclaration } from "../../../src/ast/declarations/VariableDeclaration";
+import { IVariableDeclarator } from "../../../src/ast/declarations/VariableDeclarator";
+import { IArrayExpression } from "../../../src/ast/expressions/ArrayExpression";
+import { IObjectExpression } from "../../../src/ast/expressions/ObjectExpression";
+import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
+import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
+import { IProperty } from "../../../src/ast/miscellaneous/Property";
+import { IArrayPattern } from "../../../src/ast/patterns/ArrayPattern";
+import { IObjectPattern } from "../../../src/ast/patterns/ObjectPattern";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::VariableDeclaration", () => {
   it("Should properly parse variable with initializer", () => {

@@ -1,8 +1,8 @@
-import { IUpdateExpression } from "../../src/ast/expressions/UpdateExpression";
-import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
-import { IProgram } from "../../src/ast/programs/Program";
-import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
-import { Parser } from "../../src/parser/Parser";
+import { IUpdateExpression } from "../../../src/ast/expressions/UpdateExpression";
+import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::UpdateExpression", () => {
   it("Should properly parse increment expression", () => {

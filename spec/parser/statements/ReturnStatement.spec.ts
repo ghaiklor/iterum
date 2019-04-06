@@ -1,8 +1,8 @@
-import { IBinaryExpression } from "../../src/ast/expressions/BinaryExpression";
-import { ILiteral } from "../../src/ast/miscellaneous/Literal";
-import { IProgram } from "../../src/ast/programs/Program";
-import { IReturnStatement } from "../../src/ast/statements/ReturnStatement";
-import { Parser } from "../../src/parser/Parser";
+import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
+import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IReturnStatement } from "../../../src/ast/statements/ReturnStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::ReturnStatement", () => {
   it("Should properly parse the statement", () => {

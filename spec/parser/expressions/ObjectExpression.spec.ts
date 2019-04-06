@@ -1,10 +1,10 @@
-import { IObjectExpression } from "../../src/ast/expressions/ObjectExpression";
-import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../src/ast/miscellaneous/Literal";
-import { IProperty } from "../../src/ast/miscellaneous/Property";
-import { IProgram } from "../../src/ast/programs/Program";
-import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
-import { Parser } from "../../src/parser/Parser";
+import { IObjectExpression } from "../../../src/ast/expressions/ObjectExpression";
+import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
+import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
+import { IProperty } from "../../../src/ast/miscellaneous/Property";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::ObjectExpression", () => {
   it("Should properly parse object literals with multiply properties", () => {

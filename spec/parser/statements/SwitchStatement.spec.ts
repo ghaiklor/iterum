@@ -1,10 +1,10 @@
-import { ISwitchCase } from "../../src/ast/clauses/SwitchCase";
-import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../src/ast/miscellaneous/Literal";
-import { IProgram } from "../../src/ast/programs/Program";
-import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
-import { ISwitchStatement } from "../../src/ast/statements/SwitchStatement";
-import { Parser } from "../../src/parser/Parser";
+import { ISwitchCase } from "../../../src/ast/clauses/SwitchCase";
+import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
+import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
+import { ISwitchStatement } from "../../../src/ast/statements/SwitchStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::SwitchStatement", () => {
   it("Should properly parse the statement", () => {

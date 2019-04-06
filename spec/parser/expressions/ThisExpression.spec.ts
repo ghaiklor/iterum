@@ -1,7 +1,7 @@
-import { IThisExpression } from "../../src/ast/expressions/ThisExpression";
-import { IProgram } from "../../src/ast/programs/Program";
-import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
-import { Parser } from "../../src/parser/Parser";
+import { IThisExpression } from "../../../src/ast/expressions/ThisExpression";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::ThisExpression", () => {
   it("Should properly parse this expression", () => {

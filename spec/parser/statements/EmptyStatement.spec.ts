@@ -1,6 +1,6 @@
-import { IProgram } from "../../src/ast/programs/Program";
-import { IEmptyStatement } from "../../src/ast/statements/EmptyStatement";
-import { Parser } from "../../src/parser/Parser";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IEmptyStatement } from "../../../src/ast/statements/EmptyStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::EmptyStatement", () => {
   it("Should properly parse the statement", () => {

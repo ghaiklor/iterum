@@ -1,13 +1,13 @@
-import { IVariableDeclaration } from "../../src/ast/declarations/VariableDeclaration";
-import { IVariableDeclarator } from "../../src/ast/declarations/VariableDeclarator";
-import { IBinaryExpression } from "../../src/ast/expressions/BinaryExpression";
-import { IUpdateExpression } from "../../src/ast/expressions/UpdateExpression";
-import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../src/ast/miscellaneous/Literal";
-import { IProgram } from "../../src/ast/programs/Program";
-import { IBlockStatement } from "../../src/ast/statements/BlockStatement";
-import { IForStatement } from "../../src/ast/statements/ForStatement";
-import { Parser } from "../../src/parser/Parser";
+import { IVariableDeclaration } from "../../../src/ast/declarations/VariableDeclaration";
+import { IVariableDeclarator } from "../../../src/ast/declarations/VariableDeclarator";
+import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
+import { IUpdateExpression } from "../../../src/ast/expressions/UpdateExpression";
+import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
+import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
+import { IForStatement } from "../../../src/ast/statements/ForStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::ForStatement", () => {
   it("Should properly parse for statement with variable initializer", () => {

@@ -1,8 +1,8 @@
-import { INewExpression } from "../../src/ast/expressions/NewExpression";
-import { IIdentifier } from "../../src/ast/miscellaneous/Identifier";
-import { IProgram } from "../../src/ast/programs/Program";
-import { IExpressionStatement } from "../../src/ast/statements/ExpressionStatement";
-import { Parser } from "../../src/parser/Parser";
+import { INewExpression } from "../../../src/ast/expressions/NewExpression";
+import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
+import { IProgram } from "../../../src/ast/programs/Program";
+import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
+import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::NewExpression", () => {
   it("Should properly parse new expression", () => {
