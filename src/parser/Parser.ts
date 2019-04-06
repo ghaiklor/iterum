@@ -873,9 +873,13 @@ export class Parser {
     ];
 
     if (this.currentToken.isSomeOf(DECLARATION_TOKENS)) {
-      return this.declaration();
+      const declaration = this.declaration();
+      this.eat(TokenType.SEMICOLON);
+      return declaration;
     } else {
-      return this.statement();
+      const statement = this.statement();
+      this.eat(TokenType.SEMICOLON);
+      return statement;
     }
   }
 
