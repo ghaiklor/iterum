@@ -1,6 +1,5 @@
 import { INode } from "../node/Node";
-import { IPattern } from "../patterns/Pattern";
 
-export interface IExpression extends INode, IPattern {
+export interface IExpression extends INode {
   type: string;
 }

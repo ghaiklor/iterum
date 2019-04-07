@@ -19,6 +19,7 @@ describe("Iterum::Parser::FunctionExpression", () => {
     expect(ast).toMatchObject({
       body: [{
         expression: {
+          async: false,
           body: {
             body: [{
               argument: {
@@ -34,8 +35,6 @@ describe("Iterum::Parser::FunctionExpression", () => {
             loc: null,
             type: "BlockStatement",
           } as IBlockStatement,
-          defaults: null,
-          expression: false,
           generator: false,
           id: { type: "Identifier", loc: null, name: "add" } as IIdentifier,
           loc: null,
@@ -43,7 +42,6 @@ describe("Iterum::Parser::FunctionExpression", () => {
             { type: "Identifier", loc: null, name: "a" } as IIdentifier,
             { type: "Identifier", loc: null, name: "b" } as IIdentifier,
           ],
-          rest: null,
           type: "FunctionExpression",
         } as IFunctionExpression,
         loc: null,

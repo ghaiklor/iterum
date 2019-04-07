@@ -6,5 +6,4 @@ export interface ISwitchStatement extends IStatement {
   type: "SwitchStatement";
   discriminant: IExpression;
   cases: ISwitchCase[];
-  lexical: boolean;
 }

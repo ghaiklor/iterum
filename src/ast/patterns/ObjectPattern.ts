@@ -1,8 +1,8 @@
-import { IIdentifier } from "../miscellaneous/Identifier";
-import { ILiteral } from "../miscellaneous/Literal";
+import { IAssignmentProperty } from "../miscellaneous/AssignmentProperty";
 import { IPattern } from "./Pattern";
+import { IRestElement } from "./RestElement";
 
 export interface IObjectPattern extends IPattern {
   type: "ObjectPattern";
-  properties: Array<{ key: ILiteral | IIdentifier, value: IPattern }>;
+  properties: Array<IAssignmentProperty | IRestElement>;
 }

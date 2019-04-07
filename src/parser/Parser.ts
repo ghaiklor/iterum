@@ -1,12 +1,12 @@
+import { IClassBody } from "../ast/classes/ClassBody";
+import { IClassDeclaration } from "../ast/classes/ClassDeclaration";
+import { IMethodDefinition } from "../ast/classes/MethodDefinition";
 import { ICatchClause } from "../ast/clauses/CatchClause";
 import { ISwitchCase } from "../ast/clauses/SwitchCase";
-import { IClassBody } from "../ast/declarations/ClassBody";
-import { IClassDeclaration } from "../ast/declarations/ClassDeclaration";
 import { IDeclaration } from "../ast/declarations/Declaration";
 import { IFunctionDeclaration } from "../ast/declarations/FunctionDeclaration";
 import { IVariableDeclaration } from "../ast/declarations/VariableDeclaration";
 import { IVariableDeclarator } from "../ast/declarations/VariableDeclarator";
-import { IMethodDefinition } from "../ast/definitions/MethodDefinition";
 import { IArrayExpression } from "../ast/expressions/ArrayExpression";
 import { IAssignmentExpression } from "../ast/expressions/AssignmentExpression";
 import { IBinaryExpression } from "../ast/expressions/BinaryExpression";
@@ -23,10 +23,11 @@ import { ISequenceExpression } from "../ast/expressions/SequenceExpression";
 import { IThisExpression } from "../ast/expressions/ThisExpression";
 import { IUnaryExpression } from "../ast/expressions/UnaryExpression";
 import { IUpdateExpression } from "../ast/expressions/UpdateExpression";
+import { ILiteral } from "../ast/literals/Literal";
 import { AssignmentOperator } from "../ast/miscellaneous/AssignmentOperator";
+import { IAssignmentProperty } from "../ast/miscellaneous/AssignmentProperty";
 import { BinaryOperator } from "../ast/miscellaneous/BinaryOperator";
 import { IIdentifier } from "../ast/miscellaneous/Identifier";
-import { ILiteral } from "../ast/miscellaneous/Literal";
 import { LogicalOperator } from "../ast/miscellaneous/LogicalOperator";
 import { IProperty } from "../ast/miscellaneous/Property";
 import { UnaryOperator } from "../ast/miscellaneous/UnaryOperator";
@@ -1014,7 +1015,7 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private bindingPropertyList(): IProperty[] {
+  private bindingPropertyList(): IAssignmentProperty[] {
     const properties = [this.bindingProperty()];
 
     while (this.eat(TokenType.COMMA)) {
@@ -1034,8 +1035,8 @@ export class Parser {
     return expressions;
   }
 
-  private bindingProperty(): IProperty {
-    const node = this.openNode<IProperty>("Property");
+  private bindingProperty(): IAssignmentProperty {
+    const node = this.openNode<IAssignmentProperty>("Property");
     const identifier = this.bindingIdentifier();
 
     node.key = identifier;
@@ -1187,7 +1188,6 @@ export class Parser {
     node.discriminant = this.expression();
     this.expect(TokenType.RIGHT_PARENTHESIS);
     node.cases = this.caseBlock();
-    node.lexical = true;
 
     return this.closeNode(node);
   }
@@ -1271,7 +1271,6 @@ export class Parser {
     node.param = this.bindingIdentifier();
     this.expect(TokenType.RIGHT_PARENTHESIS);
     node.body = this.blockStatement();
-    node.guard = null;
 
     return this.closeNode(node);
   }
@@ -1293,10 +1292,8 @@ export class Parser {
   // --------------------------------------- //
   private functionDeclaration(): IFunctionDeclaration {
     const node = this.openNode<IFunctionDeclaration>("FunctionDeclaration");
-    node.defaults = null;
-    node.expression = false;
+    node.async = false;
     node.generator = false;
-    node.rest = null;
 
     this.expect(TokenType.FUNCTION);
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
@@ -1313,10 +1310,8 @@ export class Parser {
 
   private functionExpression(): IFunctionExpression {
     const node = this.openNode<IFunctionExpression>("FunctionExpression");
-    node.defaults = null;
-    node.expression = false;
+    node.async = false;
     node.generator = false;
-    node.rest = null;
     node.id = null;
 
     this.eat(TokenType.FUNCTION);

@@ -1,6 +1,6 @@
-import { IClassBody } from "../../../src/ast/declarations/ClassBody";
-import { IClassDeclaration } from "../../../src/ast/declarations/ClassDeclaration";
-import { IMethodDefinition } from "../../../src/ast/definitions/MethodDefinition";
+import { IClassBody } from "../../../src/ast/classes/ClassBody";
+import { IClassDeclaration } from "../../../src/ast/classes/ClassDeclaration";
+import { IMethodDefinition } from "../../../src/ast/classes/MethodDefinition";
 import { IAssignmentExpression } from "../../../src/ast/expressions/AssignmentExpression";
 import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
 import { IFunctionExpression } from "../../../src/ast/expressions/FunctionExpression";
@@ -53,6 +53,7 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                 static: false,
                 type: "MethodDefinition",
                 value: {
+                  async: false,
                   body: {
                     body: [
                       {
@@ -93,8 +94,6 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                     loc: null,
                     type: "BlockStatement",
                   } as IBlockStatement,
-                  defaults: null,
-                  expression: false,
                   generator: false,
                   id: null,
                   loc: null,
@@ -102,7 +101,6 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                     { type: "Identifier", loc: null, name: "a" } as IIdentifier,
                     { type: "Identifier", loc: null, name: "b" } as IIdentifier,
                   ],
-                  rest: null,
                   type: "FunctionExpression",
                 } as IFunctionExpression,
               } as IMethodDefinition,
@@ -114,6 +112,7 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                 static: false,
                 type: "MethodDefinition",
                 value: {
+                  async: false,
                   body: {
                     body: [{
                       argument: {
@@ -129,8 +128,6 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                     loc: null,
                     type: "BlockStatement",
                   } as IBlockStatement,
-                  defaults: null,
-                  expression: false,
                   generator: false,
                   id: null,
                   loc: null,
@@ -138,7 +135,6 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                     { type: "Identifier", loc: null, name: "a" } as IIdentifier,
                     { type: "Identifier", loc: null, name: "b" } as IIdentifier,
                   ],
-                  rest: null,
                   type: "FunctionExpression",
                 } as IFunctionExpression,
               } as IMethodDefinition,
@@ -150,6 +146,7 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                 static: false,
                 type: "MethodDefinition",
                 value: {
+                  async: false,
                   body: {
                     body: [{
                       argument: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
@@ -159,13 +156,10 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                     loc: null,
                     type: "BlockStatement",
                   } as IBlockStatement,
-                  defaults: null,
-                  expression: false,
                   generator: false,
                   id: null,
                   loc: null,
                   params: [],
-                  rest: null,
                   type: "FunctionExpression",
                 } as IFunctionExpression,
               } as IMethodDefinition,
@@ -177,6 +171,7 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                 static: false,
                 type: "MethodDefinition",
                 value: {
+                  async: false,
                   body: {
                     body: [{
                       expression: {
@@ -198,15 +193,12 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                     loc: null,
                     type: "BlockStatement",
                   } as IBlockStatement,
-                  defaults: null,
-                  expression: false,
                   generator: false,
                   id: null,
                   loc: null,
                   params: [
                     { type: "Identifier", loc: null, name: "value" } as IIdentifier,
                   ],
-                  rest: null,
                   type: "FunctionExpression",
                 } as IFunctionExpression,
               } as IMethodDefinition,
@@ -252,6 +244,7 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                 static: true,
                 type: "MethodDefinition",
                 value: {
+                  async: false,
                   body: {
                     body: [{
                       argument: {
@@ -267,8 +260,6 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                     loc: null,
                     type: "BlockStatement",
                   } as IBlockStatement,
-                  defaults: null,
-                  expression: false,
                   generator: false,
                   id: null,
                   loc: null,
@@ -276,7 +267,6 @@ describe("Iterum::Parser::ClassDeclaration", () => {
                     { type: "Identifier", loc: null, name: "a" } as IIdentifier,
                     { type: "Identifier", loc: null, name: "b" } as IIdentifier,
                   ],
-                  rest: null,
                   type: "FunctionExpression",
                 } as IFunctionExpression,
               } as IMethodDefinition,

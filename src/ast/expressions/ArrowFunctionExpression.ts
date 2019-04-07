@@ -1,15 +1,9 @@
 import { IFunction } from "../functions/Function";
-import { IIdentifier } from "../miscellaneous/Identifier";
-import { IPattern } from "../patterns/Pattern";
-import { IBlockStatement } from "../statements/BlockStatement";
+import { IFunctionBody } from "../statements/FunctionBody";
 import { IExpression } from "./Expression";
 
-export interface IArrowFunctionExpression extends IFunction, IExpression {
+export interface IArrowFunctionExpression extends Pick<IFunction, Exclude<keyof IFunction, "body">>, IExpression {
   type: "ArrowFunctionExpression";
-  params: IPattern[];
-  defaults: IExpression[] | null;
-  rest: IIdentifier | null;
-  body: IBlockStatement | IExpression;
-  generator: boolean;
+  body: IFunctionBody | IExpression;
   expression: boolean;
 }

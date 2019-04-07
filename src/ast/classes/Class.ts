@@ -1,10 +1,9 @@
 import { IExpression } from "../expressions/Expression";
 import { IIdentifier } from "../miscellaneous/Identifier";
+import { INode } from "../node/Node";
 import { IClassBody } from "./ClassBody";
-import { IDeclaration } from "./Declaration";
 
-export interface IClassDeclaration extends IDeclaration {
-  type: "ClassDeclaration";
+export interface IClass extends INode {
   id: IIdentifier | null;
   superClass: IExpression | null;
   body: IClassBody;

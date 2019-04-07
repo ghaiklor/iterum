@@ -1,5 +1,5 @@
+import { ILiteral } from "../literals/Literal";
 import { IIdentifier } from "../miscellaneous/Identifier";
-import { ILiteral } from "../miscellaneous/Literal";
 import { INode } from "../node/Node";
 import { IPattern } from "./Pattern";
 

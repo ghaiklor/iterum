@@ -1,10 +1,6 @@
-import { IVariableDeclaration } from "../declarations/VariableDeclaration";
-import { IExpression } from "../expressions/Expression";
-import { IStatement } from "./Statement";
+import { IForInStatement } from "./ForInStatement";
 
-export interface IForOfStatement extends IStatement {
+export interface IForOfStatement extends Pick<IForInStatement, Exclude<keyof IForInStatement, "type">> {
   type: "ForOfStatement";
-  left: IVariableDeclaration | IExpression;
-  right: IExpression;
-  body: IStatement;
+  await: boolean;
 }

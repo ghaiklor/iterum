@@ -1,6 +1,6 @@
 import { ISwitchCase } from "../../../src/ast/clauses/SwitchCase";
+import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
 import { IProgram } from "../../../src/ast/programs/Program";
 import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
 import { ISwitchStatement } from "../../../src/ast/statements/SwitchStatement";
@@ -56,7 +56,6 @@ describe("Iterum::Parser::SwitchStatement", () => {
           } as ISwitchCase,
         ],
         discriminant: { type: "Identifier", loc: null, name: "foo" } as IIdentifier,
-        lexical: true,
         loc: null,
         type: "SwitchStatement",
       } as ISwitchStatement],

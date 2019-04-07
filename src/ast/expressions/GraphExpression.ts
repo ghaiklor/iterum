@@ -1,4 +1,4 @@
-import { ILiteral } from "../miscellaneous/Literal";
+import { ILiteral } from "../literals/Literal";
 import { IExpression } from "./Expression";
 
 export interface IGraphExpression extends IExpression {

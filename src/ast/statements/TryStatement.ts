@@ -6,6 +6,5 @@ export interface ITryStatement extends IStatement {
   type: "TryStatement";
   block: IBlockStatement;
   handler: ICatchClause | null;
-  guardedHandlers: ICatchClause[];
   finalizer: IBlockStatement | null;
 }

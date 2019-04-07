@@ -1,10 +1,6 @@
-import { IClassBody } from "../declarations/ClassBody";
+import { IClass } from "../classes/Class";
 import { IExpression } from "../expressions/Expression";
-import { IIdentifier } from "../miscellaneous/Identifier";
 
-export interface IClassExpression extends IExpression {
+export interface IClassExpression extends IClass, IExpression {
   type: "ClassExpression";
-  id: IIdentifier | null;
-  superClass: IExpression | null;
-  body: IClassBody;
 }
