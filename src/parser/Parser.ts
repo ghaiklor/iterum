@@ -1449,7 +1449,6 @@ export class Parser {
 
   private classBody(): IClassBody {
     const node = this.openNode<IClassBody>("ClassBody");
-
     node.body = this.classElementList();
 
     return this.closeNode(node);
@@ -1463,6 +1462,10 @@ export class Parser {
       TokenType.GET,
       TokenType.IDENTIFIER,
     ];
+
+    if (this.currentToken.is(TokenType.RIGHT_CURLY_BRACES)) {
+      return [];
+    }
 
     const elements = [this.classElement()];
 

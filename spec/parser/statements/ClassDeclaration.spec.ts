@@ -296,4 +296,33 @@ describe("Iterum::Parser::ClassDeclaration", () => {
       type: "Program",
     });
   });
+
+  it("Should properly parse the class without heritage and empty body", () => {
+    const source = `
+      {
+        class Foo {}
+      }
+    `;
+
+    const ast = Parser.parse(source);
+    expect(ast).toMatchObject({
+      body: [{
+        body: [{
+          body: {
+            body: [],
+            loc: null,
+            type: "ClassBody",
+          } as IClassBody,
+          id: { type: "Identifier", loc: null, name: "Foo" } as IIdentifier,
+          loc: null,
+          superClass: null,
+          type: "ClassDeclaration",
+        } as IClassDeclaration],
+        loc: null,
+        type: "BlockStatement",
+      } as IBlockStatement],
+      loc: null,
+      type: "Program",
+    } as IProgram);
+  });
 });
