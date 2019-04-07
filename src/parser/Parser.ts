@@ -1319,8 +1319,9 @@ export class Parser {
     node.expression = false;
     node.generator = false;
     node.rest = null;
+    node.id = null;
 
-    this.expect(TokenType.FUNCTION);
+    this.eat(TokenType.FUNCTION);
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
       node.id = this.bindingIdentifier();
     }
@@ -1391,6 +1392,8 @@ export class Parser {
 
   private methodDefinition(): IMethodDefinition {
     const node = this.openNode<IMethodDefinition>("MethodDefinition");
+    node.computed = false;
+    node.static = false;
 
     if (this.eat(TokenType.SET)) {
       node.kind = "set";
