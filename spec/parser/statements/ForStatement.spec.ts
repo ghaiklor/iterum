@@ -2,8 +2,8 @@ import { IVariableDeclaration } from "../../../src/ast/declarations/VariableDecl
 import { IVariableDeclarator } from "../../../src/ast/declarations/VariableDeclarator";
 import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
 import { IUpdateExpression } from "../../../src/ast/expressions/UpdateExpression";
+import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
 import { IProgram } from "../../../src/ast/programs/Program";
 import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
 import { IForStatement } from "../../../src/ast/statements/ForStatement";
@@ -50,6 +50,7 @@ describe("Iterum::Parser::ForStatement", () => {
         } as IUpdateExpression,
       } as IForStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -94,6 +95,7 @@ describe("Iterum::Parser::ForStatement", () => {
         } as IUpdateExpression,
       } as IForStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -128,6 +130,7 @@ describe("Iterum::Parser::ForStatement", () => {
         } as IUpdateExpression,
       } as IForStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

@@ -52,6 +52,7 @@ describe("Iterum::Parser::DoWhileStatement", () => {
         type: "DoWhileStatement",
       } as IDoWhileStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -99,6 +100,7 @@ describe("Iterum::Parser::DoWhileStatement", () => {
         type: "DoWhileStatement",
       } as IDoWhileStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

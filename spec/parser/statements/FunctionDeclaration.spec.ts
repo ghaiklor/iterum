@@ -52,6 +52,7 @@ describe("Iterum::Parser::FunctionDeclaration", () => {
         type: "BlockStatement",
       } as IBlockStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

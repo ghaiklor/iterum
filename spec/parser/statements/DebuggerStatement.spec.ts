@@ -13,6 +13,7 @@ describe("Iterum::Parser::DebuggerStatement", () => {
         type: "DebuggerStatement",
       } as IDebuggerStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

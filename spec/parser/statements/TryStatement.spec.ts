@@ -78,6 +78,7 @@ describe("Iterum::Parser::TryStatement", () => {
         type: "TryStatement",
       } as ITryStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -135,6 +136,7 @@ describe("Iterum::Parser::TryStatement", () => {
         type: "TryStatement",
       } as ITryStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -187,6 +189,7 @@ describe("Iterum::Parser::TryStatement", () => {
         type: "TryStatement",
       } as ITryStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

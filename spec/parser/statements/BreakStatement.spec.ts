@@ -15,6 +15,7 @@ describe("Iterum::Parser::BreakStatement", () => {
         type: "BreakStatement",
       } as IBreakStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -30,6 +31,7 @@ describe("Iterum::Parser::BreakStatement", () => {
         type: "BreakStatement",
       } as IBreakStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

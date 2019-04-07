@@ -15,6 +15,7 @@ describe("Iterum::Parser::ContinueStatement", () => {
         type: "ContinueStatement",
       } as IContinueStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -30,6 +31,7 @@ describe("Iterum::Parser::ContinueStatement", () => {
         type: "ContinueStatement",
       } as IContinueStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

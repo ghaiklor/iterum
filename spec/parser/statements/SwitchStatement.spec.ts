@@ -60,6 +60,7 @@ describe("Iterum::Parser::SwitchStatement", () => {
         type: "SwitchStatement",
       } as ISwitchStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

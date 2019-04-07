@@ -1,4 +1,4 @@
-import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
+import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IProgram } from "../../../src/ast/programs/Program";
 import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
 import { IIfStatement } from "../../../src/ast/statements/IfStatement";
@@ -32,6 +32,7 @@ describe("Iterum::Parser::IfStatement", () => {
         type: "IfStatement",
       } as IIfStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -72,6 +73,7 @@ describe("Iterum::Parser::IfStatement", () => {
         type: "IfStatement",
       } as IIfStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

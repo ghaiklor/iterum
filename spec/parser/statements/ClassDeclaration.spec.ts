@@ -215,6 +215,7 @@ describe("Iterum::Parser::ClassDeclaration", () => {
         type: "BlockStatement",
       } as IBlockStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -312,6 +313,7 @@ describe("Iterum::Parser::ClassDeclaration", () => {
         type: "BlockStatement",
       } as IBlockStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

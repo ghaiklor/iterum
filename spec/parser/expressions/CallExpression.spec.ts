@@ -1,6 +1,6 @@
 import { ICallExpression } from "../../../src/ast/expressions/CallExpression";
+import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
 import { IProgram } from "../../../src/ast/programs/Program";
 import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
 import { Parser } from "../../../src/parser/Parser";

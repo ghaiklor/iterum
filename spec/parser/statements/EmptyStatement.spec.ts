@@ -13,6 +13,7 @@ describe("Iterum::Parser::EmptyStatement", () => {
         type: "EmptyStatement",
       } as IEmptyStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

@@ -1,8 +1,8 @@
 import { IAssignmentExpression } from "../../../src/ast/expressions/AssignmentExpression";
 import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
 import { IObjectExpression } from "../../../src/ast/expressions/ObjectExpression";
+import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
 import { IProperty } from "../../../src/ast/miscellaneous/Property";
 import { IProgram } from "../../../src/ast/programs/Program";
 import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
@@ -48,9 +48,12 @@ describe("Iterum::Parser::WithStatement", () => {
           loc: null,
           properties: [
             {
+              computed: false,
               key: { type: "Identifier", loc: null, name: "foo" } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: false,
               type: "Property",
               value: { type: "Literal", loc: null, value: "bar", raw: "bar" } as ILiteral,
             } as IProperty,
@@ -60,6 +63,7 @@ describe("Iterum::Parser::WithStatement", () => {
         type: "WithStatement",
       } as IWithStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

@@ -1,6 +1,6 @@
 import { INewExpression } from "../../../src/ast/expressions/NewExpression";
+import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
 import { IProgram } from "../../../src/ast/programs/Program";
 import { IThrowStatement } from "../../../src/ast/statements/ThrowStatement";
 import { Parser } from "../../../src/parser/Parser";
@@ -27,6 +27,7 @@ describe("Iterum::Parser::ThrowStatement", () => {
         type: "ThrowStatement",
       } as IThrowStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

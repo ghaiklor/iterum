@@ -287,17 +287,23 @@ export class Parser {
 
     const node = this.openNode<IProperty>("Property");
 
+    node.computed = false;
+    node.method = false;
+    node.shorthand = true;
     node.kind = "init";
+
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
       const identifierReference = this.identifierReference();
       node.key = identifierReference;
       node.value = identifierReference;
 
       if (this.eat(TokenType.COLON)) {
+        node.shorthand = false;
         node.value = this.assignmentExpression();
         return this.closeNode(node);
       }
     } else if (this.currentToken.isSomeOf(LITERAL_PROPERTY_NAME)) {
+      node.shorthand = false;
       node.key = this.literal();
       this.expect(TokenType.COLON);
       node.value = this.assignmentExpression();
@@ -1039,10 +1045,15 @@ export class Parser {
     const node = this.openNode<IAssignmentProperty>("Property");
     const identifier = this.bindingIdentifier();
 
-    node.key = identifier;
+    node.computed = false;
     node.kind = "init";
+    node.method = false;
+    node.shorthand = true;
+    node.key = identifier;
     node.value = identifier;
+
     if (this.eat(TokenType.COLON)) {
+      node.shorthand = false;
       node.value = this.bindingElement();
       return this.closeNode(node);
     }
@@ -1447,6 +1458,7 @@ export class Parser {
 
   private program(): IProgram {
     const node = this.openNode<IProgram>("Program");
+    node.sourceType = "module";
     node.body = [this.statement()];
 
     return this.closeNode(node);

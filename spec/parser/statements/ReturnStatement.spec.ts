@@ -1,5 +1,5 @@
 import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
-import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
+import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IProgram } from "../../../src/ast/programs/Program";
 import { IReturnStatement } from "../../../src/ast/statements/ReturnStatement";
 import { Parser } from "../../../src/parser/Parser";
@@ -22,6 +22,7 @@ describe("Iterum::Parser::ReturnStatement", () => {
         type: "ReturnStatement",
       } as IReturnStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

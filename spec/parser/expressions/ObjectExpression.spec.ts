@@ -1,6 +1,6 @@
 import { IObjectExpression } from "../../../src/ast/expressions/ObjectExpression";
+import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
 import { IProperty } from "../../../src/ast/miscellaneous/Property";
 import { IProgram } from "../../../src/ast/programs/Program";
 import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
@@ -16,16 +16,22 @@ describe("Iterum::Parser::ObjectExpression", () => {
         expression: {
           properties: [
             {
+              computed: false,
               key: { name: "foo", type: "Identifier" } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: false,
               type: "Property",
               value: { value: "bar", raw: "bar", type: "Literal", loc: null } as ILiteral,
             } as IProperty,
             {
+              computed: false,
               key: { name: "bar", type: "Identifier", loc: null } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: false,
               type: "Property",
               value: { value: 2, raw: "2", type: "Literal", loc: null } as ILiteral,
             } as IProperty,
@@ -69,16 +75,22 @@ describe("Iterum::Parser::ObjectExpression", () => {
           loc: null,
           properties: [
             {
+              computed: false,
               key: { name: "foo", type: "Identifier" } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: true,
               type: "Property",
               value: { name: "foo", type: "Identifier" } as IIdentifier,
             } as IProperty,
             {
+              computed: false,
               key: { name: "bar", type: "Identifier" } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: true,
               type: "Property",
               value: { name: "bar", type: "Identifier" } as IIdentifier,
             } as IProperty],
@@ -101,9 +113,12 @@ describe("Iterum::Parser::ObjectExpression", () => {
         expression: {
           properties: [
             {
+              computed: false,
               key: { value: 5, raw: "5", type: "Literal", loc: null } as ILiteral,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: false,
               type: "Property",
               value: { value: "foo", raw: "foo", type: "Literal", loc: null } as ILiteral,
             } as IProperty,

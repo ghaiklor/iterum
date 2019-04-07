@@ -1,7 +1,7 @@
 import { IAssignmentExpression } from "../../../src/ast/expressions/AssignmentExpression";
 import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
+import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
 import { IProgram } from "../../../src/ast/programs/Program";
 import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
 import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
@@ -54,6 +54,7 @@ describe("Iterum::Parser::BlockStatement", () => {
         type: "BlockStatement",
       } as IBlockStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });

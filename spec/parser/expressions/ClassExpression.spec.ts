@@ -1,4 +1,4 @@
-import { IClassBody } from "../../../src/ast/declarations/ClassBody";
+import { IClassBody } from "../../../src/ast/classes/ClassBody";
 import { IClassExpression } from "../../../src/ast/expressions/ClassExpression";
 import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
 import { IProgram } from "../../../src/ast/programs/Program";

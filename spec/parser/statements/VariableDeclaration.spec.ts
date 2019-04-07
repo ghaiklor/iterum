@@ -2,8 +2,8 @@ import { IVariableDeclaration } from "../../../src/ast/declarations/VariableDecl
 import { IVariableDeclarator } from "../../../src/ast/declarations/VariableDeclarator";
 import { IArrayExpression } from "../../../src/ast/expressions/ArrayExpression";
 import { IObjectExpression } from "../../../src/ast/expressions/ObjectExpression";
+import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { ILiteral } from "../../../src/ast/miscellaneous/Literal";
 import { IProperty } from "../../../src/ast/miscellaneous/Property";
 import { IArrayPattern } from "../../../src/ast/patterns/ArrayPattern";
 import { IObjectPattern } from "../../../src/ast/patterns/ObjectPattern";
@@ -28,6 +28,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "VariableDeclaration",
       } as IVariableDeclaration],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -56,6 +57,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "VariableDeclaration",
       } as IVariableDeclaration],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -70,9 +72,12 @@ describe("Iterum::Parser::VariableDeclaration", () => {
           id: {
             loc: null,
             properties: [{
+              computed: false,
               key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: true,
               type: "Property",
               value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
             } as IProperty],
@@ -81,9 +86,12 @@ describe("Iterum::Parser::VariableDeclaration", () => {
           init: {
             loc: null,
             properties: [{
+              computed: false,
               key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: false,
               type: "Property",
               value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
             } as IProperty],
@@ -97,6 +105,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "VariableDeclaration",
       } as IVariableDeclaration],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -111,9 +120,12 @@ describe("Iterum::Parser::VariableDeclaration", () => {
           id: {
             loc: null,
             properties: [{
+              computed: false,
               key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: true,
               type: "Property",
               value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
             } as IProperty],
@@ -122,9 +134,12 @@ describe("Iterum::Parser::VariableDeclaration", () => {
           init: {
             loc: null,
             properties: [{
+              computed: false,
               key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: false,
               type: "Property",
               value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
             } as IProperty],
@@ -138,6 +153,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "VariableDeclaration",
       } as IVariableDeclaration],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -171,6 +187,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "VariableDeclaration",
       } as IVariableDeclaration],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -185,9 +202,12 @@ describe("Iterum::Parser::VariableDeclaration", () => {
           id: {
             loc: null,
             properties: [{
+              computed: false,
               key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: false,
               type: "Property",
               value: { type: "Identifier", loc: null, name: "c" } as IIdentifier,
             } as IProperty],
@@ -196,9 +216,12 @@ describe("Iterum::Parser::VariableDeclaration", () => {
           init: {
             loc: null,
             properties: [{
+              computed: false,
               key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: false,
               type: "Property",
               value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
             } as IProperty],
@@ -212,6 +235,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "VariableDeclaration",
       } as IVariableDeclaration],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -231,9 +255,12 @@ describe("Iterum::Parser::VariableDeclaration", () => {
           init: {
             loc: null,
             properties: [{
+              computed: false,
               key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
               kind: "init",
               loc: null,
+              method: false,
+              shorthand: false,
               type: "Property",
               value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
             } as IProperty],
@@ -247,6 +274,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "VariableDeclaration",
       } as IVariableDeclaration],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -278,6 +306,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "VariableDeclaration",
       } as IVariableDeclaration],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -313,6 +342,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "VariableDeclaration",
       } as IVariableDeclaration],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -328,16 +358,22 @@ describe("Iterum::Parser::VariableDeclaration", () => {
             loc: null,
             properties: [
               {
+                computed: false,
                 key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
                 kind: "init",
                 loc: null,
+                method: false,
+                shorthand: true,
                 type: "Property",
                 value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
               } as IProperty,
               {
+                computed: false,
                 key: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
                 kind: "init",
                 loc: null,
+                method: false,
+                shorthand: true,
                 type: "Property",
                 value: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
               } as IProperty,
@@ -348,16 +384,22 @@ describe("Iterum::Parser::VariableDeclaration", () => {
             loc: null,
             properties: [
               {
+                computed: false,
                 key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
                 kind: "init",
                 loc: null,
+                method: false,
+                shorthand: false,
                 type: "Property",
                 value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
               } as IProperty,
               {
+                computed: false,
                 key: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
                 kind: "init",
                 loc: null,
+                method: false,
+                shorthand: false,
                 type: "Property",
                 value: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
               } as IProperty,
@@ -372,6 +414,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "VariableDeclaration",
       } as IVariableDeclaration],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -393,16 +436,22 @@ describe("Iterum::Parser::VariableDeclaration", () => {
               loc: null,
               properties: [
                 {
+                  computed: false,
                   key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
                   kind: "init",
                   loc: null,
+                  method: false,
+                  shorthand: true,
                   type: "Property",
                   value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
                 } as IProperty,
                 {
+                  computed: false,
                   key: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
                   kind: "init",
                   loc: null,
+                  method: false,
+                  shorthand: true,
                   type: "Property",
                   value: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
                 } as IProperty,
@@ -413,16 +462,22 @@ describe("Iterum::Parser::VariableDeclaration", () => {
               loc: null,
               properties: [
                 {
+                  computed: false,
                   key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
                   kind: "init",
                   loc: null,
+                  method: false,
+                  shorthand: false,
                   type: "Property",
                   value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
                 } as IProperty,
                 {
+                  computed: false,
                   key: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
                   kind: "init",
                   loc: null,
+                  method: false,
+                  shorthand: false,
                   type: "Property",
                   value: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
                 } as IProperty,
@@ -440,6 +495,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "BlockStatement",
       } as IBlockStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
@@ -462,9 +518,12 @@ describe("Iterum::Parser::VariableDeclaration", () => {
                 loc: null,
                 properties: [
                   {
+                    computed: false,
                     key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
                     kind: "init",
                     loc: null,
+                    method: false,
+                    shorthand: true,
                     type: "Property",
                     value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
                   } as IProperty,
@@ -475,9 +534,12 @@ describe("Iterum::Parser::VariableDeclaration", () => {
                 loc: null,
                 properties: [
                   {
+                    computed: false,
                     key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
                     kind: "init",
                     loc: null,
+                    method: false,
+                    shorthand: false,
                     type: "Property",
                     value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
                   } as IProperty,
@@ -514,6 +576,7 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         type: "BlockStatement",
       } as IBlockStatement],
       loc: null,
+      sourceType: "module",
       type: "Program",
     } as IProgram);
   });
