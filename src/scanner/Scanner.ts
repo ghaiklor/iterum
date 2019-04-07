@@ -74,7 +74,7 @@ export class Scanner {
    *
    * @param length How many characters to slice from current position
    */
-  private slice(length: number = 1): string {
+  private slice(length: number): string {
     return this.source.slice(this.index, this.index + length);
   }
 
