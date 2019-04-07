@@ -1428,7 +1428,6 @@ export class Parser {
 
   private classElementList(): IMethodDefinition[] {
     const METHOD_DEFINITION_TOKENS = [
-      TokenType.SEMICOLON,
       TokenType.STATIC,
       TokenType.SET,
       TokenType.GET,
@@ -1440,7 +1439,6 @@ export class Parser {
     }
 
     const elements = [this.classElement()];
-
     while (this.currentToken.isSomeOf(METHOD_DEFINITION_TOKENS)) {
       elements.push(this.classElement());
     }
@@ -1449,13 +1447,7 @@ export class Parser {
   }
 
   private classElement(): IMethodDefinition {
-    const node = this.openNode<IMethodDefinition>("MethodDefinition");
-
-    if (this.eat(TokenType.SEMICOLON)) {
-      return this.closeNode(node);
-    } else {
-      return this.methodDefinition();
-    }
+    return this.methodDefinition();
   }
 
   private program(): IProgram {
