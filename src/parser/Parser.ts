@@ -1062,7 +1062,7 @@ export class Parser {
   private expressionStatement(): IExpressionStatement {
     const node = this.openNode<IExpressionStatement>("ExpressionStatement");
     node.expression = this.expression();
-    this.expect(TokenType.SEMICOLON);
+    this.eat(TokenType.SEMICOLON);
 
     return this.closeNode(node);
   }
@@ -1092,7 +1092,7 @@ export class Parser {
       this.expect(TokenType.LEFT_PARENTHESIS);
       node.test = this.expression();
       this.expect(TokenType.RIGHT_PARENTHESIS);
-      this.expect(TokenType.SEMICOLON);
+      this.eat(TokenType.SEMICOLON);
 
       return this.closeNode(node);
     } else if (this.eat(TokenType.WHILE)) {

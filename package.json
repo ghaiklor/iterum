@@ -37,13 +37,14 @@
     "clean": "rimraf coverage dist",
     "commit": "npx git-cz",
     "lint": "tslint --project tsconfig.json --config tslint.json",
-    "test": "npm run test:unit && npm run test:test262",
-    "test:test262": "tsc && node tools/test262/test262.js",
+    "test": "npm run test:unit && npm run test:test262-parser-tests",
+    "test:test262-parser-tests": "tsc && node tools/test262-parser-tests.js",
     "test:unit": "jest --coverage --config jest.config.json"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "24.0.11",
+    "chalk": "2.4.2",
     "codecov": "3.3.0",
     "cz-conventional-changelog": "2.1.0",
     "jest": "24.7.1",
