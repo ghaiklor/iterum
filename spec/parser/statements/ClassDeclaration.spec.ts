@@ -13,8 +13,8 @@ import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStat
 import { IReturnStatement } from "../../../src/ast/statements/ReturnStatement";
 import { Parser } from "../../../src/parser/Parser";
 
-describe("Iterum::Parser::ClassDeclarations", () => {
-  it("Should properly parse the class with all method definitions", () => {
+describe("Iterum::Parser::ClassDeclaration", () => {
+  it("Should properly parse the class (constructor, method, getter, setter)", () => {
     const source = `
       {
         class Foo extends Bar {
@@ -225,5 +225,75 @@ describe("Iterum::Parser::ClassDeclarations", () => {
       loc: null,
       type: "Program",
     } as IProgram);
+  });
+
+  it("Should properly parse the class with static method", () => {
+    const source = `
+      {
+        class Foo extends Bar {
+          static add(a, b) {
+            return a + b;
+          }
+        }
+      }
+    `;
+
+    const ast = Parser.parse(source);
+    expect(ast).toMatchObject({
+      body: [{
+        body: [{
+          body: {
+            body: [
+              {
+                computed: false,
+                key: { type: "Identifier", loc: null, name: "add" } as IIdentifier,
+                kind: "method",
+                loc: null,
+                static: true,
+                type: "MethodDefinition",
+                value: {
+                  body: {
+                    body: [{
+                      argument: {
+                        left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+                        loc: null,
+                        operator: "+",
+                        right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+                        type: "BinaryExpression",
+                      } as IBinaryExpression,
+                      loc: null,
+                      type: "ReturnStatement",
+                    } as IReturnStatement],
+                    loc: null,
+                    type: "BlockStatement",
+                  } as IBlockStatement,
+                  defaults: null,
+                  expression: false,
+                  generator: false,
+                  id: null,
+                  loc: null,
+                  params: [
+                    { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+                    { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+                  ],
+                  rest: null,
+                  type: "FunctionExpression",
+                } as IFunctionExpression,
+              } as IMethodDefinition,
+            ],
+            loc: null,
+            type: "ClassBody",
+          } as IClassBody,
+          id: { type: "Identifier", loc: null, name: "Foo" } as IIdentifier,
+          loc: null,
+          superClass: { type: "Identifier", loc: null, name: "Bar" } as IIdentifier,
+          type: "ClassDeclaration",
+        } as IClassDeclaration],
+        loc: null,
+        type: "BlockStatement",
+      } as IBlockStatement],
+      loc: null,
+      type: "Program",
+    });
   });
 });

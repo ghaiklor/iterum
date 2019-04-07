@@ -1392,9 +1392,9 @@ export class Parser {
 
   private methodDefinition(): IMethodDefinition {
     const node = this.openNode<IMethodDefinition>("MethodDefinition");
-    node.computed = false;
-    node.static = false;
 
+    node.computed = false;
+    node.static = this.eat(TokenType.STATIC);
     if (this.eat(TokenType.SET)) {
       node.kind = "set";
     } else if (this.eat(TokenType.GET)) {
@@ -1478,8 +1478,6 @@ export class Parser {
 
     if (this.eat(TokenType.SEMICOLON)) {
       return this.closeNode(node);
-    } else if (this.eat(TokenType.STATIC)) {
-      return this.methodDefinition();
     } else {
       return this.methodDefinition();
     }
