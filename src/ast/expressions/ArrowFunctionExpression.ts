@@ -4,10 +4,10 @@ import { IPattern } from "../patterns/Pattern";
 import { IBlockStatement } from "../statements/BlockStatement";
 import { IExpression } from "./Expression";
 
-export interface IArrowExpression extends IFunction, IExpression {
-  type: "ArrowExpression";
+export interface IArrowFunctionExpression extends IFunction, IExpression {
+  type: "ArrowFunctionExpression";
   params: IPattern[];
-  defaults: IExpression[];
+  defaults: IExpression[] | null;
   rest: IIdentifier | null;
   body: IBlockStatement | IExpression;
   generator: boolean;

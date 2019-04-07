@@ -8,10 +8,10 @@ import { IVariableDeclaration } from "../ast/declarations/VariableDeclaration";
 import { IVariableDeclarator } from "../ast/declarations/VariableDeclarator";
 import { IMethodDefinition } from "../ast/definitions/MethodDefinition";
 import { IArrayExpression } from "../ast/expressions/ArrayExpression";
-import { IArrowExpression } from "../ast/expressions/ArrowExpression";
 import { IAssignmentExpression } from "../ast/expressions/AssignmentExpression";
 import { IBinaryExpression } from "../ast/expressions/BinaryExpression";
 import { ICallExpression } from "../ast/expressions/CallExpression";
+import { IClassExpression } from "../ast/expressions/ClassExpression";
 import { IConditionalExpression } from "../ast/expressions/ConditionalExpression";
 import { IExpression } from "../ast/expressions/Expression";
 import { IFunctionExpression } from "../ast/expressions/FunctionExpression";
@@ -754,8 +754,6 @@ export class Parser {
       node.operator = AssignmentOperator.EXPONENTIATION_ASSIGN;
       node.right = this.assignmentExpression();
       return this.closeNode(node);
-    } else if (this.currentToken.is(TokenType.LEFT_PARENTHESIS)) {
-      return this.arrowFunction();
     }
 
     return left;
@@ -1364,32 +1362,6 @@ export class Parser {
     return this.blockStatement();
   }
 
-  private arrowFunction(): IArrowExpression {
-    const node = this.openNode<IArrowExpression>("ArrowExpression");
-
-    node.params = this.arrowParameters();
-    this.expect(TokenType.ARROW);
-    node.body = this.conciseBody();
-
-    return this.closeNode(node);
-  }
-
-  private arrowParameters(): IIdentifier[] {
-    this.expect(TokenType.LEFT_PARENTHESIS);
-    const parameters = this.formalParameters();
-    this.expect(TokenType.RIGHT_PARENTHESIS);
-
-    return parameters;
-  }
-
-  private conciseBody(): IBlockStatement | IExpression {
-    if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
-      return this.functionBody();
-    } else {
-      return this.assignmentExpression();
-    }
-  }
-
   private methodDefinition(): IMethodDefinition {
     const node = this.openNode<IMethodDefinition>("MethodDefinition");
 
@@ -1425,8 +1397,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private classExpression(): IClassDeclaration {
-    const node = this.openNode<IClassDeclaration>("ClassDeclaration");
+  private classExpression(): IClassExpression {
+    const node = this.openNode<IClassExpression>("ClassExpression");
 
     this.expect(TokenType.CLASS);
     node.id = this.bindingIdentifier();
