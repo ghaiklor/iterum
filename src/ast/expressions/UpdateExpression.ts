@@ -1,4 +1,4 @@
-import { UpdateOperator } from "../miscellaneous/UpdateOperator";
+import { UpdateOperator } from "../operators/UpdateOperator";
 import { IExpression } from "./Expression";
 
 export interface IUpdateExpression extends IExpression {

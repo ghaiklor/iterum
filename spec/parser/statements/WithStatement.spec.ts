@@ -3,8 +3,8 @@ import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression
 import { IObjectExpression } from "../../../src/ast/expressions/ObjectExpression";
 import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { IProperty } from "../../../src/ast/miscellaneous/Property";
 import { IProgram } from "../../../src/ast/programs/Program";
+import { IProperty } from "../../../src/ast/properties/Property";
 import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
 import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
 import { IWithStatement } from "../../../src/ast/statements/WithStatement";

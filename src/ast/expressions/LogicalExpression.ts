@@ -1,4 +1,4 @@
-import { LogicalOperator } from "../miscellaneous/LogicalOperator";
+import { LogicalOperator } from "../operators/LogicalOperator";
 import { IExpression } from "./Expression";
 
 export interface ILogicalExpression extends IExpression {

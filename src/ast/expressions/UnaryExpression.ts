@@ -1,4 +1,4 @@
-import { UnaryOperator } from "../miscellaneous/UnaryOperator";
+import { UnaryOperator } from "../operators/UnaryOperator";
 import { IExpression } from "./Expression";
 
 export interface IUnaryExpression extends IExpression {

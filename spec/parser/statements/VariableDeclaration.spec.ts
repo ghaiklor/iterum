@@ -4,10 +4,10 @@ import { IArrayExpression } from "../../../src/ast/expressions/ArrayExpression";
 import { IObjectExpression } from "../../../src/ast/expressions/ObjectExpression";
 import { ILiteral } from "../../../src/ast/literals/Literal";
 import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { IProperty } from "../../../src/ast/miscellaneous/Property";
 import { IArrayPattern } from "../../../src/ast/patterns/ArrayPattern";
 import { IObjectPattern } from "../../../src/ast/patterns/ObjectPattern";
 import { IProgram } from "../../../src/ast/programs/Program";
+import { IProperty } from "../../../src/ast/properties/Property";
 import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
 import { Parser } from "../../../src/parser/Parser";
 

@@ -1,4 +1,4 @@
-import { BinaryOperator } from "../miscellaneous/BinaryOperator";
+import { BinaryOperator } from "../operators/BinaryOperator";
 import { IExpression } from "./Expression";
 
 export interface IBinaryExpression extends IExpression {

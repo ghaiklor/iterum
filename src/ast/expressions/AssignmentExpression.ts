@@ -1,4 +1,4 @@
-import { AssignmentOperator } from "../miscellaneous/AssignmentOperator";
+import { AssignmentOperator } from "../operators/AssignmentOperator";
 import { IPattern } from "../patterns/Pattern";
 import { IExpression } from "./Expression";
 

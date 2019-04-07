@@ -1,5 +1,5 @@
 import { IExpression } from "../expressions/Expression";
-import { IIdentifier } from "./Identifier";
+import { IIdentifier } from "../miscellaneous/Identifier";
 
 export interface IMetaProperty extends IExpression {
   type: "MetaProperty";

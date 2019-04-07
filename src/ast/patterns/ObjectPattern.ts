@@ -1,4 +1,4 @@
-import { IAssignmentProperty } from "../miscellaneous/AssignmentProperty";
+import { IAssignmentProperty } from "../properties/AssignmentProperty";
 import { IPattern } from "./Pattern";
 import { IRestElement } from "./RestElement";
 

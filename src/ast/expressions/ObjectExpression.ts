@@ -1,5 +1,5 @@
-import { IProperty } from "../miscellaneous/Property";
 import { ISpreadElement } from "../miscellaneous/SpreadElement";
+import { IProperty } from "../properties/Property";
 import { IExpression } from "./Expression";
 
 export interface IObjectExpression extends IExpression {

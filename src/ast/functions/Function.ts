@@ -1,7 +1,7 @@
 import { IIdentifier } from "../miscellaneous/Identifier";
 import { INode } from "../node/Node";
 import { IPattern } from "../patterns/Pattern";
-import { IFunctionBody } from "../statements/FunctionBody";
+import { IFunctionBody } from "./FunctionBody";
 
 export interface IFunction extends INode {
   id: IIdentifier | null;
