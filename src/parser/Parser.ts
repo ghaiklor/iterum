@@ -52,12 +52,14 @@ import { IStatement } from "../ast/statements/Statement";
 import { ISwitchStatement } from "../ast/statements/SwitchStatement";
 import { IThrowStatement } from "../ast/statements/ThrowStatement";
 import { ITryStatement } from "../ast/statements/TryStatement";
+import { IWhileStatement } from "../ast/statements/WhileStatement";
 import { IWithStatement } from "../ast/statements/WithStatement";
 import { Scanner } from "../scanner/Scanner";
 import { Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
 
-type IBreakableStatement = IDoWhileStatement | IForStatement | IForInStatement | IForOfStatement | ISwitchStatement;
+type IIterationStatement = IDoWhileStatement | IWhileStatement | IForStatement | IForInStatement | IForOfStatement;
+type IBreakableStatement = IIterationStatement | ISwitchStatement;
 
 export class Parser {
   public static parse(source: string): IProgram {
@@ -1096,7 +1098,7 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private iterationStatement(): IDoWhileStatement | IForStatement | IForInStatement | IForOfStatement {
+  private iterationStatement(): IIterationStatement {
     if (this.eat(TokenType.DO)) {
       const node = this.openNode<IDoWhileStatement>("DoWhileStatement");
       node.body = this.statement();
@@ -1108,7 +1110,7 @@ export class Parser {
 
       return this.closeNode(node);
     } else if (this.eat(TokenType.WHILE)) {
-      const node = this.openNode<IDoWhileStatement>("DoWhileStatement");
+      const node = this.openNode<IWhileStatement>("WhileStatement");
 
       this.expect(TokenType.LEFT_PARENTHESIS);
       node.test = this.expression();

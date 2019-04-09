@@ -6,6 +6,7 @@ import { IProgram } from "../../../src/ast/programs/Program";
 import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
 import { IDoWhileStatement } from "../../../src/ast/statements/DoWhileStatement";
 import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
+import { IWhileStatement } from "../../../src/ast/statements/WhileStatement";
 import { Parser } from "../../../src/parser/Parser";
 
 describe("Iterum::Parser::DoWhileStatement", () => {
@@ -97,8 +98,8 @@ describe("Iterum::Parser::DoWhileStatement", () => {
           right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
           type: "BinaryExpression",
         } as IBinaryExpression,
-        type: "DoWhileStatement",
-      } as IDoWhileStatement],
+        type: "WhileStatement",
+      } as IWhileStatement],
       loc: null,
       sourceType: "module",
       type: "Program",
