@@ -2401,10 +2401,11 @@ let passed = (name, file, log = false) => {
   }
 };
 
-let failed = (name, file) => {
+let failed = (e, name, file) => {
   failedCount++;
   console.log(chalk.red(`Test Suite "${name}", case ${file} failed ❌`));
   console.log(chalk.red(`${path.resolve(TESTS[name], file)}`));
+  console.log(chalk.red(`${e.message}`));
 };
 
 let runBatch = (name, isThrow) => {
@@ -2420,7 +2421,7 @@ let runBatch = (name, isThrow) => {
       assertMethod(() => parse(fs.readFileSync(`${TESTS[name]}/${file}`, 'utf8')));
       passed(name, file, process.env.LOG_PASSED);
     } catch (e) {
-      failed(name, file);
+      failed(e, name, file);
     }
   });
 };
