@@ -2,6 +2,7 @@ import { Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
 
 export const KEYWORDS = new Map<string, Token>([
+  ["as", new Token(TokenType.AS, "as")],
   ["async", new Token(TokenType.ASYNC, "async")],
   ["await", new Token(TokenType.AWAIT, "await")],
   ["break", new Token(TokenType.BREAK, "break")],
@@ -21,6 +22,7 @@ export const KEYWORDS = new Map<string, Token>([
   ["false", new Token(TokenType.BOOLEAN_LITERAL, "false")],
   ["finally", new Token(TokenType.FINALLY, "finally")],
   ["for", new Token(TokenType.FOR, "for")],
+  ["from", new Token(TokenType.FROM, "from")],
   ["function", new Token(TokenType.FUNCTION, "function")],
   ["get", new Token(TokenType.GET, "get")],
   ["if", new Token(TokenType.IF, "if")],

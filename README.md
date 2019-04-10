@@ -5,6 +5,7 @@
 ![Codacy branch grade](https://img.shields.io/codacy/grade/315a0c481bd74165bc0c64597d893f32/master.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ghaiklor/iterum.svg)
 ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
+![ECMA-262 Coverage](https://img.shields.io/static/v1.svg?label=ECMA-262%20Coverage&message=51.50%&color=informational)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ghaiklor/iterum.svg)
 
 [![GitHub followers](https://img.shields.io/github/followers/ghaiklor.svg?label=Follow&style=social)](https://github.com/ghaiklor)

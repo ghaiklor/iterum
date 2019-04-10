@@ -25,6 +25,15 @@ import { IUnaryExpression } from "../ast/expressions/UnaryExpression";
 import { IUpdateExpression } from "../ast/expressions/UpdateExpression";
 import { ILiteral } from "../ast/literals/Literal";
 import { IIdentifier } from "../ast/miscellaneous/Identifier";
+import { IExportAllDeclaration } from "../ast/modules/ExportAllDeclaration";
+import { IExportDefaultDeclaration } from "../ast/modules/ExportDefaultDeclaration";
+import { IExportNamedDeclaration } from "../ast/modules/ExportNamedDeclaration";
+import { IExportSpecifier } from "../ast/modules/ExportSpecifier";
+import { IImportDeclaration } from "../ast/modules/ImportDeclaration";
+import { IImportDefaultSpecifier } from "../ast/modules/ImportDefaultSpecifier";
+import { IImportNamespaceSpecifier } from "../ast/modules/ImportNamespaceSpecifier";
+import { IImportSpecifier } from "../ast/modules/ImportSpecifier";
+import { IModuleDeclaration } from "../ast/modules/ModuleDeclaration";
 import { INode } from "../ast/node/Node";
 import { AssignmentOperator } from "../ast/operators/AssignmentOperator";
 import { BinaryOperator } from "../ast/operators/BinaryOperator";
@@ -60,6 +69,7 @@ import { TokenType } from "../token/TokenType";
 
 type IIterationStatement = IDoWhileStatement | IWhileStatement | IForStatement | IForInStatement | IForOfStatement;
 type IBreakableStatement = IIterationStatement | ISwitchStatement;
+type IExportDeclaration = IExportDefaultDeclaration | IExportNamedDeclaration | IExportAllDeclaration;
 
 export class Parser {
   public static parse(source: string): IProgram {
@@ -1458,10 +1468,186 @@ export class Parser {
     return this.methodDefinition();
   }
 
+  // ------------------------- //
+  // --- GRAMMAR (MODULES) --- //
+  // ------------------------- //
+  private module(): Array<IModuleDeclaration | IStatement> {
+    return this.moduleBody();
+  }
+
+  private moduleBody(): Array<IModuleDeclaration | IStatement> {
+    return this.moduleItemList();
+  }
+
+  private moduleItemList(): Array<IModuleDeclaration | IStatement> {
+    const items = [this.moduleItem()];
+
+    while (!this.currentToken.is(TokenType.EOF)) {
+      items.push(this.moduleItem());
+    }
+
+    return items;
+  }
+
+  private moduleItem(): IModuleDeclaration | IStatement {
+    if (this.currentToken.is(TokenType.IMPORT)) {
+      return this.importDeclaration();
+    } else if (this.currentToken.is(TokenType.EXPORT)) {
+      return this.exportDeclaration();
+    } else {
+      return this.statementListItem();
+    }
+  }
+
+  private importDeclaration(): IImportDeclaration {
+    const node = this.openNode<IImportDeclaration>("ImportDeclaration");
+
+    this.expect(TokenType.IMPORT);
+    node.specifiers = this.importClause();
+    node.source = this.fromClause();
+    this.eat(TokenType.SEMICOLON);
+
+    return this.closeNode(node);
+  }
+
+  private importClause(): Array<IImportDefaultSpecifier | IImportNamespaceSpecifier | IImportSpecifier> {
+    if (this.currentToken.is(TokenType.IDENTIFIER)) {
+      return this.importedDefaultBinding();
+    } else if (this.currentToken.is(TokenType.MULTIPLY)) {
+      return this.namespaceImport();
+    } else {
+      return this.namedImports();
+    }
+  }
+
+  private importedDefaultBinding(): IImportDefaultSpecifier[] {
+    const node = this.openNode<IImportDefaultSpecifier>("ImportDefaultSpecifier");
+    node.local = this.importedBinding();
+    return [this.closeNode(node)];
+  }
+
+  private namespaceImport(): IImportNamespaceSpecifier[] {
+    const node = this.openNode<IImportNamespaceSpecifier>("ImportNamespaceSpecifier");
+
+    this.expect(TokenType.MULTIPLY);
+    this.expect(TokenType.AS);
+    node.local = this.importedBinding();
+
+    return [this.closeNode(node)];
+  }
+
+  private namedImports(): IImportSpecifier[] {
+    this.expect(TokenType.LEFT_CURLY_BRACES);
+    if (this.eat(TokenType.RIGHT_CURLY_BRACES)) {
+      return [];
+    }
+
+    const imports = this.importsList();
+    this.expect(TokenType.RIGHT_CURLY_BRACES);
+
+    return imports;
+  }
+
+  private fromClause(): ILiteral {
+    this.expect(TokenType.FROM);
+    return this.moduleSpecifier();
+  }
+
+  private importsList(): IImportSpecifier[] {
+    const imports = [this.importSpecifier()];
+
+    while (this.eat(TokenType.COMMA)) {
+      imports.push(this.importSpecifier());
+    }
+
+    return imports;
+  }
+
+  private importSpecifier(): IImportSpecifier {
+    const node = this.openNode<IImportSpecifier>("ImportSpecifier");
+
+    node.imported = this.identifier();
+    node.local = node.imported;
+    if (this.eat(TokenType.AS)) {
+      node.local = this.importedBinding();
+    }
+
+    return this.closeNode(node);
+  }
+
+  private moduleSpecifier(): ILiteral {
+    return this.literal();
+  }
+
+  private importedBinding(): IIdentifier {
+    return this.bindingIdentifier();
+  }
+
+  private exportDeclaration(): IExportDeclaration {
+    this.expect(TokenType.EXPORT);
+
+    if (this.eat(TokenType.MULTIPLY)) {
+      const node = this.openNode<IExportAllDeclaration>("ExportAllDeclaration");
+      node.source = this.fromClause();
+      this.eat(TokenType.SEMICOLON);
+      return this.closeNode(node);
+    } else if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
+      return this.exportClause();
+    } else {
+      this.expect(TokenType.DEFAULT);
+
+      const node = this.openNode<IExportDefaultDeclaration>("ExportDefaultDeclaration");
+      node.declaration = this.classDeclaration();
+      this.eat(TokenType.SEMICOLON);
+
+      return this.closeNode(node);
+    }
+  }
+
+  private exportClause(): IExportNamedDeclaration {
+    const node = this.openNode<IExportNamedDeclaration>("ExportNamedDeclaration");
+
+    node.declaration = null;
+    node.source = null;
+    node.specifiers = [];
+    this.expect(TokenType.LEFT_CURLY_BRACES);
+    if (this.eat(TokenType.RIGHT_CURLY_BRACES)) {
+      return this.closeNode(node);
+    }
+
+    node.specifiers = this.exportsList();
+    this.expect(TokenType.RIGHT_CURLY_BRACES);
+    this.eat(TokenType.SEMICOLON);
+
+    return this.closeNode(node);
+  }
+
+  private exportsList(): IExportSpecifier[] {
+    const specifiers = [this.exportSpecifier()];
+
+    while (this.eat(TokenType.COMMA)) {
+      specifiers.push(this.exportSpecifier());
+    }
+
+    return specifiers;
+  }
+
+  private exportSpecifier(): IExportSpecifier {
+    const node = this.openNode<IExportSpecifier>("ExportSpecifier");
+
+    node.local = this.identifier();
+    node.exported = node.local;
+    if (this.eat(TokenType.AS)) {
+      node.exported = this.identifier();
+    }
+
+    return this.closeNode(node);
+  }
+
   private program(): IProgram {
     const node = this.openNode<IProgram>("Program");
     node.sourceType = "module";
-    node.body = [this.statement()];
+    node.body = this.module();
 
     return this.closeNode(node);
   }

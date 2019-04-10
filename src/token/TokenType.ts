@@ -1,5 +1,6 @@
 export const enum TokenType {
   ARROW = "=>",
+  AS = "AS",
   ASSIGN = "=",
   ASYNC = "ASYNC",
   AWAIT = "AWAIT",
@@ -45,6 +46,7 @@ export const enum TokenType {
   EXTENDS = "EXTENDS",
   FINALLY = "FINALLY",
   FOR = "FOR",
+  FROM = "FROM",
   FUNCTION = "FUNCTION",
   GET = "GET",
   GREATER_THAN = ">",
