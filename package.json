@@ -10,6 +10,7 @@
     "email": "ghaiklor@gmail.com",
     "url": "https://ghaiklor.com"
   },
+  "bin": "./bin/iterum",
   "bugs": {
     "url": "https://github.com/ghaiklor/iterum/issues",
     "email": "ghaiklor@gmail.com"
@@ -41,7 +42,9 @@
     "test:test262-parser-tests": "tsc && node tools/test262-parser-tests.js",
     "test:unit": "jest --no-cache --coverage --config jest.config.json"
   },
-  "dependencies": {},
+  "dependencies": {
+    "commander": "2.20.0"
+  },
   "devDependencies": {
     "@types/jest": "24.0.11",
     "chalk": "2.4.2",
