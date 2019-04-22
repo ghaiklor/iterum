@@ -39,7 +39,7 @@
     "commit": "npx git-cz",
     "lint": "tslint --project tsconfig.json --config tslint.json",
     "test": "npm run test:unit && npm run test:test262-parser-tests",
-    "test:test262-parser-tests": "tsc && node tools/test262-parser-tests.js",
+    "test:test262-parser-tests": "tsc && node tools/test262-parser-tests/test262-parser-tests.js",
     "test:unit": "jest --no-cache --coverage --config jest.config.json"
   },
   "dependencies": {
