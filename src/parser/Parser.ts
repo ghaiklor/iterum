@@ -951,15 +951,9 @@ export class Parser {
 
   private variableStatement(): IVariableDeclaration {
     const node = this.openNode<IVariableDeclaration>("VariableDeclaration");
+    this.expect(TokenType.VAR);
 
-    if (this.eat(TokenType.VAR)) {
-      node.kind = "var";
-    } else if (this.eat(TokenType.LET)) {
-      node.kind = "let";
-    } else if (this.eat(TokenType.CONST)) {
-      node.kind = "const";
-    }
-
+    node.kind = "var";
     node.declarations = this.variableDeclarationList();
 
     return this.closeNode(node);

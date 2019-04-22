@@ -33,6 +33,48 @@ describe("Iterum::Parser::VariableDeclaration", () => {
     } as IProgram);
   });
 
+  it("Should properly parse let with initializer", () => {
+    const source = `let a = 2;`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        declarations: [{
+          id: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          init: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+          loc: null,
+          type: "VariableDeclarator",
+        } as IVariableDeclarator],
+        loc: null,
+        type: "VariableDeclaration",
+      } as IVariableDeclaration],
+      loc: null,
+      sourceType: "module",
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse const with initializer", () => {
+    const source = `const a = 2;`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        declarations: [{
+          id: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          init: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+          loc: null,
+          type: "VariableDeclarator",
+        } as IVariableDeclarator],
+        loc: null,
+        type: "VariableDeclaration",
+      } as IVariableDeclaration],
+      loc: null,
+      sourceType: "module",
+      type: "Program",
+    } as IProgram);
+  });
+
   it("Should properly parse multiple variable declarator with initializer", () => {
     const source = `var a, b = 2;`;
     const ast = Parser.parse(source);
@@ -101,6 +143,54 @@ describe("Iterum::Parser::VariableDeclaration", () => {
           type: "VariableDeclarator",
         } as IVariableDeclarator],
         kind: "let",
+        loc: null,
+        type: "VariableDeclaration",
+      } as IVariableDeclaration],
+      loc: null,
+      sourceType: "module",
+      type: "Program",
+    } as IProgram);
+  });
+
+  it("Should properly parse variable declaration with object binding pattern", () => {
+    const source = `var { a } = { a: 2 };`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        declarations: [{
+          id: {
+            loc: null,
+            properties: [{
+              computed: false,
+              key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+              kind: "init",
+              loc: null,
+              method: false,
+              shorthand: true,
+              type: "Property",
+              value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+            } as IProperty],
+            type: "ObjectPattern",
+          } as IObjectPattern,
+          init: {
+            loc: null,
+            properties: [{
+              computed: false,
+              key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+              kind: "init",
+              loc: null,
+              method: false,
+              shorthand: false,
+              type: "Property",
+              value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+            } as IProperty],
+            type: "ObjectExpression",
+          } as IObjectExpression,
+          loc: null,
+          type: "VariableDeclarator",
+        } as IVariableDeclarator],
+        kind: "var",
         loc: null,
         type: "VariableDeclaration",
       } as IVariableDeclaration],
