@@ -3,8 +3,8 @@
 const program = require('commander');
 const fs = require('fs');
 const path = require('path');
-const version = require('../package.json').version;
-const parse = require('../dist/parser/Parser').Parser.parse;
+const version = require(path.resolve(__dirname, '../package.json')).version;
+const parse = require(path.resolve(__dirname, '../dist/parser/Parser')).Parser.parse;
 
 program
   .version(version, '--version')
