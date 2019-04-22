@@ -10,7 +10,7 @@
     "email": "ghaiklor@gmail.com",
     "url": "https://ghaiklor.com"
   },
-  "bin": "./bin/iterum",
+  "bin": "./bin/iterum.js",
   "bugs": {
     "url": "https://github.com/ghaiklor/iterum/issues",
     "email": "ghaiklor@gmail.com"
