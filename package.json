@@ -38,7 +38,7 @@
     "clean": "rimraf coverage dist",
     "commit": "npx git-cz",
     "lint": "tslint --project tsconfig.json --config tslint.json",
-    "prepare": "npm run build",
+    "prepare": "tsc",
     "preversion": "npm run build",
     "test": "npm run test:unit && npm run test:test262-parser-tests",
     "test:test262-parser-tests": "tsc && node tools/test262-parser-tests/test262-parser-tests.js",
