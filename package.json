@@ -41,16 +41,19 @@
   },
   "scripts": {
     "build": "npm run clean && npm run lint && npm run test && npm run compile",
+    "changelog": "standard-changelog",
     "clean": "rimraf coverage dist",
     "commit": "git-cz",
     "compile": "tsc",
     "lint": "tslint --project tsconfig.json --config tslint.json",
+    "postversion": "git push && git push --tags",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "preversion": "npm run build",
     "test": "npm run test:unit && npm run test:test262-parser-tests",
     "test:test262-parser-tests": "node tools/test262-parser-tests/test262-parser-tests.js",
-    "test:unit": "jest --no-cache --coverage --config jest.config.json"
+    "test:unit": "jest --no-cache --coverage --config jest.config.json",
+    "version": "npm run changelog && git add CHANGELOG.md"
   },
   "dependencies": {
     "commander": "2.20.0"
@@ -62,6 +65,7 @@
     "git-cz": "3.0.1",
     "jest": "24.8.0",
     "rimraf": "2.6.3",
+    "standard-changelog": "2.0.11",
     "test262-parser-tests": "github:tc39/test262-parser-tests",
     "ts-jest": "24.0.2",
     "tslint": "5.16.0",
