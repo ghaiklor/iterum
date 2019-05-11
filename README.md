@@ -19,39 +19,20 @@ _It is just an educational project and VM itself is implemented on top of NodeJS
 
 ## Getting Started
 
-TK fill it when everything is done (CLI, REPL, basic examples in Iterum language)
-
-Run the VM in REPL mode:
-
-```shell
-iterum
-```
-
-Pass the file with Iterum sources to VM for execution:
-
-```shell
-iterum your-source-code.im
-```
-
-## Iterum Language
-
-TK fill it with grammar and some examples
-
-An example program that read two numbers and adds them together:
+Write your code in Iterum Language and save it somewhere, i.e (_examples/add.js_):
 
 ```javascript
 function add(a, b) {
     return a + b;
 }
 
-print("A = ");
-let a = read();
+console.log(add(2, 5));
+```
 
-print("B = ");
-let b = read();
+Run iterum and provide path to the file:
 
-let result = add(a, b);
-print("A + B = " + result);
+```bash
+npx @ghaiklor/iterum --print-ast examples/add.js
 ```
 
 ## How It Works

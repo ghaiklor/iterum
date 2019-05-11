@@ -1,16 +1,17 @@
 {
-  "name": "iterum",
-  "version": "0.1.0",
+  "name": "@ghaiklor/iterum",
+  "version": "0.0.0",
   "description": "Yet another attempt to create VM with its own language and intermediate representation",
   "license": "MIT",
-  "main": "index.js",
   "homepage": "https://github.com/ghaiklor/iterum#readme",
   "author": {
     "name": "Eugene Obrezkov",
     "email": "ghaiklor@gmail.com",
     "url": "https://ghaiklor.com"
   },
-  "bin": "./bin/iterum.js",
+  "bin": {
+    "iterum": "./bin/iterum.js"
+  },
   "bugs": {
     "url": "https://github.com/ghaiklor/iterum/issues",
     "email": "ghaiklor@gmail.com"
@@ -32,6 +33,11 @@
     "commitizen": {
       "path": "git-cz"
     }
+  },
+  "publishConfig": {
+    "tag": "latest",
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "scripts": {
     "build": "npm run clean && npm run lint && npm run test && npm run compile",

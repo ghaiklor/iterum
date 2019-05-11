@@ -1,0 +1,6 @@
+.vscode/
+coverage/
+examples/
+spec/
+src/
+tools/

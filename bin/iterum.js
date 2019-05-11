@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+// TODO: make normal CLI when VM will be ready
+
 const program = require('commander');
 const fs = require('fs');
 const path = require('path');
@@ -9,7 +11,7 @@ const parse = require(path.resolve(__dirname, '../dist/parser/Parser')).Parser.p
 program
   .version(version, '--version')
   .usage('[options] <file...>')
-  .option('--print-ast', 'Print the AST after parsing the source language')
+  .option('--print-ast', 'print the AST after parsing the source language')
   .parse(process.argv);
 
 const file = program.args[0];
