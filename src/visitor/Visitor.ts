@@ -1,0 +1,20 @@
+import { INode } from "../ast/node/Node";
+
+export class Visitor {
+  // TODO: improve types information about visitors
+  private visitors: Record<string, (node: any, visitor: Visitor) => any>;
+  constructor(visitors: Record<string, (node: any, visitor: Visitor) => any>) {
+    this.visitors = visitors;
+  }
+
+  public visit(node: INode) {
+    const type = node.type;
+    const visitor = this.visitors[type];
+
+    if (!visitor || typeof visitor !== "function") {
+      throw new Error(`No visitor found for ${type}`);
+    }
+
+    return visitor(node, this);
+  }
+}
