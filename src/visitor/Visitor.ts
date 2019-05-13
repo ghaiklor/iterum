@@ -1,9 +1,8 @@
 import { INode } from "../ast/node/Node";
 
 export class Visitor {
-  // TODO: improve types information about visitors
-  private visitors: Record<string, (node: any, visitor: Visitor) => any>;
-  constructor(visitors: Record<string, (node: any, visitor: Visitor) => any>) {
+  private visitors: Record<string, (node: INode, visitor: Visitor) => any>;
+  constructor(visitors: Record<string, (node: INode, visitor: Visitor) => any>) {
     this.visitors = visitors;
   }
 

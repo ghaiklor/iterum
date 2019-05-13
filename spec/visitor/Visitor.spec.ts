@@ -11,7 +11,8 @@ describe("Iterum::Visitor", () => {
     const source = `2 + 5`;
     const ast = Parser.parse(source);
     const traverser = new Visitor({
-      BinaryExpression: (node: IBinaryExpression, visitor) => {
+      BinaryExpression: (n, visitor) => {
+        const node = n as IBinaryExpression;
         const left = visitor.visit(node.left);
         const right = visitor.visit(node.right);
 
@@ -20,14 +21,14 @@ describe("Iterum::Visitor", () => {
             return left + right;
         }
       },
-      ExpressionStatement: (node: IExpressionStatement, visitor) => {
-        return visitor.visit(node.expression);
+      ExpressionStatement: (node, visitor) => {
+        return visitor.visit((node as IExpressionStatement).expression);
       },
-      Literal: (node: ILiteral) => {
-        return node.value;
+      Literal: (node) => {
+        return (node as ILiteral).value;
       },
-      Program: (node: IProgram, visitor) => {
-        return node.body.map((n) => visitor.visit(n))[0];
+      Program: (node, visitor) => {
+        return (node as IProgram).body.map((n) => visitor.visit(n))[0];
       },
     });
 
