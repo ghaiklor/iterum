@@ -61,7 +61,7 @@
   "devDependencies": {
     "@types/jest": "24.0.13",
     "chalk": "2.4.2",
-    "codecov": "3.4.0",
+    "codecov": "3.5.0",
     "git-cz": "3.0.1",
     "jest": "24.8.0",
     "rimraf": "2.6.3",
