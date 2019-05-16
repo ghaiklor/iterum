@@ -11,19 +11,24 @@ export class Interpreter {
 
   private ast: INode;
   private visitor: Visitor;
-  private symbolTable: SymbolTable;
+  private scope: SymbolTable;
   constructor(ast: INode) {
     this.ast = ast;
 
-    this.symbolTable = new SymbolTable();
-    this.symbolTable.define(new Symbol("console", console));
+    this.scope = new SymbolTable();
+    this.scope.define(new Symbol("console", console));
 
     this.visitor = new Visitor(VISITORS);
-    this.visitor.setSymbolTable(this.symbolTable);
+    this.visitor.setScope(this.scope);
   }
 
-  public getCurrentScope(): SymbolTable {
-    return this.symbolTable;
+  public setScope(scope: SymbolTable): Interpreter {
+    this.scope = scope;
+    return this;
+  }
+
+  public getScope(): SymbolTable {
+    return this.scope;
   }
 
   public interpret() {

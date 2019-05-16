@@ -174,10 +174,11 @@ describe("Iterum::Interpreter", () => {
     const source = `let a = 5;`;
     const ast = Parser.parse(source);
     const interpreter = new Interpreter(ast);
+    const scope = interpreter.getScope();
 
+    expect(scope.lookup("a")).toBeUndefined();
     interpreter.interpret();
 
-    const scope = interpreter.getCurrentScope();
     const aSymbol = scope.lookup("a");
     if (aSymbol) {
       expect(aSymbol.name).toEqual("a");

@@ -2,20 +2,20 @@ import { INode } from "../ast/node/Node";
 import { SymbolTable } from "../symbols/SymbolTable";
 
 export class Visitor {
-  private symbolTable: SymbolTable;
+  private scope: SymbolTable;
   private visitors: Record<string, (node: INode, visitor: Visitor) => any>;
   constructor(visitors: Record<string, (node: INode, visitor: Visitor) => any>) {
-    this.symbolTable = new SymbolTable();
+    this.scope = new SymbolTable();
     this.visitors = visitors;
   }
 
-  public setSymbolTable(table: SymbolTable): Visitor {
-    this.symbolTable = table;
+  public setScope(scope: SymbolTable): Visitor {
+    this.scope = scope;
     return this;
   }
 
-  public getSymbolTable(): SymbolTable {
-    return this.symbolTable;
+  public getScope(): SymbolTable {
+    return this.scope;
   }
 
   public visit(node: INode) {
