@@ -169,4 +169,21 @@ describe("Iterum::Interpreter", () => {
 
     expect(result).toEqual([1, 2, 3]);
   });
+
+  it("Should properly interpret variable declaration", () => {
+    const source = `let a = 5;`;
+    const ast = Parser.parse(source);
+    const interpreter = new Interpreter(ast);
+
+    interpreter.interpret();
+
+    const scope = interpreter.getCurrentScope();
+    const aSymbol = scope.lookup("a");
+    if (aSymbol) {
+      expect(aSymbol.name).toEqual("a");
+      expect(aSymbol.value).toEqual(5);
+    } else {
+      throw new Error("aSymbol must be declared");
+    }
+  });
 });

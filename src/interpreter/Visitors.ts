@@ -1,8 +1,11 @@
 import { ArrayExpression } from "./visitors/ArrayExpression";
 import { BinaryExpression } from "./visitors/BinaryExpression";
 import { ExpressionStatement } from "./visitors/ExpressionStatement";
+import { Identifier } from "./visitors/Identifier";
 import { Literal } from "./visitors/Literal";
 import { Program } from "./visitors/Program";
+import { VariableDeclaration } from "./visitors/VariableDeclaration";
+import { VariableDeclarator } from "./visitors/VariableDeclarator";
 
 // TODO: uncomment visitors when they will have an implementation
 export const VISITORS = {
@@ -45,7 +48,7 @@ export const VISITORS = {
   // GeneratorExpression: () => notImplemented(),
   // GraphExpression: () => notImplemented(),
   // GraphIndexExpression: () => notImplemented(),
-  // Identifier: () => notImplemented(),
+  Identifier,
   // IfStatement: () => notImplemented(),
   // ImportDeclaration: () => notImplemented(),
   // ImportDefaultSpecifier: () => notImplemented(),
@@ -82,8 +85,8 @@ export const VISITORS = {
   // TryStatement: () => notImplemented(),
   // UnaryExpression: () => notImplemented(),
   // UpdateExpression: () => notImplemented(),
-  // VariableDeclaration: () => notImplemented(),
-  // VariableDeclarator: () => notImplemented(),
+  VariableDeclaration,
+  VariableDeclarator,
   // WhileStatement: () => notImplemented(),
   // WithStatement: () => notImplemented(),
   // YieldExpression: () => notImplemented(),
