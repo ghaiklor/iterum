@@ -187,4 +187,18 @@ describe("Iterum::Interpreter", () => {
       throw new Error("aSymbol must be declared");
     }
   });
+
+  it("Should properly interpret binary expression with variables", () => {
+    const source = `
+      let a = 5;
+      let b = 2;
+
+      a * b;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(10);
+  });
 });
