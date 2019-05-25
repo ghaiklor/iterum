@@ -5,7 +5,7 @@ import { AssignmentOperator } from "../../ast/operators/AssignmentOperator";
 import { Symbol } from "../../symbols/Symbol";
 import { Visitor } from "../../visitor/Visitor";
 
-export function AssignmentExpression(n: INode, visitor: Visitor) {
+export function AssignmentExpression(n: INode, visitor: Visitor): any {
   const node = n as IAssignmentExpression;
   const scope = visitor.getScope();
   const rhsValue = visitor.visit(node.right);
@@ -66,4 +66,6 @@ export function AssignmentExpression(n: INode, visitor: Visitor) {
       scope.assign(new Symbol(lhsName, lhsValue & rhsValue));
       break;
   }
+
+  return scope.lookup(lhsName).value;
 }

@@ -2,7 +2,7 @@ import { IArrayExpression } from "../../ast/expressions/ArrayExpression";
 import { INode } from "../../ast/node/Node";
 import { Visitor } from "../../visitor/Visitor";
 
-export function ArrayExpression(n: INode, visitor: Visitor) {
+export function ArrayExpression(n: INode, visitor: Visitor): any[] {
   const node = n as IArrayExpression;
   const elements = [];
 

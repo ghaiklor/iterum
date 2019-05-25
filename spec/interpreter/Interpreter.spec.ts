@@ -438,11 +438,9 @@ describe("Iterum::Interpreter", () => {
     const source = `print "Hello, World!"`;
     const ast = Parser.parse(source);
     const stdoutMock = jest.spyOn(process.stdout, "write").mockImplementationOnce(() => true);
-    const result = Interpreter.interpret(ast);
 
-    expect(result).toEqual("Hello, World!");
+    Interpreter.interpret(ast);
     expect(stdoutMock).toHaveBeenCalledWith("Hello, World!\n");
-
     stdoutMock.mockRestore();
   });
 });

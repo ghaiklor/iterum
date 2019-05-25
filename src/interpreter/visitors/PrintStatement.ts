@@ -5,7 +5,6 @@ import { Visitor } from "../../visitor/Visitor";
 export function PrintStatement(n: INode, visitor: Visitor) {
   const node = n as IPrintStatement;
   const value = visitor.visit(node.expression);
-  process.stdout.write(`${value}\n`);
 
-  return value;
+  process.stdout.write(`${value}\n`);
 }

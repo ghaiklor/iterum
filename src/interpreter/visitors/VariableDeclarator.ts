@@ -21,5 +21,5 @@ export function VariableDeclarator(n: INode, visitor: Visitor) {
   }
 
   const symbol = new Symbol(name, value);
-  return scope.define(symbol);
+  scope.define(symbol);
 }
