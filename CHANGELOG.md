@@ -1,3 +1,23 @@
+# [0.2.0](https://github.com/ghaiklor/iterum/compare/v0.1.0...v0.2.0) (2019-05-25)
+
+
+### Bug Fixes
+
+* 🐛 symbol table instance leak as an interpret result ([00c8a6a](https://github.com/ghaiklor/iterum/commit/00c8a6a))
+
+
+### Features
+
+* 🎸 implement basic interpreter with few visitors ([59cbb64](https://github.com/ghaiklor/iterum/commit/59cbb64))
+* 🎸 implement interpreter for VariableDeclaration ([aba0fc3](https://github.com/ghaiklor/iterum/commit/aba0fc3))
+* 🎸 implement print as a statement ([b968de6](https://github.com/ghaiklor/iterum/commit/b968de6))
+* 🎸 implement REPL for interpreter ([0770e27](https://github.com/ghaiklor/iterum/commit/0770e27))
+* 🎸 implement variable declarations, assignments, scopes ([660edc7](https://github.com/ghaiklor/iterum/commit/660edc7))
+* 🎸 implement visitor for AST nodes ([563fdbb](https://github.com/ghaiklor/iterum/commit/563fdbb))
+* 🎸 implementation for symbol tables ([248eae6](https://github.com/ghaiklor/iterum/commit/248eae6))
+
+
+
 # 0.1.0 (2019-05-11)
 
 
