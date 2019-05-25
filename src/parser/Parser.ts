@@ -56,6 +56,7 @@ import { IForInStatement } from "../ast/statements/ForInStatement";
 import { IForOfStatement } from "../ast/statements/ForOfStatement";
 import { IForStatement } from "../ast/statements/ForStatement";
 import { IIfStatement } from "../ast/statements/IfStatement";
+import { IPrintStatement } from "../ast/statements/PrintStatement";
 import { IReturnStatement } from "../ast/statements/ReturnStatement";
 import { IStatement } from "../ast/statements/Statement";
 import { ISwitchStatement } from "../ast/statements/SwitchStatement";
@@ -817,6 +818,8 @@ export class Parser {
       return this.breakStatement();
     } else if (this.currentToken.isSomeOf([TokenType.DO, TokenType.WHILE, TokenType.FOR, TokenType.SWITCH])) {
       return this.breakableStatement();
+    } else if (this.currentToken.is(TokenType.PRINT)) {
+      return this.printStatement();
     } else {
       return this.expressionStatement();
     }
@@ -848,6 +851,15 @@ export class Parser {
     } else {
       return this.switchStatement();
     }
+  }
+
+  private printStatement(): IPrintStatement {
+    const node = this.openNode<IPrintStatement>("PrintStatement");
+    this.expect(TokenType.PRINT);
+
+    node.expression = this.expression();
+
+    return this.closeNode(node);
   }
 
   private blockStatement(): IBlockStatement {

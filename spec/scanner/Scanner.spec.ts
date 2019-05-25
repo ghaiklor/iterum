@@ -291,7 +291,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "5" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_CURLY_BRACES, code: "{" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "print" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.PRINT, code: "print" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "Greater" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
@@ -299,7 +299,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_CURLY_BRACES, code: "}" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.ELSE, code: "else" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_CURLY_BRACES, code: "{" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "print" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.PRINT, code: "print" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.STRING_LITERAL, code: "Lesser" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
@@ -362,7 +362,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, code: "2" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "print" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.PRINT, code: "print" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "result" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
@@ -455,7 +455,7 @@ describe("Iterum::Lexer", () => {
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.SEMICOLON, code: ";" } as Token);
-    expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "print" } as Token);
+    expect(lexer.next()).toMatchObject({ type: TokenType.PRINT, code: "print" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.LEFT_PARENTHESIS, code: "(" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.IDENTIFIER, code: "result" } as Token);
     expect(lexer.next()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, code: ")" } as Token);

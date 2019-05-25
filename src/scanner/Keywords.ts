@@ -35,6 +35,7 @@ export const KEYWORDS = new Map<string, Token>([
   ["new", new Token(TokenType.NEW, "new")],
   ["null", new Token(TokenType.NULL_LITERAL, "null")],
   ["package", new Token(TokenType.PACKAGE, "package")],
+  ["print", new Token(TokenType.PRINT, "print")],
   ["private", new Token(TokenType.PRIVATE, "private")],
   ["protected", new Token(TokenType.PROTECTED, "protected")],
   ["public", new Token(TokenType.PUBLIC, "public")],

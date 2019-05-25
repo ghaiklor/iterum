@@ -84,6 +84,7 @@ export const enum TokenType {
   PLUS = "+",
   PLUS_ASSIGN = "+=",
   PLUS_PLUS = "++",
+  PRINT = "PRINT",
   PRIVATE = "PRIVATE",
   PROTECTED = "PROTECTED",
   PUBLIC = "PUBLIC",
