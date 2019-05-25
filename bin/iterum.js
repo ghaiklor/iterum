@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 
-// TODO: make normal CLI when VM will be ready
-
 const program = require('commander');
 const fs = require('fs');
+const repl = require('repl');
 const path = require('path');
 const version = require(path.resolve(__dirname, '../package.json')).version;
 const parse = require(path.resolve(__dirname, '../dist/parser/Parser')).Parser.parse;
-const interpret = require(path.resolve(__dirname, '../dist/interpreter/Interpreter')).Interpreter.interpret;
+const Interpreter = require(path.resolve(__dirname, '../dist/interpreter/Interpreter')).Interpreter;
 
 program
   .version(version, '--version')
@@ -16,17 +15,42 @@ program
   .option('--interpret', 'interpret the code and output the result of last statement')
   .parse(process.argv);
 
-const file = program.args[0];
-if (!file || typeof file !== 'string' || !fs.existsSync(file)) {
-  console.log(`File ${file} does not exists`);
+if (program.args.length > 1) {
+  program.outputHelp();
   process.exit(1);
 }
 
-const source = fs.readFileSync(file, 'utf-8');
-if (program.printAst) {
-  console.log(JSON.stringify(parse(source), null, 2));
+if (program.args.length === 1) {
+  const file = program.args[0];
+  if (!file || typeof file !== 'string' || !fs.existsSync(file)) {
+    console.error(`File ${file} does not exists`);
+    process.exit(1);
+  }
+
+  const source = fs.readFileSync(file, 'utf-8');
+  const ast = parse(source);
+
+  if (program.printAst) {
+    console.log(JSON.stringify(ast, null, 2));
+  }
+
+  if (program.interpret) {
+    Interpreter.interpret(ast);
+  }
+
+  process.exit(0);
 }
 
-if (program.interpret) {
-  interpret(parse(source));
+if (program.args.length === 0) {
+  const interpreter = new Interpreter();
+
+  repl.start({
+    prompt: "iterum > ",
+    eval: (cmd, context, file, cb) => {
+      const ast = parse(cmd);
+      const result = interpreter.interpret(ast);
+
+      cb(null, result);
+    }
+  });
 }

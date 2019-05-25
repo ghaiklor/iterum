@@ -20,7 +20,7 @@ export class Interpreter {
     return this.visitor.getScope();
   }
 
-  public interpret() {
-    return this.visitor.visit(this.ast);
+  public interpret(ast?: INode) {
+    return this.visitor.visit(ast || this.ast);
   }
 }
