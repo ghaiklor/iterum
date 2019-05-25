@@ -176,7 +176,7 @@ describe("Iterum::Interpreter", () => {
     const interpreter = new Interpreter(ast);
     const scope = interpreter.getScope();
 
-    expect(scope.lookup("a")).toBeUndefined();
+    expect(() => scope.lookup("a")).toThrowError("a is not declared");
     interpreter.interpret();
 
     const aSymbol = scope.lookup("a");
@@ -200,5 +200,249 @@ describe("Iterum::Interpreter", () => {
     const result = Interpreter.interpret(ast);
 
     expect(result).toEqual(10);
+  });
+
+  it("Should properly interpret binary expression with variables in different lexical scopes", () => {
+    const source = `
+      let result;
+
+      {
+        let a = 2;
+        {
+          let b = 3;
+          {
+            let c = 4;
+            result = a + b + c;
+          }
+        }
+      }
+
+      result;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(9);
+  });
+
+  it("Should properly interpret assignment expression (with plus)", () => {
+    const source = `
+      let a = 5;
+      let b = 2;
+
+      a += b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(7);
+  });
+
+  it("Should properly interpret assignment expression (with minus)", () => {
+    const source = `
+      let a = 5;
+      let b = 2;
+
+      a -= b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(3);
+  });
+
+  it("Should properly interpret assignment expression (with multiply)", () => {
+    const source = `
+      let a = 5;
+      let b = 2;
+
+      a *= b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(10);
+  });
+
+  it("Should properly interpret assignment expression (with exponentiation)", () => {
+    const source = `
+      let a = 5;
+      let b = 2;
+
+      a **= b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(25);
+  });
+
+  it("Should properly interpret assignment expression (with divide)", () => {
+    const source = `
+      let a = 6;
+      let b = 2;
+
+      a /= b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(3);
+  });
+
+  it("Should properly interpret assignment expression (with modulus)", () => {
+    const source = `
+      let a = 5;
+      let b = 2;
+
+      a %= b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(1);
+  });
+
+  it("Should properly interpret assignment expression (with bitwise shift to left)", () => {
+    const source = `
+      let a = 4;
+      let b = 1;
+
+      a <<= b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(8);
+  });
+
+  it("Should properly interpret assignment expression (with bitwise shift to right)", () => {
+    const source = `
+      let a = 4;
+      let b = 1;
+
+      a >>= b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(2);
+  });
+
+  it("Should properly interpret assignment expression (with logical bitwise shift to right)", () => {
+    const source = `
+      let a = 4;
+      let b = 1;
+
+      a >>>= b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(2);
+  });
+
+  it("Should properly interpret assignment expression (with bitwise or)", () => {
+    const source = `
+      let a = 4;
+      let b = 1;
+
+      a |= b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(5);
+  });
+
+  it("Should properly interpret assignment expression (with bitwise xor)", () => {
+    const source = `
+      let a = 4;
+      let b = 1;
+
+      a ^= b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(5);
+  });
+
+  it("Should properly interpret assignment expression (with bitwise and)", () => {
+    const source = `
+      let a = 4;
+      let b = 1;
+
+      a &= b;
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(0);
+  });
+
+  it("Should properly throw an error when re-defining the symbol", () => {
+    const source = `
+      let a = 4;
+      let a = 1;
+    `;
+
+    const ast = Parser.parse(source);
+    expect(() => Interpreter.interpret(ast)).toThrowError("a has already been declared");
+  });
+
+  it("Should properly throw an error when looking up non-existing symbol", () => {
+    const source = `a;`;
+
+    const ast = Parser.parse(source);
+    expect(() => Interpreter.interpret(ast)).toThrowError("a is not declared");
+  });
+
+  it("Should properly throw an error when assigning to non-existing symbol", () => {
+    const source = `
+      {
+        a = 2;
+      }
+    `;
+
+    const ast = Parser.parse(source);
+    expect(() => Interpreter.interpret(ast)).toThrowError("a is not declared");
+  });
+
+  it("Should properly interpret print statement", () => {
+    const source = `print "Hello, World!"`;
+    const ast = Parser.parse(source);
+    const stdoutMock = jest.spyOn(process.stdout, "write").mockImplementationOnce(() => true);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual("Hello, World!");
+    expect(stdoutMock).toHaveBeenCalledWith("Hello, World!\n");
+
+    stdoutMock.mockRestore();
   });
 });

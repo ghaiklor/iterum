@@ -11,5 +11,5 @@ export function Identifier(n: INode, visitor: Visitor) {
     return value.value;
   }
 
-  return node.name;
+  throw new Error(`Variable ${node.name} is not defined`);
 }

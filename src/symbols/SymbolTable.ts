@@ -10,20 +10,39 @@ export class SymbolTable {
 
   // tslint:disable-next-line: ban-types
   public define(symbol: Symbol) {
+    if (this.symbols.has(symbol.name)) {
+      throw new Error(`${symbol.name} has already been declared`);
+    }
+
     this.symbols.set(symbol.name, symbol);
     return this;
   }
 
   // tslint:disable-next-line: ban-types
-  public lookup(name: string): Symbol | undefined {
-    if (this.symbols.has(name)) {
-      return this.symbols.get(name);
+  public assign(symbol: Symbol): void {
+    if (this.symbols.has(symbol.name)) {
+      this.symbols.set(symbol.name, symbol);
+      return;
+    }
+
+    if (this.enclosingScope !== null) {
+      return this.enclosingScope.assign(symbol);
+    }
+
+    throw new Error(`${symbol.name} is not declared`);
+  }
+
+  // tslint:disable-next-line: ban-types
+  public lookup(name: string): Symbol {
+    const value = this.symbols.get(name);
+    if (value !== undefined) {
+      return value;
     }
 
     if (this.enclosingScope !== null) {
       return this.enclosingScope.lookup(name);
     }
 
-    return undefined;
+    throw new Error(`${name} is not declared`);
   }
 }

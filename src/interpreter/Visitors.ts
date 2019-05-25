@@ -1,22 +1,21 @@
 import { ArrayExpression } from "./visitors/ArrayExpression";
+import { AssignmentExpression } from "./visitors/AssignmentExpression";
 import { BinaryExpression } from "./visitors/BinaryExpression";
+import { BlockStatement } from "./visitors/BlockStatement";
 import { ExpressionStatement } from "./visitors/ExpressionStatement";
 import { Identifier } from "./visitors/Identifier";
 import { Literal } from "./visitors/Literal";
+import { PrintStatement } from "./visitors/PrintStatement";
 import { Program } from "./visitors/Program";
 import { VariableDeclaration } from "./visitors/VariableDeclaration";
 import { VariableDeclarator } from "./visitors/VariableDeclarator";
 
 // TODO: uncomment visitors when they will have an implementation
 export const VISITORS = {
-  ArrayExpression,
   // ArrayPattern: () => notImplemented(),
   // ArrowFunctionExpression: () => notImplemented(),
-  // AssignmentExpression: () => notImplemented(),
   // AssignmentPattern: () => notImplemented(),
   // AwaitExpression: () => notImplemented(),
-  BinaryExpression,
-  // BlockStatement: () => notImplemented(),
   // BreakStatement: () => notImplemented(),
   // CallExpression: () => notImplemented(),
   // CatchClause: () => notImplemented(),
@@ -37,7 +36,6 @@ export const VISITORS = {
   // ExportDefaultDeclaration: () => notImplemented(),
   // ExportNamedDeclaration: () => notImplemented(),
   // ExportSpecifier: () => notImplemented(),
-  ExpressionStatement,
   // ForInStatement: () => notImplemented(),
   // ForOfStatement: () => notImplemented(),
   // ForStatement: () => notImplemented(),
@@ -48,7 +46,6 @@ export const VISITORS = {
   // GeneratorExpression: () => notImplemented(),
   // GraphExpression: () => notImplemented(),
   // GraphIndexExpression: () => notImplemented(),
-  Identifier,
   // IfStatement: () => notImplemented(),
   // ImportDeclaration: () => notImplemented(),
   // ImportDefaultSpecifier: () => notImplemented(),
@@ -57,7 +54,6 @@ export const VISITORS = {
   // LabeledStatement: () => notImplemented(),
   // LetExpression: () => notImplemented(),
   // LetStatement: () => notImplemented(),
-  Literal,
   // LogicalExpression: () => notImplemented(),
   // MemberExpression: () => notImplemented(),
   // MetaProperty: () => notImplemented(),
@@ -66,7 +62,6 @@ export const VISITORS = {
   // NewExpression: () => notImplemented(),
   // ObjectExpression: () => notImplemented(),
   // ObjectPattern: () => notImplemented(),
-  Program,
   // Property: () => notImplemented(),
   // PropertyPattern: () => notImplemented(),
   // RegExpLiteral: () => notImplemented(),
@@ -85,9 +80,18 @@ export const VISITORS = {
   // TryStatement: () => notImplemented(),
   // UnaryExpression: () => notImplemented(),
   // UpdateExpression: () => notImplemented(),
-  VariableDeclaration,
-  VariableDeclarator,
   // WhileStatement: () => notImplemented(),
   // WithStatement: () => notImplemented(),
   // YieldExpression: () => notImplemented(),
+  ArrayExpression,
+  AssignmentExpression,
+  BinaryExpression,
+  BlockStatement,
+  ExpressionStatement,
+  Identifier,
+  Literal,
+  PrintStatement,
+  Program,
+  VariableDeclaration,
+  VariableDeclarator,
 };

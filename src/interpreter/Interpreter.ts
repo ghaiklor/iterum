@@ -1,5 +1,4 @@
 import { INode } from "../ast/node/Node";
-import { Symbol } from "../symbols/Symbol";
 import { SymbolTable } from "../symbols/SymbolTable";
 import { Visitor } from "../visitor/Visitor";
 import { VISITORS } from "./Visitors";
@@ -11,24 +10,14 @@ export class Interpreter {
 
   private ast: INode;
   private visitor: Visitor;
-  private scope: SymbolTable;
   constructor(ast: INode) {
     this.ast = ast;
-
-    this.scope = new SymbolTable();
-    this.scope.define(new Symbol("console", console));
-
     this.visitor = new Visitor(VISITORS);
-    this.visitor.setScope(this.scope);
-  }
-
-  public setScope(scope: SymbolTable): Interpreter {
-    this.scope = scope;
-    return this;
+    this.visitor.setScope(new SymbolTable());
   }
 
   public getScope(): SymbolTable {
-    return this.scope;
+    return this.visitor.getScope();
   }
 
   public interpret() {

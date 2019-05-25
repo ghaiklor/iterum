@@ -48,8 +48,8 @@ describe("Iterum::SymbolTable", () => {
     }
   });
 
-  it("Should properly return undefined if symbol is not found", () => {
+  it("Should properly throw error if symbol is not found", () => {
     const table = new SymbolTable();
-    expect(table.lookup("foo")).toBeUndefined();
+    expect(() => table.lookup("foo")).toThrowError("foo is not declared");
   });
 });

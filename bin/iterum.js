@@ -28,5 +28,5 @@ if (program.printAst) {
 }
 
 if (program.interpret) {
-  console.log(interpret(parse(source)));
+  interpret(parse(source));
 }
