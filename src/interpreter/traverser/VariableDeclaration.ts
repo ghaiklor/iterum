@@ -1,7 +1,10 @@
 import { IVariableDeclaration } from "../../ast/declarations/VariableDeclaration";
 import { INode } from "../../ast/node/Node";
-import { Traverser } from "../../traverser/Traverser";
+import { ITraverseContext } from "../../traverser/Traverser";
 
-export function VariableDeclaration(node: INode, traverser: Traverser) {
-  (node as IVariableDeclaration).declarations.forEach((decl) => traverser.traverse(decl));
+export function VariableDeclaration(n: INode, context: ITraverseContext) {
+  const { traverser } = context;
+  const node = n as IVariableDeclaration;
+
+  node.declarations.forEach((decl) => traverser.traverse(decl, context));
 }

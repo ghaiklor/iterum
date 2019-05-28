@@ -1,13 +1,13 @@
 import { ISequenceExpression } from "../../ast/expressions/SequenceExpression";
 import { INode } from "../../ast/node/Node";
-import { Traverser } from "../../traverser/Traverser";
+import { ITraverseContext } from "../../traverser/Traverser";
 
-export function SequenceExpression(n: INode, traverser: Traverser) {
+export function SequenceExpression(n: INode, context: ITraverseContext) {
   const node = n as ISequenceExpression;
 
   for (let i = 0; i < node.expressions.length - 1; i++) {
-    traverser.traverse(node.expressions[i]);
+    context.traverser.traverse(node.expressions[i], context);
   }
 
-  return traverser.traverse(node.expressions[node.expressions.length - 1]);
+  return context.traverser.traverse(node.expressions[node.expressions.length - 1], context);
 }

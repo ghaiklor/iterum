@@ -3,18 +3,19 @@ import { IIdentifier } from "../../ast/miscellaneous/Identifier";
 import { INode } from "../../ast/node/Node";
 import { AssignmentOperator } from "../../ast/operators/AssignmentOperator";
 import { Symbol } from "../../symbols/Symbol";
-import { Traverser } from "../../traverser/Traverser";
+import { ITraverseContext } from "../../traverser/Traverser";
 
-export function AssignmentExpression(n: INode, traverser: Traverser): any {
+export function AssignmentExpression(n: INode, context: ITraverseContext): any {
+  const { traverser, scope } = context;
+
   const node = n as IAssignmentExpression;
-  const scope = traverser.getScope();
-  const rhsValue = traverser.traverse(node.right);
+  const rhsValue = traverser.traverse(node.right, context);
 
   let lhsName;
   if (node.left.type === "Identifier") {
     lhsName = (node.left as IIdentifier).name;
   } else {
-    lhsName = traverser.traverse(node.left);
+    lhsName = traverser.traverse(node.left, context);
   }
 
   const lhsValue = scope.lookup(lhsName).value;

@@ -1,8 +1,8 @@
 import { IArrayExpression } from "../../ast/expressions/ArrayExpression";
 import { INode } from "../../ast/node/Node";
-import { Traverser } from "../../traverser/Traverser";
+import { ITraverseContext } from "../../traverser/Traverser";
 
-export function ArrayExpression(n: INode, traverser: Traverser): any[] {
+export function ArrayExpression(n: INode, context: ITraverseContext): any[] {
   const node = n as IArrayExpression;
   const elements = [];
 
@@ -11,7 +11,7 @@ export function ArrayExpression(n: INode, traverser: Traverser): any[] {
       continue;
     }
 
-    elements.push(traverser.traverse(element));
+    elements.push(context.traverser.traverse(element, context));
   }
 
   return elements;

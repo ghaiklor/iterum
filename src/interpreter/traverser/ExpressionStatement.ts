@@ -1,7 +1,7 @@
 import { INode } from "../../ast/node/Node";
 import { IExpressionStatement } from "../../ast/statements/ExpressionStatement";
-import { Traverser } from "../../traverser/Traverser";
+import { ITraverseContext } from "../../traverser/Traverser";
 
-export function ExpressionStatement(node: INode, traverser: Traverser) {
-  return traverser.traverse((node as IExpressionStatement).expression);
+export function ExpressionStatement(node: INode, context: ITraverseContext) {
+  return context.traverser.traverse((node as IExpressionStatement).expression, context);
 }

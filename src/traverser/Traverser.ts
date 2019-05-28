@@ -1,24 +1,18 @@
 import { INode } from "../ast/node/Node";
 import { SymbolTable } from "../symbols/SymbolTable";
 
+export interface ITraverseContext {
+  scope: SymbolTable;
+  traverser: Traverser;
+}
+
 export class Traverser {
-  private scope: SymbolTable;
-  private traverser: Record<string, (node: INode, traverser: Traverser) => any>;
-  constructor(traverser: Record<string, (node: INode, traverser: Traverser) => any>) {
-    this.scope = new SymbolTable();
+  private traverser: Record<string, (node: INode, context: ITraverseContext) => any>;
+  constructor(traverser: Record<string, (node: INode, context: ITraverseContext) => any>) {
     this.traverser = traverser;
   }
 
-  public setScope(scope: SymbolTable): Traverser {
-    this.scope = scope;
-    return this;
-  }
-
-  public getScope(): SymbolTable {
-    return this.scope;
-  }
-
-  public traverse(node: INode) {
+  public traverse(node: INode, context: ITraverseContext) {
     const type = node.type;
     const traverse = this.traverser[type];
 
@@ -26,6 +20,6 @@ export class Traverser {
       throw new Error(`No traverser found for ${type}`);
     }
 
-    return traverse(node, this);
+    return traverse(node, context);
   }
 }

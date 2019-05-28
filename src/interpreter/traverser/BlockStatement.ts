@@ -1,16 +1,16 @@
 import { INode } from "../../ast/node/Node";
 import { IBlockStatement } from "../../ast/statements/BlockStatement";
 import { SymbolTable } from "../../symbols/SymbolTable";
-import { Traverser } from "../../traverser/Traverser";
+import { ITraverseContext } from "../../traverser/Traverser";
 
-export function BlockStatement(n: INode, traverser: Traverser) {
+export function BlockStatement(n: INode, context: ITraverseContext) {
+  const { traverser, scope } = context;
   const node = n as IBlockStatement;
-  const previous = traverser.getScope();
 
   try {
-    traverser.setScope(new SymbolTable(previous));
-    node.body.forEach((statement) => traverser.traverse(statement));
+    context.scope = new SymbolTable(scope);
+    node.body.forEach((statement) => traverser.traverse(statement, context));
   } finally {
-    traverser.setScope(previous);
+    context.scope = scope;
   }
 }

@@ -5,22 +5,17 @@ import { TRAVERSER } from "./Traverser";
 
 export class Interpreter {
   public static interpret(ast: INode) {
-    return new Interpreter(ast).interpret();
+    return new Interpreter().interpret(ast);
   }
 
-  private ast: INode;
+  private scope: SymbolTable;
   private traverser: Traverser;
-  constructor(ast: INode) {
-    this.ast = ast;
+  constructor() {
+    this.scope = new SymbolTable();
     this.traverser = new Traverser(TRAVERSER);
-    this.traverser.setScope(new SymbolTable());
   }
 
-  public getScope(): SymbolTable {
-    return this.traverser.getScope();
-  }
-
-  public interpret(ast?: INode) {
-    return this.traverser.traverse(ast || this.ast);
+  public interpret(ast: INode) {
+    return this.traverser.traverse(ast, { scope: this.scope, traverser: this.traverser });
   }
 }

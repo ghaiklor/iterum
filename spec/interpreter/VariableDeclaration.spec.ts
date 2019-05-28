@@ -2,24 +2,6 @@ import { Interpreter } from "../../src/interpreter/Interpreter";
 import { Parser } from "../../src/parser/Parser";
 
 describe("Iterum::Interpreter::VariableDeclaration", () => {
-  it("Should properly interpret variable declaration", () => {
-    const source = `let a = 5;`;
-    const ast = Parser.parse(source);
-    const interpreter = new Interpreter(ast);
-    const scope = interpreter.getScope();
-
-    expect(() => scope.lookup("a")).toThrowError("a is not declared");
-    interpreter.interpret();
-
-    const aSymbol = scope.lookup("a");
-    if (aSymbol) {
-      expect(aSymbol.name).toEqual("a");
-      expect(aSymbol.value).toEqual(5);
-    } else {
-      throw new Error("aSymbol must be declared");
-    }
-  });
-
   it("Should properly interpret binary expression with variables", () => {
     const source = `
       let a = 5;
