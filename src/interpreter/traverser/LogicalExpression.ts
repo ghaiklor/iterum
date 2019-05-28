@@ -1,11 +1,11 @@
 import { ILogicalExpression } from "../../ast/expressions/LogicalExpression";
 import { INode } from "../../ast/node/Node";
 import { LogicalOperator } from "../../ast/operators/LogicalOperator";
-import { Visitor } from "../../visitor/Visitor";
+import { Traverser } from "../../traverser/Traverser";
 
-export function LogicalExpression(n: INode, visitor: Visitor) {
+export function LogicalExpression(n: INode, traverser: Traverser) {
   const node = n as ILogicalExpression;
-  const left = visitor.visit(node.left);
+  const left = traverser.traverse(node.left);
 
   if (node.operator === LogicalOperator.AND && !left) {
     return left;
@@ -15,5 +15,5 @@ export function LogicalExpression(n: INode, visitor: Visitor) {
     return left;
   }
 
-  return visitor.visit(node.right);
+  return traverser.traverse(node.right);
 }

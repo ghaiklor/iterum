@@ -1,7 +1,7 @@
 import { INode } from "../ast/node/Node";
 import { SymbolTable } from "../symbols/SymbolTable";
-import { Visitor } from "../visitor/Visitor";
-import { VISITORS } from "./Visitors";
+import { Traverser } from "../traverser/Traverser";
+import { TRAVERSER } from "./Traverser";
 
 export class Interpreter {
   public static interpret(ast: INode) {
@@ -9,18 +9,18 @@ export class Interpreter {
   }
 
   private ast: INode;
-  private visitor: Visitor;
+  private traverser: Traverser;
   constructor(ast: INode) {
     this.ast = ast;
-    this.visitor = new Visitor(VISITORS);
-    this.visitor.setScope(new SymbolTable());
+    this.traverser = new Traverser(TRAVERSER);
+    this.traverser.setScope(new SymbolTable());
   }
 
   public getScope(): SymbolTable {
-    return this.visitor.getScope();
+    return this.traverser.getScope();
   }
 
   public interpret(ast?: INode) {
-    return this.visitor.visit(ast || this.ast);
+    return this.traverser.traverse(ast || this.ast);
   }
 }

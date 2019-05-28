@@ -1,25 +1,25 @@
-import { ArrayExpression } from "./visitors/ArrayExpression";
-import { AssignmentExpression } from "./visitors/AssignmentExpression";
-import { BinaryExpression } from "./visitors/BinaryExpression";
-import { BlockStatement } from "./visitors/BlockStatement";
-import { ConditionalExpression } from "./visitors/ConditionalExpression";
-import { DoWhileStatement } from "./visitors/DoWhileStatement";
-import { ExpressionStatement } from "./visitors/ExpressionStatement";
-import { ForStatement } from "./visitors/ForStatement";
-import { Identifier } from "./visitors/Identifier";
-import { IfStatement } from "./visitors/IfStatement";
-import { Literal } from "./visitors/Literal";
-import { LogicalExpression } from "./visitors/LogicalExpression";
-import { PrintStatement } from "./visitors/PrintStatement";
-import { Program } from "./visitors/Program";
-import { SequenceExpression } from "./visitors/SequenceExpression";
-import { UnaryExpression } from "./visitors/UnaryExpression";
-import { VariableDeclaration } from "./visitors/VariableDeclaration";
-import { VariableDeclarator } from "./visitors/VariableDeclarator";
-import { WhileStatement } from "./visitors/WhileStatement";
+import { ArrayExpression } from "./traverser/ArrayExpression";
+import { AssignmentExpression } from "./traverser/AssignmentExpression";
+import { BinaryExpression } from "./traverser/BinaryExpression";
+import { BlockStatement } from "./traverser/BlockStatement";
+import { ConditionalExpression } from "./traverser/ConditionalExpression";
+import { DoWhileStatement } from "./traverser/DoWhileStatement";
+import { ExpressionStatement } from "./traverser/ExpressionStatement";
+import { ForStatement } from "./traverser/ForStatement";
+import { Identifier } from "./traverser/Identifier";
+import { IfStatement } from "./traverser/IfStatement";
+import { Literal } from "./traverser/Literal";
+import { LogicalExpression } from "./traverser/LogicalExpression";
+import { PrintStatement } from "./traverser/PrintStatement";
+import { Program } from "./traverser/Program";
+import { SequenceExpression } from "./traverser/SequenceExpression";
+import { UnaryExpression } from "./traverser/UnaryExpression";
+import { VariableDeclaration } from "./traverser/VariableDeclaration";
+import { VariableDeclarator } from "./traverser/VariableDeclarator";
+import { WhileStatement } from "./traverser/WhileStatement";
 
 // TODO: uncomment visitors when they will have an implementation
-export const VISITORS = {
+export const TRAVERSER = {
   // ArrayPattern: () => notImplemented(),
   // ArrowFunctionExpression: () => notImplemented(),
   // AssignmentPattern: () => notImplemented(),

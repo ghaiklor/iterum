@@ -1,10 +1,10 @@
 import { INode } from "../../ast/node/Node";
 import { IPrintStatement } from "../../ast/statements/PrintStatement";
-import { Visitor } from "../../visitor/Visitor";
+import { Traverser } from "../../traverser/Traverser";
 
-export function PrintStatement(n: INode, visitor: Visitor) {
+export function PrintStatement(n: INode, traverser: Traverser) {
   const node = n as IPrintStatement;
-  const value = visitor.visit(node.expression);
+  const value = traverser.traverse(node.expression);
 
   process.stdout.write(`${value}\n`);
 }

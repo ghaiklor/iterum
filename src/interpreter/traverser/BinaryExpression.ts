@@ -1,12 +1,12 @@
 import { IBinaryExpression } from "../../ast/expressions/BinaryExpression";
 import { INode } from "../../ast/node/Node";
 import { BinaryOperator } from "../../ast/operators/BinaryOperator";
-import { Visitor } from "../../visitor/Visitor";
+import { Traverser } from "../../traverser/Traverser";
 
-export function BinaryExpression(n: INode, visitor: Visitor) {
+export function BinaryExpression(n: INode, traverser: Traverser) {
   const node = n as IBinaryExpression;
-  const left = visitor.visit(node.left);
-  const right = visitor.visit(node.right);
+  const left = traverser.traverse(node.left);
+  const right = traverser.traverse(node.right);
   const operator = node.operator;
 
   switch (operator) {
