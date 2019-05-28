@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/ghaiklor/iterum/compare/v0.2.0...v0.3.0) (2019-05-28)
+
+
+### Features
+
+* 🎸 add {do-while, while, for} loops, if statement and expr ([f9ee865](https://github.com/ghaiklor/iterum/commit/f9ee865))
+
+
+
 # [0.2.0](https://github.com/ghaiklor/iterum/compare/v0.1.0...v0.2.0) (2019-05-25)
 
 
