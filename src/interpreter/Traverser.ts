@@ -18,7 +18,7 @@ import { VariableDeclaration } from "./traverser/VariableDeclaration";
 import { VariableDeclarator } from "./traverser/VariableDeclarator";
 import { WhileStatement } from "./traverser/WhileStatement";
 
-// TODO: uncomment visitors when they will have an implementation
+// TODO: uncomment traverser when they will have an implementation
 export const TRAVERSER = {
   // ArrayPattern: () => notImplemented(),
   // ArrowFunctionExpression: () => notImplemented(),

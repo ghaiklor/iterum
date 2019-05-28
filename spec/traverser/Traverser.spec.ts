@@ -6,7 +6,7 @@ import { IExpressionStatement } from "../../src/ast/statements/ExpressionStateme
 import { Parser } from "../../src/parser/Parser";
 import { Traverser } from "../../src/traverser/Traverser";
 
-describe("Iterum::Visitor", () => {
+describe("Iterum::Traverser", () => {
   it("Should properly traverse the binary expression", () => {
     const source = `2 + 5`;
     const ast = Parser.parse(source);
@@ -35,7 +35,7 @@ describe("Iterum::Visitor", () => {
     expect(walker.traverse(ast)).toEqual(7);
   });
 
-  it("Should properly throw an error if visitor is not found for the node", () => {
+  it("Should properly throw an error if traverser is not found for the node", () => {
     const source = `2`;
     const ast = Parser.parse(source);
     const walker = new Traverser({});
