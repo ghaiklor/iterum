@@ -2,13 +2,21 @@ import { ArrayExpression } from "./visitors/ArrayExpression";
 import { AssignmentExpression } from "./visitors/AssignmentExpression";
 import { BinaryExpression } from "./visitors/BinaryExpression";
 import { BlockStatement } from "./visitors/BlockStatement";
+import { ConditionalExpression } from "./visitors/ConditionalExpression";
+import { DoWhileStatement } from "./visitors/DoWhileStatement";
 import { ExpressionStatement } from "./visitors/ExpressionStatement";
+import { ForStatement } from "./visitors/ForStatement";
 import { Identifier } from "./visitors/Identifier";
+import { IfStatement } from "./visitors/IfStatement";
 import { Literal } from "./visitors/Literal";
+import { LogicalExpression } from "./visitors/LogicalExpression";
 import { PrintStatement } from "./visitors/PrintStatement";
 import { Program } from "./visitors/Program";
+import { SequenceExpression } from "./visitors/SequenceExpression";
+import { UnaryExpression } from "./visitors/UnaryExpression";
 import { VariableDeclaration } from "./visitors/VariableDeclaration";
 import { VariableDeclarator } from "./visitors/VariableDeclarator";
+import { WhileStatement } from "./visitors/WhileStatement";
 
 // TODO: uncomment visitors when they will have an implementation
 export const VISITORS = {
@@ -26,11 +34,9 @@ export const VISITORS = {
   // ComprehensionBlock: () => notImplemented(),
   // ComprehensionExpression: () => notImplemented(),
   // ComprehensionIf: () => notImplemented(),
-  // ConditionalExpression: () => notImplemented(),
   // ContinueStatement: () => notImplemented(),
   // DebuggerStatement: () => notImplemented(),
   // Directive: () => notImplemented(),
-  // DoWhileStatement: () => notImplemented(),
   // EmptyStatement: () => notImplemented(),
   // ExportAllDeclaration: () => notImplemented(),
   // ExportDefaultDeclaration: () => notImplemented(),
@@ -38,7 +44,6 @@ export const VISITORS = {
   // ExportSpecifier: () => notImplemented(),
   // ForInStatement: () => notImplemented(),
   // ForOfStatement: () => notImplemented(),
-  // ForStatement: () => notImplemented(),
   // Function: () => notImplemented(),
   // FunctionBody: () => notImplemented(),
   // FunctionDeclaration: () => notImplemented(),
@@ -46,7 +51,6 @@ export const VISITORS = {
   // GeneratorExpression: () => notImplemented(),
   // GraphExpression: () => notImplemented(),
   // GraphIndexExpression: () => notImplemented(),
-  // IfStatement: () => notImplemented(),
   // ImportDeclaration: () => notImplemented(),
   // ImportDefaultSpecifier: () => notImplemented(),
   // ImportNamespaceSpecifier: () => notImplemented(),
@@ -54,7 +58,6 @@ export const VISITORS = {
   // LabeledStatement: () => notImplemented(),
   // LetExpression: () => notImplemented(),
   // LetStatement: () => notImplemented(),
-  // LogicalExpression: () => notImplemented(),
   // MemberExpression: () => notImplemented(),
   // MetaProperty: () => notImplemented(),
   // MethodDefinition: () => notImplemented(),
@@ -67,7 +70,6 @@ export const VISITORS = {
   // RegExpLiteral: () => notImplemented(),
   // RestElement: () => notImplemented(),
   // ReturnStatement: () => notImplemented(),
-  // SequenceExpression: () => notImplemented(),
   // SpreadElement: () => notImplemented(),
   // Super: () => notImplemented(),
   // SwitchCase: () => notImplemented(),
@@ -78,20 +80,26 @@ export const VISITORS = {
   // ThisExpression: () => notImplemented(),
   // ThrowStatement: () => notImplemented(),
   // TryStatement: () => notImplemented(),
-  // UnaryExpression: () => notImplemented(),
   // UpdateExpression: () => notImplemented(),
-  // WhileStatement: () => notImplemented(),
   // WithStatement: () => notImplemented(),
   // YieldExpression: () => notImplemented(),
   ArrayExpression,
   AssignmentExpression,
   BinaryExpression,
   BlockStatement,
+  ConditionalExpression,
+  DoWhileStatement,
   ExpressionStatement,
+  ForStatement,
   Identifier,
+  IfStatement,
   Literal,
+  LogicalExpression,
   PrintStatement,
   Program,
+  SequenceExpression,
+  UnaryExpression,
   VariableDeclaration,
   VariableDeclarator,
+  WhileStatement,
 };

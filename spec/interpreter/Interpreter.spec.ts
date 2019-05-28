@@ -443,4 +443,192 @@ describe("Iterum::Interpreter", () => {
     expect(stdoutMock).toHaveBeenCalledWith("Hello, World!\n");
     stdoutMock.mockRestore();
   });
+
+  it("Should properly interpret conditional expression (truthy)", () => {
+    const source = `true ? 10 : 5;`;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+    expect(result).toEqual(10);
+  });
+
+  it("Should properly interpret conditional expression (falsy)", () => {
+    const source = `false ? 10 : 5;`;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+    expect(result).toEqual(5);
+  });
+
+  it("Should properly interpret do while statement", () => {
+    const source = `
+      let a;
+
+      do {
+        a = a + 1;
+      } while (a < 5);
+
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+    expect(result).toEqual(5);
+  });
+
+  it("Should properly interpret if statement (truthy)", () => {
+    const source = `
+      let a;
+
+      if (true) {
+        a = 10;
+      } else {
+        a = 5;
+      }
+
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+    expect(result).toEqual(10);
+  });
+
+  it("Should properly interpret if statement (falsy)", () => {
+    const source = `
+      let a;
+
+      if (false) {
+        a = 10;
+      } else {
+        a = 5;
+      }
+
+      a;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+    expect(result).toEqual(5);
+  });
+
+  it("Should properly interpret logical expression (&&)", () => {
+    const source = `true && true`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(true);
+  });
+
+  it("Should properly interpret logical expression (||)", () => {
+    const source = `false || true`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(true);
+  });
+
+  it("Should properly short circuit on &&", () => {
+    const source = `false && true`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(false);
+  });
+
+  it("Should properly short circuit on ||", () => {
+    const source = `true || false`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(true);
+  });
+
+  it("Should properly interpret sequence expression", () => {
+    const source = `5, 10, 15, 20`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(20);
+  });
+
+  it("Should properly interpret unary expression (-)", () => {
+    const source = `-5`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(-5);
+  });
+
+  it("Should properly interpret unary expression (+)", () => {
+    const source = `+5`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(5);
+  });
+
+  it("Should properly interpret unary expression (!)", () => {
+    const source = `!false`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(true);
+  });
+
+  it("Should properly interpret unary expression (~)", () => {
+    const source = `~0`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(-1);
+  });
+
+  it("Should properly interpret unary expression (typeof)", () => {
+    const source = `typeof "Hello, World!"`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual("string");
+  });
+
+  it("Should properly interpret unary expression (void)", () => {
+    const source = `void 0`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(void 0);
+  });
+
+  it("Should properly interpret while statement", () => {
+    const source = `
+      let a = 0;
+
+      while (a < 10) {
+        a = a + 1;
+      }
+
+      a;
+    `;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(10);
+  });
+
+  it("Should properly interpret for statement", () => {
+    const source = `
+      let b = 0;
+
+      for (let a = 0; a < 10; a += 1) {
+        b += 2;
+      }
+
+      a * b;
+    `;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(200);
+  });
 });
