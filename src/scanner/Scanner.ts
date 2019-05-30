@@ -1,3 +1,5 @@
+import { ErrorCode } from "../errors/ErrorCode";
+import { LexicalError } from "../errors/LexicalError";
 import { ITokenLocation, Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
 import { Character } from "./Character";
@@ -7,10 +9,12 @@ import { PUNCTUATION } from "./Punctuation";
 const CHARACTERS_LOOKAHEAD = 4;
 
 export class Scanner {
+  public errors: LexicalError[] = [];
   private source: string;
   private index: number;
   private char: Character;
   private location: ITokenLocation;
+  private tokens: Token[] = [];
   constructor(source: string) {
     this.source = source;
     this.index = 0;
@@ -18,7 +22,7 @@ export class Scanner {
     this.location = { line: 1, column: 1 } as ITokenLocation;
   }
 
-  public next(): Token {
+  public next(): Token | void {
     while (this.char.isWhitespace()) {
       this.whitespace();
       this.comment();
@@ -30,7 +34,7 @@ export class Scanner {
       return this.numericLiteral();
     } else if (this.char.isSomeOf(["'", '"'])) {
       return this.stringLiteral();
-    } else if (this.char.isEOF()) {
+    } else if (this.isEOF()) {
       return this.createToken(TokenType.EOF, "EOF");
     } else {
       for (let i = CHARACTERS_LOOKAHEAD; i > 0; i--) {
@@ -42,8 +46,21 @@ export class Scanner {
         }
       }
 
-      throw new Error(`Unrecognized character ${this.char} at ${this.location.line}:${this.location.column}`);
+      this.recoverableError(ErrorCode.UNRECOGNIZED_CHARACTER, this.char.toString());
+      this.advance();
     }
+  }
+
+  public scanAll(): Token[] {
+    while (!this.isEOF()) {
+      const token = this.next();
+      if (token !== undefined) {
+        this.tokens.push(token);
+      }
+    }
+
+    this.tokens.push(this.createToken(TokenType.EOF, ""));
+    return this.tokens;
   }
 
   /**
@@ -82,6 +99,15 @@ export class Scanner {
     return new Token(type, code, this.location);
   }
 
+  private recoverableError(code: ErrorCode, ...args: string[]): void {
+    const lexicalError = new LexicalError(code, this.location, ...args);
+    this.errors.push(lexicalError);
+  }
+
+  private isEOF(): boolean {
+    return this.index >= this.source.length;
+  }
+
   private incrementLineLocation(): void {
     this.location.line++;
     this.location.column = 0;
@@ -109,8 +135,9 @@ export class Scanner {
       this.advance(2);
 
       while (!(this.char.is("*") && this.peek().is("/"))) {
-        if (this.char.isEOF()) {
-          throw new Error(`Expected */ at ${this.location.line}:${this.location.column}`);
+        if (this.isEOF()) {
+          this.recoverableError(ErrorCode.EXPECTED, "*/");
+          return this;
         }
 
         if (this.char.isLineTerminator()) {
@@ -130,7 +157,7 @@ export class Scanner {
     if (this.char.is("/") && this.peek().is("/")) {
       this.advance(2);
 
-      while (!(this.char.isLineTerminator() || this.char.isEOF())) {
+      while (!(this.char.isLineTerminator() || this.isEOF())) {
         this.advance();
 
         if (this.char.isLineTerminator()) {
@@ -213,15 +240,17 @@ export class Scanner {
     return this.createToken(TokenType.BINARY_LITERAL, buffer);
   }
 
-  private stringLiteral(): Token {
+  private stringLiteral(): Token | void {
     let buffer: string = "";
 
     const quoteType: string = this.char.toString();
     this.advance();
 
     while (!this.char.is(quoteType)) {
-      if (this.char.isLineTerminator() || this.char.isEOF()) {
-        throw new Error(`Unterminated string literal at ${this.location.line}:${this.location.column}`);
+      if (this.char.isLineTerminator() || this.isEOF()) {
+        this.recoverableError(ErrorCode.UNTERMINATED_STRING_LITERAL);
+        this.advance();
+        return;
       }
 
       buffer += this.char;

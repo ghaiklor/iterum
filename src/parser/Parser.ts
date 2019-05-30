@@ -74,14 +74,29 @@ type IExportDeclaration = IExportDefaultDeclaration | IExportNamedDeclaration | 
 
 export class Parser {
   public static parse(source: string): IProgram {
-    return new Parser(source).program();
+    const parser = new Parser(source);
+    const ast = parser.program();
+    const errors = parser.scanner.errors;
+    // TODO: add here syntax errors as well
+
+    if (errors.length > 0) {
+      // TODO: make better reporter for errors
+      // tslint:disable-next-line: no-console
+      errors.forEach((error) => console.error(error.toString()));
+    }
+
+    return ast;
   }
 
   private scanner: Scanner;
+  private tokens: Token[];
+  private offset: number;
   private currentToken: Token;
   constructor(source: string) {
     this.scanner = new Scanner(source);
-    this.currentToken = this.scanner.next();
+    this.tokens = this.scanner.scanAll();
+    this.offset = 0;
+    this.currentToken = this.tokens[this.offset];
   }
 
   /**
@@ -92,7 +107,8 @@ export class Parser {
    */
   private eat(tokenToEat: TokenType): boolean {
     if (this.currentToken.is(tokenToEat)) {
-      this.currentToken = this.scanner.next();
+      this.offset++;
+      this.currentToken = this.tokens[this.offset];
       return true;
     }
 
@@ -107,7 +123,8 @@ export class Parser {
    */
   private expect(expectedToken: TokenType): Parser {
     if (this.currentToken.is(expectedToken)) {
-      this.currentToken = this.scanner.next();
+      this.offset++;
+      this.currentToken = this.tokens[this.offset];
     } else {
       throw new Error(
         `Expected ${expectedToken} at ${this.currentToken.location.line}:${this.currentToken.location.column}, ` +
@@ -146,6 +163,10 @@ export class Parser {
    */
   private closeNode<T>(node: T): T {
     return node;
+  }
+
+  private isEOF(): boolean {
+    return this.currentToken.is(TokenType.EOF) || (this.offset >= this.tokens.length);
   }
 
   // ----------------------------- //
@@ -1494,7 +1515,7 @@ export class Parser {
   private moduleItemList(): Array<IModuleDeclaration | IStatement> {
     const items = [this.moduleItem()];
 
-    while (!this.currentToken.is(TokenType.EOF)) {
+    while (!this.isEOF()) {
       items.push(this.moduleItem());
     }
 
