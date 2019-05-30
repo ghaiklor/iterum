@@ -56,4 +56,46 @@ describe("Iterum::Parser::FunctionDeclaration", () => {
       type: "Program",
     } as IProgram);
   });
+
+  it("Should properly parse function declaration outside of lexical block", () => {
+    const source = `
+      function add(a, b) {
+        return a + b;
+      }
+    `;
+
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        async: false,
+        body: {
+          body: [{
+            argument: {
+              left: { type: "Identifier", name: "a" } as IIdentifier,
+              loc: null,
+              operator: "+",
+              right: { type: "Identifier", name: "b" } as IIdentifier,
+              type: "BinaryExpression",
+            } as IBinaryExpression,
+            loc: null,
+            type: "ReturnStatement",
+          } as IReturnStatement],
+          loc: null,
+          type: "BlockStatement",
+        } as IBlockStatement,
+        generator: false,
+        id: { type: "Identifier", name: "add", loc: null } as IIdentifier,
+        loc: null,
+        params: [
+          { type: "Identifier", name: "a", loc: null } as IIdentifier,
+          { type: "Identifier", name: "b", loc: null } as IIdentifier,
+        ],
+        type: "FunctionDeclaration",
+      } as IFunctionDeclaration],
+      loc: null,
+      sourceType: "module",
+      type: "Program",
+    } as IProgram);
+  });
 });
