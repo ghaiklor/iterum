@@ -1,7 +1,8 @@
 import { Symbol } from "./Symbol";
 
 export class SymbolTable {
-  private symbols: Map<string, Symbol>; // tslint:disable-line: ban-types
+  // tslint:disable-next-line: ban-types
+  private symbols: Map<string, Symbol>;
   private enclosingScope: SymbolTable | null;
   constructor(enclosingScope: SymbolTable | null = null) {
     this.symbols = new Map();
@@ -9,13 +10,12 @@ export class SymbolTable {
   }
 
   // tslint:disable-next-line: ban-types
-  public define(symbol: Symbol) {
+  public define(symbol: Symbol): void {
     if (this.symbols.has(symbol.name)) {
       throw new Error(`${symbol.name} has already been declared`);
     }
 
     this.symbols.set(symbol.name, symbol);
-    return this;
   }
 
   // tslint:disable-next-line: ban-types
