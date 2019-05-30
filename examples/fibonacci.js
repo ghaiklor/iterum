@@ -1,15 +1,9 @@
-let first = 0;
-let second = 1;
-let index = 20;
+function fibonacci(num) {
+  if (num <= 1) return 1;
 
-print first;
-print second;
+  return fibonacci(num - 1) + fibonacci(num - 2);
+}
 
-while (index > 0) {
-  let result = first + second;
-  first = second;
-  second = result;
-  index -= 1;
-
-  print result;
+for (let i = 0; i < 20; i += 1) {
+  print fibonacci(i);
 }

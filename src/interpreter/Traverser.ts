@@ -2,16 +2,19 @@ import { ArrayExpression } from "./traverser/ArrayExpression";
 import { AssignmentExpression } from "./traverser/AssignmentExpression";
 import { BinaryExpression } from "./traverser/BinaryExpression";
 import { BlockStatement } from "./traverser/BlockStatement";
+import { CallExpression } from "./traverser/CallExpression";
 import { ConditionalExpression } from "./traverser/ConditionalExpression";
 import { DoWhileStatement } from "./traverser/DoWhileStatement";
 import { ExpressionStatement } from "./traverser/ExpressionStatement";
 import { ForStatement } from "./traverser/ForStatement";
+import { FunctionDeclaration } from "./traverser/FunctionDeclaration";
 import { Identifier } from "./traverser/Identifier";
 import { IfStatement } from "./traverser/IfStatement";
 import { Literal } from "./traverser/Literal";
 import { LogicalExpression } from "./traverser/LogicalExpression";
 import { PrintStatement } from "./traverser/PrintStatement";
 import { Program } from "./traverser/Program";
+import { ReturnStatement } from "./traverser/ReturnStatement";
 import { SequenceExpression } from "./traverser/SequenceExpression";
 import { UnaryExpression } from "./traverser/UnaryExpression";
 import { VariableDeclaration } from "./traverser/VariableDeclaration";
@@ -25,7 +28,6 @@ export const TRAVERSER = {
   // AssignmentPattern: () => notImplemented(),
   // AwaitExpression: () => notImplemented(),
   // BreakStatement: () => notImplemented(),
-  // CallExpression: () => notImplemented(),
   // CatchClause: () => notImplemented(),
   // Class: () => notImplemented(),
   // ClassBody: () => notImplemented(),
@@ -46,7 +48,6 @@ export const TRAVERSER = {
   // ForOfStatement: () => notImplemented(),
   // Function: () => notImplemented(),
   // FunctionBody: () => notImplemented(),
-  // FunctionDeclaration: () => notImplemented(),
   // FunctionExpression: () => notImplemented(),
   // GeneratorExpression: () => notImplemented(),
   // GraphExpression: () => notImplemented(),
@@ -69,7 +70,6 @@ export const TRAVERSER = {
   // PropertyPattern: () => notImplemented(),
   // RegExpLiteral: () => notImplemented(),
   // RestElement: () => notImplemented(),
-  // ReturnStatement: () => notImplemented(),
   // SpreadElement: () => notImplemented(),
   // Super: () => notImplemented(),
   // SwitchCase: () => notImplemented(),
@@ -87,16 +87,19 @@ export const TRAVERSER = {
   AssignmentExpression,
   BinaryExpression,
   BlockStatement,
+  CallExpression,
   ConditionalExpression,
   DoWhileStatement,
   ExpressionStatement,
   ForStatement,
+  FunctionDeclaration,
   Identifier,
   IfStatement,
   Literal,
   LogicalExpression,
   PrintStatement,
   Program,
+  ReturnStatement,
   SequenceExpression,
   UnaryExpression,
   VariableDeclaration,
