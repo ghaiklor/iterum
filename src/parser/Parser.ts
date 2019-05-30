@@ -110,7 +110,7 @@ export class Parser {
       this.currentToken = this.scanner.next();
     } else {
       throw new Error(
-        `Expected ${expectedToken} at ${this.scanner.location.line}:${this.scanner.location.column}, ` +
+        `Expected ${expectedToken} at ${this.currentToken.location.line}:${this.currentToken.location.column}, ` +
         `but got ${this.currentToken.type}`,
       );
     }
@@ -126,7 +126,7 @@ export class Parser {
   private unexpected<T>(): T {
     throw new Error(
       `Unexpected ${this.currentToken.code} ` +
-      `at ${this.scanner.location.line}:${this.scanner.location.column}`,
+      `at ${this.currentToken.location.line}:${this.currentToken.location.column}`,
     );
   }
 

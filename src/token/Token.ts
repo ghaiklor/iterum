@@ -1,12 +1,18 @@
 import { TokenType } from "./TokenType";
 
+export interface ITokenLocation {
+  line: number;
+  column: number;
+}
+
 export class Token {
   public type: TokenType;
   public code: string;
-
-  constructor(type: TokenType, code: string) {
+  public location: ITokenLocation;
+  constructor(type: TokenType, code: string, location: ITokenLocation) {
     this.type = type;
     this.code = code;
+    this.location = location;
   }
 
   /**
@@ -38,11 +44,20 @@ export class Token {
   }
 
   /**
+   * Check if the token is not from the provided token list.
+   *
+   * @param types An array of token types to check against
+   */
+  public isNotSomeOf(types: TokenType[]) {
+    return !this.isSomeOf(types);
+  }
+
+  /**
    * Serialize token to string representation for easier debugging.
    *
    * @returns {String}
    */
   public toString(): string {
-    return `Token(${this.type}, ${this.code})`;
+    return `[${this.location.line}:${this.location.column}] Token(${this.type}, ${this.code})`;
   }
 }

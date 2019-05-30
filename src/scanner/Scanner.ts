@@ -1,4 +1,4 @@
-import { Token } from "../token/Token";
+import { ITokenLocation, Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
 import { Character } from "./Character";
 import { KEYWORDS } from "./Keywords";
@@ -7,15 +7,15 @@ import { PUNCTUATION } from "./Punctuation";
 const CHARACTERS_LOOKAHEAD = 4;
 
 export class Scanner {
-  public location: { line: number, column: number };
   private source: string;
   private index: number;
   private char: Character;
+  private location: ITokenLocation;
   constructor(source: string) {
     this.source = source;
     this.index = 0;
     this.char = Character.from(this.source[this.index]);
-    this.location = { line: 1, column: 1 };
+    this.location = { line: 1, column: 1 } as ITokenLocation;
   }
 
   public next(): Token {
@@ -31,14 +31,14 @@ export class Scanner {
     } else if (this.char.isSomeOf(["'", '"'])) {
       return this.stringLiteral();
     } else if (this.char.isEOF()) {
-      return new Token(TokenType.EOF, "EOF");
+      return this.createToken(TokenType.EOF, "EOF");
     } else {
       for (let i = CHARACTERS_LOOKAHEAD; i > 0; i--) {
-        const lookahead = this.slice(i);
-        const token = PUNCTUATION.get(lookahead);
-        if (token) {
-          this.advance(lookahead.length);
-          return token;
+        const slice = this.slice(i);
+        const tokenType = PUNCTUATION.get(slice);
+        if (tokenType) {
+          this.advance(slice.length);
+          return this.createToken(tokenType, slice);
         }
       }
 
@@ -76,6 +76,10 @@ export class Scanner {
    */
   private slice(length: number): string {
     return this.source.slice(this.index, this.index + length);
+  }
+
+  private createToken(type: TokenType, code: string): Token {
+    return new Token(type, code, this.location);
   }
 
   private incrementLineLocation(): void {
@@ -170,7 +174,7 @@ export class Scanner {
       }
     }
 
-    return new Token(TokenType.DECIMAL_LITERAL, buffer);
+    return this.createToken(TokenType.DECIMAL_LITERAL, buffer);
   }
 
   private hexadecimalIntegerLiteral(): Token {
@@ -182,7 +186,7 @@ export class Scanner {
       this.advance();
     }
 
-    return new Token(TokenType.HEXADECIMAL_LITERAL, buffer);
+    return this.createToken(TokenType.HEXADECIMAL_LITERAL, buffer);
   }
 
   private octalIntegerLiteral(): Token {
@@ -194,7 +198,7 @@ export class Scanner {
       this.advance();
     }
 
-    return new Token(TokenType.OCTAL_LITERAL, buffer);
+    return this.createToken(TokenType.OCTAL_LITERAL, buffer);
   }
 
   private binaryIntegerLiteral(): Token {
@@ -206,7 +210,7 @@ export class Scanner {
       this.advance();
     }
 
-    return new Token(TokenType.BINARY_LITERAL, buffer);
+    return this.createToken(TokenType.BINARY_LITERAL, buffer);
   }
 
   private stringLiteral(): Token {
@@ -225,7 +229,7 @@ export class Scanner {
     }
 
     this.advance();
-    return new Token(TokenType.STRING_LITERAL, buffer);
+    return this.createToken(TokenType.STRING_LITERAL, buffer);
   }
 
   private identifierOrKeyword(): Token {
@@ -236,6 +240,11 @@ export class Scanner {
       this.advance();
     }
 
-    return KEYWORDS.get(buffer) || new Token(TokenType.IDENTIFIER, buffer);
+    let tokenType = KEYWORDS.get(buffer);
+    if (tokenType === undefined) {
+      tokenType = TokenType.IDENTIFIER;
+    }
+
+    return this.createToken(tokenType, buffer);
   }
 }
