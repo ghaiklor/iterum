@@ -375,7 +375,7 @@ describe("Iterum::Scanner", () => {
     expect(scanner.next()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
     expect(scanner.errors.map((error) => error.toString())).toMatchObject([
       "[3:15] LexicalError: Unrecognized character §",
-    ])
+    ]);
   });
 
   it("Should properly tokenize a program with read/print calls", () => {
