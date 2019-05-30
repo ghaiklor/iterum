@@ -9,4 +9,12 @@ describe("Iterum::Interpreter::ArrayExpression", () => {
 
     expect(result).toEqual([1, 2, 3]);
   });
+
+  it("Should properly interpret array expression with holes", () => {
+    const source = `[1,,3]`;
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual([1, null, 3]);
+  });
 });

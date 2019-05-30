@@ -7,7 +7,8 @@ export function ArrayExpression(n: INode, context: ITraverseContext): any[] {
   const elements = [];
 
   for (const element of node.elements) {
-    if (!element) {
+    if (element === null) {
+      elements.push(null);
       continue;
     }
 

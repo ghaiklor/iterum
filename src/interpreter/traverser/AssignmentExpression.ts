@@ -10,14 +10,7 @@ export function AssignmentExpression(n: INode, context: ITraverseContext): any {
 
   const node = n as IAssignmentExpression;
   const rhsValue = traverser.traverse(node.right, context);
-
-  let lhsName;
-  if (node.left.type === "Identifier") {
-    lhsName = (node.left as IIdentifier).name;
-  } else {
-    lhsName = traverser.traverse(node.left, context);
-  }
-
+  const lhsName = (node.left as IIdentifier).name;
   const lhsValue = scope.lookup(lhsName).value;
 
   switch (node.operator) {

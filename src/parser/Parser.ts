@@ -255,10 +255,16 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private elementList(): IExpression[] {
-    const expressions = [this.assignmentExpression()];
-    while (this.eat(TokenType.COMMA)) {
-      expressions.push(this.assignmentExpression());
+  private elementList(): IArrayExpression["elements"] {
+    const expressions = [];
+
+    while (this.currentToken.isNot(TokenType.RIGHT_SQUARE_BRACKETS)) {
+      if (this.eat(TokenType.COMMA)) {
+        expressions.push(null);
+      } else {
+        expressions.push(this.assignmentExpression());
+        this.eat(TokenType.COMMA);
+      }
     }
 
     return expressions;

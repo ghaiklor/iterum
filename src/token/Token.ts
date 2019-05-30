@@ -20,6 +20,15 @@ export class Token {
   }
 
   /**
+   * Check if the token type is not the same as provided.
+   *
+   * @param type TokenType to check against the token instance
+   */
+  public isNot(type: TokenType): boolean {
+    return !this.is(type);
+  }
+
+  /**
    * Check if the token is some of provided token types.
    *
    * @param types An array of token types to check against

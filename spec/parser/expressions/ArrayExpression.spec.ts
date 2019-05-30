@@ -48,4 +48,28 @@ describe("Iterum::Parser::ArrayExpression", () => {
       type: "Program",
     } as IProgram);
   });
+
+  it("Should properly parse array literals with holes", () => {
+    const source = `[1,,3];`;
+    const ast = Parser.parse(source);
+
+    expect(ast).toMatchObject({
+      body: [{
+        expression: {
+          elements: [
+            { type: "Literal", value: 1, raw: "1", loc: null } as ILiteral,
+            null,
+            { type: "Literal", value: 3, raw: "3", loc: null } as ILiteral,
+          ],
+          loc: null,
+          type: "ArrayExpression",
+        } as IArrayExpression,
+        loc: null,
+        type: "ExpressionStatement",
+      } as IExpressionStatement],
+      loc: null,
+      sourceType: "module",
+      type: "Program",
+    } as IProgram);
+  });
 });

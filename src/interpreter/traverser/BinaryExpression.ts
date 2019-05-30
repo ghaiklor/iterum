@@ -11,9 +11,11 @@ export function BinaryExpression(n: INode, context: ITraverseContext) {
 
   switch (operator) {
     case BinaryOperator.EQUAL:
-      return left == right; // tslint:disable-line
+      // tslint:disable-next-line: triple-equals
+      return left == right;
     case BinaryOperator.NOT_EQUAL:
-      return left != right; // tslint:disable-line
+      // tslint:disable-next-line: triple-equals
+      return left != right;
     case BinaryOperator.STRICT_EQUAL:
       return left === right;
     case BinaryOperator.NOT_STRICT_EQUAL:
@@ -27,11 +29,14 @@ export function BinaryExpression(n: INode, context: ITraverseContext) {
     case BinaryOperator.GREATER_THAN_OR_EQUAL:
       return left >= right;
     case BinaryOperator.BITWISE_SHIFT_LEFT:
-      return left << right; // tslint:disable-line
+      // tslint:disable-next-line: no-bitwise
+      return left << right;
     case BinaryOperator.BITWISE_SHIFT_RIGHT:
-      return left >> right; // tslint:disable-line
+      // tslint:disable-next-line: no-bitwise
+      return left >> right;
     case BinaryOperator.BITWISE_SHIFT_RIGHT_ZERO:
-      return left >>> right; // tslint:disable-line
+      // tslint:disable-next-line: no-bitwise
+      return left >>> right;
     case BinaryOperator.PLUS:
       return left + right;
     case BinaryOperator.MINUS:
@@ -45,11 +50,14 @@ export function BinaryExpression(n: INode, context: ITraverseContext) {
     case BinaryOperator.MODULUS:
       return left % right;
     case BinaryOperator.BITWISE_AND:
-      return left & right; // tslint:disable-line
+      // tslint:disable-next-line: no-bitwise
+      return left & right;
     case BinaryOperator.BITWISE_OR:
-      return left | right; // tslint:disable-line
+      // tslint:disable-next-line: no-bitwise
+      return left | right;
     case BinaryOperator.BITWISE_XOR:
-      return left ^ right; // tslint:disable-line
+      // tslint:disable-next-line: no-bitwise
+      return left ^ right;
     case BinaryOperator.IN:
       return left in right;
     case BinaryOperator.INSTANCE_OF:
