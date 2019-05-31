@@ -8,7 +8,7 @@ export function FunctionDeclaration(n: INode, context: ITraverseContext) {
   const { scope } = context;
   const node = n as IFunctionDeclaration;
   const name = node.id.name;
-  const fn = new Function(node);
+  const fn = new Function(node, scope);
 
   scope.define(new Symbol(name, fn));
 }

@@ -32,4 +32,25 @@ describe("Iterum::Interpreter::FunctionDeclaration", () => {
 
     expect(result).toEqual(89);
   });
+
+  it("Should properly create closures over function declarations", () => {
+    const source = `
+      function makePoint(x, y) {
+        function closure(method) {
+          if (method === "x") return x;
+          if (method === "y") return y;
+        }
+
+        return closure;
+      }
+
+      const point = makePoint(2, 3);
+      point("x") + point("y");
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(5);
+  });
 });

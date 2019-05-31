@@ -8,13 +8,15 @@ import { ReturnException } from "./ReturnException";
 
 export class Function implements ICallable {
   private fn: IFunctionDeclaration;
-  constructor(fn: IFunctionDeclaration) {
+  private scope: SymbolTable;
+  constructor(fn: IFunctionDeclaration, scope: SymbolTable) {
     this.fn = fn;
+    this.scope = scope;
   }
 
   public call(args: any[], context: ITraverseContext) {
-    const { traverser, scope } = context;
-    const calleeScope = new SymbolTable(scope);
+    const { traverser } = context;
+    const calleeScope = new SymbolTable(this.scope);
 
     for (let i = 0; i < args.length; i++) {
       calleeScope.define(new Symbol((this.fn.params[i] as IIdentifier).name, args[i]));
