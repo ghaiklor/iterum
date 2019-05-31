@@ -1,3 +1,20 @@
+# [0.4.0](https://github.com/ghaiklor/iterum/compare/v0.3.0...v0.4.0) (2019-05-31)
+
+
+### Bug Fixes
+
+* 🐛 building issues with json resolver for TypeScript ([2233831](https://github.com/ghaiklor/iterum/commit/2233831))
+
+
+### Features
+
+* 🎸 implement function declarations and call expressions ([8976414](https://github.com/ghaiklor/iterum/commit/8976414))
+* 🎸 implement panic mode for parser and scanner ([0b77da8](https://github.com/ghaiklor/iterum/commit/0b77da8))
+* 🎸 implement syntax\runtime support for holes in an array ([d0713c5](https://github.com/ghaiklor/iterum/commit/d0713c5))
+* 🎸 implement wrappers for different kinds of errors ([df88098](https://github.com/ghaiklor/iterum/commit/df88098))
+
+
+
 # [0.3.0](https://github.com/ghaiklor/iterum/compare/v0.2.0...v0.3.0) (2019-05-28)
 
 
