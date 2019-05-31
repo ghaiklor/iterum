@@ -10,7 +10,7 @@
     "url": "https://ghaiklor.com"
   },
   "bin": {
-    "iterum": "./bin/iterum.js"
+    "iterum": "./dist/cli/iterum.js"
   },
   "bugs": {
     "url": "https://github.com/ghaiklor/iterum/issues",
