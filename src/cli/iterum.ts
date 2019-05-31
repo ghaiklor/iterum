@@ -3,7 +3,6 @@
 import * as program from "commander";
 import * as fs from "fs";
 import * as repl from "repl";
-import { version } from "../../package.json";
 import { ParserError } from "../errors/ParserError";
 import { Interpreter } from "../interpreter/Interpreter";
 import { Parser } from "../parser/Parser";
@@ -40,7 +39,8 @@ function interpret(source: string) {
 }
 
 program
-  .version(version, "--version")
+  // TODO: make version from package.json
+  .version("0.3.0", "--version")
   .usage("[options] <file...>")
   .option("--print-ast", "print the AST after parsing the source language")
   .option("--interpret", "interpret the code and output the result of last statement")
@@ -81,7 +81,8 @@ if (program.args.length === 0) {
         const result = interpreter.interpret(ast);
         cb(null, result);
       } catch (e) {
-        cb(e, null);
+        const error = e as ParserError;
+        cb(error, null);
       }
     },
     prompt: "iterum > ",
