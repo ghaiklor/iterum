@@ -1,10 +1,20 @@
 {
   "collectCoverage": false,
   "collectCoverageFrom": [
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    "!./src/cli/iterum.ts"
   ],
   "coverageDirectory": "coverage",
+  "coverageThreshold": {
+    "global": {
+      "branches": 80,
+      "functions": 80,
+      "lines": 80,
+      "statements": -10
+    }
+  },
   "errorOnDeprecated": true,
+  "maxConcurrency": 10,
   "notify": false,
   "notifyMode": "failure-change",
   "preset": "ts-jest",
@@ -12,6 +22,5 @@
   "testMatch": [
     "**/?(*.)+(spec|test).[jt]s?(x)"
   ],
-  "timers": "real",
   "verbose": false
 }
