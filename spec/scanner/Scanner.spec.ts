@@ -459,9 +459,10 @@ describe("Iterum::Scanner", () => {
     const source = `§ "foo`;
     const scanner = new Scanner(source);
 
-    expect(scanner.scan()).toBeUndefined();
-    expect(scanner.scan()).toBeUndefined();
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, code: "EOF" } as Token);
+    expect(scanner.scanAll()).toMatchObject([
+      { type: TokenType.EOF, code: "" } as Token,
+    ]);
+
     expect(scanner.errors.map((error) => error.toString())).toMatchObject([
       "[1:1] LexicalError: Unrecognized character §",
       "[1:7] LexicalError: Unterminated string literal",

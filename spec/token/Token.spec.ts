@@ -17,6 +17,12 @@ describe("Iterum::Token", () => {
     expect(token.is(TokenType.IDENTIFIER)).toBeTruthy();
   });
 
+  test("Should properly check if token is not it the provided list in #isNotSomeOf", () => {
+    const token = new Token(TokenType.IDENTIFIER, "foo", { line: 1, column: 1 } as ITokenLocation);
+
+    expect(token.isNotSomeOf([TokenType.FINALLY, TokenType.VAR])).toBeTruthy();
+  });
+
   test("Should properly serialize token to string representation", () => {
     const token = new Token(TokenType.IDENTIFIER, "foo", { line: 5, column: 3 } as ITokenLocation);
 
