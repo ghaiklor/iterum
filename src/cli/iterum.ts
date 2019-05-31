@@ -40,7 +40,7 @@ function interpret(source: string) {
 
 program
   // TODO: make version from package.json
-  .version("0.3.0", "--version")
+  .version("0.4.0", "--version")
   .usage("[options] <file...>")
   .option("--print-ast", "print the AST after parsing the source language")
   .option("--interpret", "interpret the code and output the result of last statement")
