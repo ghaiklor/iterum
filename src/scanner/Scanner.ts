@@ -9,6 +9,14 @@ import { PUNCTUATION } from "./Punctuation";
 const CHARACTERS_LOOKAHEAD = 4;
 
 export class Scanner {
+  public static scan(source: string): { tokens: Token[], errors: LexicalError[] } {
+    const scanner = new Scanner(source);
+    const tokens = scanner.scanAll();
+    const errors = scanner.errors;
+
+    return { tokens, errors };
+  }
+
   public errors: LexicalError[] = [];
   private source: string;
   private index: number;
@@ -22,7 +30,7 @@ export class Scanner {
     this.location = { line: 1, column: 1 } as ITokenLocation;
   }
 
-  public next(): Token | void {
+  public scan(): Token | void {
     while (this.char.isWhitespace()) {
       this.whitespace();
       this.comment();
@@ -53,7 +61,7 @@ export class Scanner {
 
   public scanAll(): Token[] {
     while (!this.isEOF()) {
-      const token = this.next();
+      const token = this.scan();
       if (token !== undefined) {
         this.tokens.push(token);
       }

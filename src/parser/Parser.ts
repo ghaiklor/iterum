@@ -64,6 +64,9 @@ import { IThrowStatement } from "../ast/statements/ThrowStatement";
 import { ITryStatement } from "../ast/statements/TryStatement";
 import { IWhileStatement } from "../ast/statements/WhileStatement";
 import { IWithStatement } from "../ast/statements/WithStatement";
+import { ErrorCode } from "../errors/ErrorCode";
+import { ParserError } from "../errors/ParserError";
+import { SyntaxError } from "../errors/SyntaxError";
 import { Scanner } from "../scanner/Scanner";
 import { Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
@@ -73,29 +76,35 @@ type IBreakableStatement = IIterationStatement | ISwitchStatement;
 type IExportDeclaration = IExportDefaultDeclaration | IExportNamedDeclaration | IExportAllDeclaration;
 
 export class Parser {
-  public static parse(source: string): IProgram {
-    const parser = new Parser(source);
-    const ast = parser.program();
-    const errors = parser.scanner.errors;
-    // TODO: add here syntax errors as well
+  public static parse(source: string): IProgram | never {
+    const { tokens, errors: lexicalErrors } = Scanner.scan(source);
+    const parser = new Parser(tokens);
+    const ast = parser.parse();
+    const errors = lexicalErrors.concat(parser.errors);
 
     if (errors.length > 0) {
-      // TODO: make better reporter for errors
-      // tslint:disable-next-line: no-console
-      errors.forEach((error) => console.error(error.toString()));
+      throw new ParserError(errors);
     }
 
     return ast;
   }
 
-  private scanner: Scanner;
+  public errors: SyntaxError[] = [];
   private tokens: Token[];
   private offset: number;
   private currentToken: Token;
-  constructor(source: string) {
-    this.scanner = new Scanner(source);
-    this.tokens = this.scanner.scanAll();
+  constructor(tokens: Token[]) {
+    this.tokens = tokens;
     this.offset = 0;
+    this.currentToken = this.tokens[this.offset];
+  }
+
+  public parse(): IProgram {
+    return this.program();
+  }
+
+  private advance(): void {
+    this.offset++;
     this.currentToken = this.tokens[this.offset];
   }
 
@@ -107,8 +116,7 @@ export class Parser {
    */
   private eat(tokenToEat: TokenType): boolean {
     if (this.currentToken.is(tokenToEat)) {
-      this.offset++;
-      this.currentToken = this.tokens[this.offset];
+      this.advance();
       return true;
     }
 
@@ -121,30 +129,62 @@ export class Parser {
    *
    * @param expectedToken What type of the token to eat
    */
-  private expect(expectedToken: TokenType): Parser {
+  private expect(expectedToken: TokenType): void | never {
     if (this.currentToken.is(expectedToken)) {
-      this.offset++;
-      this.currentToken = this.tokens[this.offset];
+      this.advance();
     } else {
-      throw new Error(
-        `Expected ${expectedToken} at ${this.currentToken.location.line}:${this.currentToken.location.column}, ` +
-        `but got ${this.currentToken.type}`,
-      );
-    }
+      const location = { ...this.currentToken.location };
+      const code = this.currentToken.code;
+      const error = new SyntaxError(ErrorCode.EXPECTED_BUT_GOT, location, expectedToken, code);
 
-    return this;
+      this.errors.push(error);
+      throw error;
+    }
   }
 
-  /**
-   * Throws an error about unexpected token.
-   *
-   * @throws {Error}
-   */
-  private unexpected<T>(): T {
-    throw new Error(
-      `Unexpected ${this.currentToken.code} ` +
-      `at ${this.currentToken.location.line}:${this.currentToken.location.column}`,
-    );
+  private unexpected(): never {
+    const location = this.currentToken.location;
+    const code = this.currentToken.code;
+    const error = new SyntaxError(ErrorCode.UNEXPECTED, location, code);
+
+    this.errors.push(error);
+    throw error;
+  }
+
+  private synchronize(): null {
+    const SYNC_POINTS = [
+      TokenType.IMPORT,
+      TokenType.EXPORT,
+      TokenType.FUNCTION,
+      TokenType.CLASS,
+      TokenType.VAR,
+      TokenType.LET,
+      TokenType.CONST,
+      TokenType.LEFT_CURLY_BRACES,
+      TokenType.IF,
+      TokenType.CONTINUE,
+      TokenType.DEBUGGER,
+      TokenType.TRY,
+      TokenType.THROW,
+      TokenType.WITH,
+      TokenType.RETURN,
+      TokenType.BREAK,
+      TokenType.DO,
+      TokenType.WHILE,
+      TokenType.FOR,
+      TokenType.SWITCH,
+      TokenType.PRINT,
+    ];
+
+    while (!this.isEOF()) {
+      if (this.currentToken.isSomeOf(SYNC_POINTS)) {
+        return null;
+      }
+
+      this.advance();
+    }
+
+    return null;
   }
 
   /**
@@ -194,7 +234,7 @@ export class Parser {
     return this.identifier();
   }
 
-  private primaryExpression(): IExpression {
+  private primaryExpression(): IExpression | never {
     const LITERAL_TOKENS = [
       TokenType.BINARY_LITERAL,
       TokenType.BOOLEAN_LITERAL,
@@ -1513,22 +1553,30 @@ export class Parser {
   }
 
   private moduleItemList(): Array<IModuleDeclaration | IStatement> {
-    const items = [this.moduleItem()];
+    const items = [];
 
     while (!this.isEOF()) {
-      items.push(this.moduleItem());
+      const item = this.moduleItem();
+      if (item !== null) {
+        items.push(item);
+      }
     }
 
     return items;
   }
 
-  private moduleItem(): IModuleDeclaration | IStatement {
-    if (this.currentToken.is(TokenType.IMPORT)) {
-      return this.importDeclaration();
-    } else if (this.currentToken.is(TokenType.EXPORT)) {
-      return this.exportDeclaration();
-    } else {
-      return this.statementListItem();
+  private moduleItem(): IModuleDeclaration | IStatement | null {
+    try {
+      if (this.currentToken.is(TokenType.IMPORT)) {
+        return this.importDeclaration();
+      } else if (this.currentToken.is(TokenType.EXPORT)) {
+        return this.exportDeclaration();
+      } else {
+        return this.statementListItem();
+      }
+    } catch (e) {
+      this.synchronize();
+      return null;
     }
   }
 

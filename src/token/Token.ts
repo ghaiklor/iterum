@@ -12,7 +12,7 @@ export class Token {
   constructor(type: TokenType, code: string, location: ITokenLocation) {
     this.type = type;
     this.code = code;
-    this.location = location;
+    this.location = { ...location };
   }
 
   /**
