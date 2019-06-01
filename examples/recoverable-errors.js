@@ -1,4 +1,7 @@
+import { foo from "module";
+export §;
 function add(5) { }
-[1, 2];
-function add(10) { }
-class function throw
+class {
+var 9 = (2 + §)
+const foo = "bar";
+''''
