@@ -69,6 +69,7 @@ import { ParserError } from "../errors/ParserError";
 import { SyntaxError } from "../errors/SyntaxError";
 import { Scanner } from "../scanner/Scanner";
 import { Token } from "../token/Token";
+import { TokenName } from "../token/TokenName";
 import { TokenType } from "../token/TokenType";
 
 type IIterationStatement = IDoWhileStatement | IWhileStatement | IForStatement | IForInStatement | IForOfStatement;
@@ -134,8 +135,9 @@ export class Parser {
       this.advance();
     } else {
       const location = { ...this.currentToken.location };
-      const code = this.currentToken.code;
-      const error = new SyntaxError(ErrorCode.EXPECTED_BUT_GOT, location, expectedToken, code);
+      const code = this.currentToken.lexeme;
+      const name = TokenName.get(expectedToken) || "Unknown token name, see the lexeme";
+      const error = new SyntaxError(ErrorCode.EXPECTED_BUT_GOT, location, name, code);
 
       this.errors.push(error);
       throw error;
@@ -144,7 +146,7 @@ export class Parser {
 
   private unexpected(): never {
     const location = this.currentToken.location;
-    const code = this.currentToken.code;
+    const code = this.currentToken.lexeme;
     const error = new SyntaxError(ErrorCode.UNEXPECTED, location, code);
 
     this.errors.push(error);
@@ -217,7 +219,7 @@ export class Parser {
     this.expect(TokenType.IDENTIFIER);
 
     const node = this.openNode<IIdentifier>("Identifier");
-    node.name = token.code;
+    node.name = token.lexeme;
 
     return this.closeNode(node);
   }
@@ -275,28 +277,28 @@ export class Parser {
     const node = this.openNode<ILiteral>("Literal");
     const token = this.currentToken;
 
-    node.raw = token.code;
+    node.raw = token.lexeme;
     if (this.eat(TokenType.NULL_LITERAL)) {
       node.value = null;
       return this.closeNode(node);
     } else if (this.eat(TokenType.BOOLEAN_LITERAL)) {
-      node.value = token.code === "true";
+      node.value = token.lexeme === "true";
       return this.closeNode(node);
     } else if (this.eat(TokenType.STRING_LITERAL)) {
-      node.value = token.code;
+      node.value = token.lexeme;
       return this.closeNode(node);
     } else if (this.eat(TokenType.DECIMAL_LITERAL)) {
-      node.value = parseFloat(token.code);
+      node.value = parseFloat(token.lexeme);
       return this.closeNode(node);
     } else if (this.eat(TokenType.HEXADECIMAL_LITERAL)) {
-      node.value = parseInt(token.code.slice(2), 16);
+      node.value = parseInt(token.lexeme.slice(2), 16);
       return this.closeNode(node);
     } else if (this.eat(TokenType.OCTAL_LITERAL)) {
-      node.value = parseInt(token.code.slice(2), 8);
+      node.value = parseInt(token.lexeme.slice(2), 8);
       return this.closeNode(node);
     } else {
       this.expect(TokenType.BINARY_LITERAL);
-      node.value = parseInt(token.code.slice(2), 2);
+      node.value = parseInt(token.lexeme.slice(2), 2);
       return this.closeNode(node);
     }
   }
@@ -1462,7 +1464,7 @@ export class Parser {
       node.kind = "set";
     } else if (this.eat(TokenType.GET)) {
       node.kind = "get";
-    } else if (this.currentToken.code === "constructor") {
+    } else if (this.currentToken.lexeme === "constructor") {
       node.kind = "constructor";
     } else {
       node.kind = "method";

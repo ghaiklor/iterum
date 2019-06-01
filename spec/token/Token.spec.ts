@@ -5,8 +5,9 @@ describe("Iterum::Token", () => {
   test("Should properly instantiate Token", () => {
     const token = new Token(TokenType.IDENTIFIER, "foo", { line: 1, column: 1 } as ITokenLocation);
 
-    expect(token.type).toEqual("IDENTIFIER");
-    expect(token.code).toEqual("foo");
+    expect(token.type).toEqual(TokenType.IDENTIFIER);
+    expect(token.name).toEqual("identifier");
+    expect(token.lexeme).toEqual("foo");
     expect(token.location).toEqual({ line: 1, column: 1 } as ITokenLocation);
   });
 
@@ -26,6 +27,6 @@ describe("Iterum::Token", () => {
   test("Should properly serialize token to string representation", () => {
     const token = new Token(TokenType.IDENTIFIER, "foo", { line: 5, column: 3 } as ITokenLocation);
 
-    expect(token.toString()).toEqual("[5:3] Token(IDENTIFIER, foo)");
+    expect(token.toString()).toEqual("[5:3] Token(identifier, foo)");
   });
 });

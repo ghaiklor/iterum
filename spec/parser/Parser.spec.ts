@@ -34,9 +34,9 @@ describe("Iterum::Parser", () => {
       expect(error.name).toEqual("ParserError");
       expect(error.message).toEqual("There are some errors found in your code");
       expect(error.toString()).toEqual([
-        "[2:21] SyntaxError: Expected IDENTIFIER, but got 5",
-        "[4:22] SyntaxError: Expected IDENTIFIER, but got 10",
-        "[5:21] SyntaxError: Expected IDENTIFIER, but got function",
+        "[2:21] SyntaxError: Expected identifier, but got 5",
+        "[4:22] SyntaxError: Expected identifier, but got 10",
+        "[5:21] SyntaxError: Expected identifier, but got function",
         "[5:27] SyntaxError: Expected (, but got throw",
         "[6:5] SyntaxError: Unexpected EOF",
       ].join("\n"));
