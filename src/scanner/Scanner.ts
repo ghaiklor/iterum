@@ -9,7 +9,7 @@ import { PUNCTUATION } from "./Punctuation";
 const CHARACTERS_LOOKAHEAD = 4;
 
 export class Scanner {
-  public static scan(source: string): { tokens: Token[], errors: LexicalError[] } {
+  public static tokenize(source: string): { tokens: Token[], errors: LexicalError[] } {
     const scanner = new Scanner(source);
     const tokens = scanner.scanAll();
     const errors = scanner.errors;
@@ -19,19 +19,23 @@ export class Scanner {
 
   public errors: LexicalError[] = [];
   private source: string;
-  private index: number;
+  private offset: number;
   private char: Character;
   private location: ITokenLocation;
   private tokens: Token[] = [];
   constructor(source: string) {
     this.source = source;
-    this.index = 0;
-    this.char = Character.from(this.source[this.index]);
+    this.offset = 0;
+    this.char = Character.from(this.source[this.offset]);
     this.location = { line: 1, column: 1 } as ITokenLocation;
   }
 
-  public scan(): Token | void {
-    while (this.char.isWhitespace()) {
+  public scan(): Token | null {
+    while (
+      (this.char.isWhitespace()) ||
+      (this.char.is("/") && this.peek().is("/")) ||
+      (this.char.is("/") && this.peek().is("*"))
+    ) {
       this.whitespace();
       this.comment();
     }
@@ -43,12 +47,12 @@ export class Scanner {
     } else if (this.char.isSomeOf(["'", '"'])) {
       return this.stringLiteral();
     } else if (this.isEOF()) {
-      return this.createToken(TokenType.EOF, "EOF");
+      return this.createToken(TokenType.EOF, "");
     } else {
-      for (let i = CHARACTERS_LOOKAHEAD; i > 0; i--) {
-        const slice = this.slice(i);
+      for (let offset = CHARACTERS_LOOKAHEAD; offset > 0; offset--) {
+        const slice = this.slice(offset);
         const tokenType = PUNCTUATION.get(slice);
-        if (tokenType) {
+        if (tokenType !== undefined) {
           this.advance(slice.length);
           return this.createToken(tokenType, slice);
         }
@@ -56,13 +60,15 @@ export class Scanner {
 
       this.recoverableError(ErrorCode.UNRECOGNIZED_CHARACTER, this.char.toString());
       this.advance();
+
+      return null;
     }
   }
 
   public scanAll(): Token[] {
     while (!this.isEOF()) {
       const token = this.scan();
-      if (token !== undefined) {
+      if (token !== null) {
         this.tokens.push(token);
       }
     }
@@ -71,84 +77,72 @@ export class Scanner {
     return this.tokens;
   }
 
-  /**
-   * Advances the cursor in the source code.
-   *
-   * @param shift How many characters to advance
-   */
-  private advance(shift: number = 1): Scanner {
-    this.index += shift;
-    this.location.column += shift;
-    this.char = Character.from(this.source[this.index]);
+  private advance(offset: number = 1): null {
+    this.offset += offset;
+    this.location.column += offset;
+    this.char = Character.from(this.source[this.offset]);
 
-    return this;
+    return null;
   }
 
-  /**
-   * Peeks up a character specified by shift argument, starting from current position.
-   * This method does not modify the state of the cursor.
-   *
-   * @param shift How many characters to skip before peeking
-   */
-  private peek(shift: number = 1): Character {
-    return Character.from(this.source[this.index + shift]);
+  private peek(offset: number = 1): Character {
+    return Character.from(this.source[this.offset + offset]);
   }
 
-  /**
-   * Takes a substring of required length, starting from the current position.
-   *
-   * @param length How many characters to slice from current position
-   */
-  private slice(length: number): string {
-    return this.source.slice(this.index, this.index + length);
+  private slice(offset: number): string {
+    return this.source.slice(this.offset, this.offset + offset);
   }
 
-  private createToken(type: TokenType, code: string): Token {
-    return new Token(type, code, this.location);
+  private createToken(type: TokenType, lexeme: string): Token {
+    return new Token(type, lexeme, this.location);
   }
 
-  private recoverableError(code: ErrorCode, ...args: string[]): void {
-    const lexicalError = new LexicalError(code, this.location, ...args);
-    this.errors.push(lexicalError);
+  private recoverableError(code: ErrorCode, ...args: string[]): null {
+    this.errors.push(new LexicalError(code, this.location, ...args));
+    return null;
   }
 
   private isEOF(): boolean {
-    return this.index >= this.source.length;
+    return this.offset >= this.source.length;
   }
 
-  private incrementLineLocation(): void {
+  private incrementLineLocation(): null {
     this.location.line++;
     this.location.column = 0;
+
+    return null;
   }
 
-  private whitespace(): void {
+  private whitespace(): null {
     while (this.char.isWhitespace()) {
-      if (this.char.isLineTerminator()) {
+      if (this.char.isLineFeed()) {
         this.incrementLineLocation();
       }
 
       this.advance();
     }
+
+    return null;
   }
 
-  private comment(): Scanner {
+  private comment(): null {
     this.multiLineComment();
     this.singleLineComment();
 
-    return this;
+    return null;
   }
 
-  private multiLineComment(): Scanner {
+  private multiLineComment(): null {
     if (this.char.is("/") && this.peek().is("*")) {
       this.advance(2);
 
       while (!(this.char.is("*") && this.peek().is("/"))) {
         if (this.isEOF()) {
           this.recoverableError(ErrorCode.EXPECTED, "*/");
-          return this;
+          return null;
         }
 
-        if (this.char.isLineTerminator()) {
+        if (this.char.isLineFeed()) {
           this.incrementLineLocation();
         }
 
@@ -158,17 +152,17 @@ export class Scanner {
       this.advance(2);
     }
 
-    return this;
+    return null;
   }
 
-  private singleLineComment(): Scanner {
+  private singleLineComment(): null {
     if (this.char.is("/") && this.peek().is("/")) {
       this.advance(2);
 
-      while (!(this.char.isLineTerminator() || this.isEOF())) {
+      while (!(this.char.isLineFeed() || this.isEOF())) {
         this.advance();
 
-        if (this.char.isLineTerminator()) {
+        if (this.char.isLineFeed()) {
           this.incrementLineLocation();
         }
       }
@@ -176,7 +170,7 @@ export class Scanner {
       this.advance();
     }
 
-    return this;
+    return null;
   }
 
   private numericLiteral(): Token {
@@ -192,19 +186,19 @@ export class Scanner {
   }
 
   private decimalLiteral(): Token {
-    let buffer: string = "";
+    let buffer = "";
 
     while (this.char.isDigit()) {
-      buffer += this.char;
+      buffer += this.char.toString();
       this.advance();
     }
 
     if (this.char.is(".") && this.peek().isDigit()) {
-      buffer += this.char;
+      buffer += this.char.toString();
       this.advance();
 
       while (this.char.isDigit()) {
-        buffer += this.char;
+        buffer += this.char.toString();
         this.advance();
       }
     }
@@ -213,11 +207,11 @@ export class Scanner {
   }
 
   private hexadecimalIntegerLiteral(): Token {
-    let buffer: string = "0x";
+    let buffer = "0x";
     this.advance(2);
 
     while (this.char.isHexDigit()) {
-      buffer += this.char;
+      buffer += this.char.toString();
       this.advance();
     }
 
@@ -225,11 +219,11 @@ export class Scanner {
   }
 
   private octalIntegerLiteral(): Token {
-    let buffer: string = "0o";
+    let buffer = "0o";
     this.advance(2);
 
     while (this.char.isOctalDigit()) {
-      buffer += this.char;
+      buffer += this.char.toString();
       this.advance();
     }
 
@@ -237,31 +231,30 @@ export class Scanner {
   }
 
   private binaryIntegerLiteral(): Token {
-    let buffer: string = "0b";
+    let buffer = "0b";
     this.advance(2);
 
     while (this.char.isBinaryDigit()) {
-      buffer += this.char;
+      buffer += this.char.toString();
       this.advance();
     }
 
     return this.createToken(TokenType.BINARY_LITERAL, buffer);
   }
 
-  private stringLiteral(): Token | void {
-    let buffer: string = "";
+  private stringLiteral(): Token | null {
+    const quoteType = this.char.code;
+    let buffer = "";
 
-    const quoteType: string = this.char.toString();
     this.advance();
-
-    while (!this.char.is(quoteType)) {
-      if (this.char.isLineTerminator() || this.isEOF()) {
+    while (this.char.isNot(quoteType)) {
+      if (this.char.isLineFeed() || this.isEOF()) {
         this.recoverableError(ErrorCode.UNTERMINATED_STRING_LITERAL);
         this.advance();
-        return;
+        return null;
       }
 
-      buffer += this.char;
+      buffer += this.char.toString();
       this.advance();
     }
 
@@ -270,10 +263,10 @@ export class Scanner {
   }
 
   private identifierOrKeyword(): Token {
-    let buffer: string = "";
+    let buffer = "";
 
     while (this.char.isAlphaNumeric()) {
-      buffer += this.char;
+      buffer += this.char.toString();
       this.advance();
     }
 

@@ -12,8 +12,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.MULTIPLY, lexeme: "*" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.DIVIDE, lexeme: "/" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.MODULUS, lexeme: "%" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize number literals", () => {
@@ -22,8 +22,8 @@ describe("Iterum::Scanner", () => {
 
     expect(scanner.scan()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, lexeme: "2" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, lexeme: "2.52" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize hexadecimal literal", () => {
@@ -31,8 +31,8 @@ describe("Iterum::Scanner", () => {
     const scanner = new Scanner(source);
 
     expect(scanner.scan()).toMatchObject({ type: TokenType.HEXADECIMAL_LITERAL, lexeme: "0x19AF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize octal literal", () => {
@@ -40,8 +40,8 @@ describe("Iterum::Scanner", () => {
     const scanner = new Scanner(source);
 
     expect(scanner.scan()).toMatchObject({ type: TokenType.OCTAL_LITERAL, lexeme: "0o07" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize binary literal", () => {
@@ -49,8 +49,8 @@ describe("Iterum::Scanner", () => {
     const scanner = new Scanner(source);
 
     expect(scanner.scan()).toMatchObject({ type: TokenType.BINARY_LITERAL, lexeme: "0b101" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize string literals", () => {
@@ -70,8 +70,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.ASSIGN, lexeme: "=" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.STRING_LITERAL, lexeme: "foo" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.SEMICOLON, lexeme: ";" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize string literals, ignoring single-line comments", () => {
@@ -94,8 +94,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.ASSIGN, lexeme: "=" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.STRING_LITERAL, lexeme: "foo" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.SEMICOLON, lexeme: ";" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize string literals, ignoring multi-line comments", () => {
@@ -122,8 +122,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.ASSIGN, lexeme: "=" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.STRING_LITERAL, lexeme: "foo" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.SEMICOLON, lexeme: ";" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly ignore single-line comment when no new line, but EOF instead", () => {
@@ -135,8 +135,16 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.ASSIGN, lexeme: "=" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.STRING_LITERAL, lexeme: "bar" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.SEMICOLON, lexeme: ";" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+  });
+
+  it("Should properly skip comment in the start position of the source", () => {
+    const source = `// Just a comment, but bug was there`;
+    const scanner = new Scanner(source);
+
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "", name: "end-of-file" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "", name: "end-of-file" } as Token);
   });
 
   it("Should properly recover from an error if multi-line comment with no closing block for it", () => {
@@ -152,7 +160,7 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.ASSIGN, lexeme: "=" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.STRING_LITERAL, lexeme: "bar" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.SEMICOLON, lexeme: ";" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
     expect(scanner.errors.map((error) => error.toString())).toMatchObject([
       "[4:5] LexicalError: Expected */",
     ]);
@@ -162,8 +170,8 @@ describe("Iterum::Scanner", () => {
     const source = `"foo`;
     const scanner = new Scanner(source);
 
-    expect(scanner.scan()).toBeUndefined();
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toBeNull();
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
     expect(scanner.errors.map((error) => error.toString())).toMatchObject([
       "[1:5] LexicalError: Unterminated string literal",
     ]);
@@ -182,8 +190,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.NOT_EQUAL, lexeme: "!=" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.LOGICAL_OR, lexeme: "||" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.LOGICAL_NOT, lexeme: "!" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize boolean literals", () => {
@@ -192,8 +200,8 @@ describe("Iterum::Scanner", () => {
 
     expect(scanner.scan()).toMatchObject({ type: TokenType.BOOLEAN_LITERAL, lexeme: "true" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.BOOLEAN_LITERAL, lexeme: "false" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize null literal", () => {
@@ -201,8 +209,8 @@ describe("Iterum::Scanner", () => {
     const scanner = new Scanner(source);
 
     expect(scanner.scan()).toMatchObject({ type: TokenType.NULL_LITERAL, lexeme: "null" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize increment and decrement tokens", () => {
@@ -213,8 +221,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.PLUS_PLUS, lexeme: "++" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.IDENTIFIER, lexeme: "bar" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.MINUS_MINUS, lexeme: "--" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize public keyword", () => {
@@ -225,8 +233,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.IDENTIFIER, lexeme: "foo" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.ASSIGN, lexeme: "=" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.NULL_LITERAL, lexeme: "null" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize strict equality", () => {
@@ -240,8 +248,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.IDENTIFIER, lexeme: "bar" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.NOT_STRICT_EQUAL, lexeme: "!==" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.BOOLEAN_LITERAL, lexeme: "false" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize dot sign", () => {
@@ -253,8 +261,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.IDENTIFIER, lexeme: "foo" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.ASSIGN, lexeme: "=" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, lexeme: "2" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize logical expression", () => {
@@ -288,8 +296,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, lexeme: ")" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.SEMICOLON, lexeme: ";" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.RIGHT_CURLY_BRACES, lexeme: "}" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize array declarator", () => {
@@ -305,8 +313,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.DECIMAL_LITERAL, lexeme: "2" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.RIGHT_SQUARE_BRACKETS, lexeme: "]" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.SEMICOLON, lexeme: ";" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly tokenize some simple program", () => {
@@ -350,8 +358,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.IDENTIFIER, lexeme: "result" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, lexeme: ")" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.SEMICOLON, lexeme: ";" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly recover from error if unrecognized character at multi-line code", () => {
@@ -369,10 +377,10 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.SEMICOLON, lexeme: ";" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.LET, lexeme: "let" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.IDENTIFIER, lexeme: "bar" } as Token);
-    expect(scanner.scan()).toBeUndefined();
+    expect(scanner.scan()).toBeNull();
     expect(scanner.scan()).toMatchObject({ type: TokenType.STRING_LITERAL, lexeme: "foo" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.SEMICOLON, lexeme: ";" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
     expect(scanner.errors.map((error) => error.toString())).toMatchObject([
       "[3:15] LexicalError: Unrecognized character §",
     ]);
@@ -441,8 +449,8 @@ describe("Iterum::Scanner", () => {
     expect(scanner.scan()).toMatchObject({ type: TokenType.IDENTIFIER, lexeme: "result" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.RIGHT_PARENTHESIS, lexeme: ")" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.SEMICOLON, lexeme: ";" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly parse the identifier, which uses JS run-time property names", () => {
@@ -451,8 +459,8 @@ describe("Iterum::Scanner", () => {
 
     expect(scanner.scan()).toMatchObject({ type: TokenType.IDENTIFIER, lexeme: "constructor" } as Token);
     expect(scanner.scan()).toMatchObject({ type: TokenType.IDENTIFIER, lexeme: "isPrototypeOf" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
-    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "EOF" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
+    expect(scanner.scan()).toMatchObject({ type: TokenType.EOF, lexeme: "" } as Token);
   });
 
   it("Should properly report lexical errors", () => {
@@ -466,6 +474,21 @@ describe("Iterum::Scanner", () => {
     expect(scanner.errors.map((error) => error.toString())).toMatchObject([
       "[1:1] LexicalError: Unrecognized character §",
       "[1:7] LexicalError: Unterminated string literal",
+    ]);
+  });
+
+  it("Should properly tokenize the source code, using the static method of scanner", () => {
+    const source = `let a = 2;`;
+    const { tokens, errors } = Scanner.tokenize(source);
+
+    expect(errors).toMatchObject([]);
+    expect(tokens).toMatchObject([
+      { type: TokenType.LET, lexeme: "let", name: "let", location: { line: 1, column: 4 } } as Token,
+      { type: TokenType.IDENTIFIER, lexeme: "a", name: "identifier", location: { line: 1, column: 6 } } as Token,
+      { type: TokenType.ASSIGN, lexeme: "=", name: "=", location: { line: 1, column: 8 } } as Token,
+      { type: TokenType.DECIMAL_LITERAL, lexeme: "2", name: "literal", location: { line: 1, column: 10 } } as Token,
+      { type: TokenType.SEMICOLON, lexeme: ";", name: ";", location: { line: 1, column: 11 } } as Token,
+      { type: TokenType.EOF, lexeme: "", name: "end-of-file", location: { line: 1, column: 11 } } as Token,
     ]);
   });
 });

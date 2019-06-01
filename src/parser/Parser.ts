@@ -78,7 +78,7 @@ type IExportDeclaration = IExportDefaultDeclaration | IExportNamedDeclaration | 
 
 export class Parser {
   public static parse(source: string): IProgram | never {
-    const { tokens, errors: lexicalErrors } = Scanner.scan(source);
+    const { tokens, errors: lexicalErrors } = Scanner.tokenize(source);
     const parser = new Parser(tokens);
     const ast = parser.parse();
     const errors = lexicalErrors.concat(parser.errors);

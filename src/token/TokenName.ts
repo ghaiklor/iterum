@@ -40,7 +40,7 @@ export const TokenName: Map<TokenType, string> = new Map([
   [TokenType.ELLIPSIS, "..."],
   [TokenType.ELSE, "else"],
   [TokenType.ENUM, "enum"],
-  [TokenType.EOF, ""],
+  [TokenType.EOF, "end-of-file"],
   [TokenType.EQUAL, "=="],
   [TokenType.EXPONENTIATION, "**"],
   [TokenType.EXPONENTIATION_ASSIGN, "**="],
