@@ -104,17 +104,13 @@ export class Parser {
     return this.program();
   }
 
-  private advance(): void {
+  private advance(): null {
     this.offset++;
     this.currentToken = this.tokens[this.offset];
+
+    return null;
   }
 
-  /**
-   * Check if token is expected and if so -> eat it and return true.
-   * Otherwise, it will not throw an error and just return false.
-   *
-   * @param tokenToEat Expected token to eat
-   */
   private eat(tokenToEat: TokenType): boolean {
     if (this.currentToken.is(tokenToEat)) {
       this.advance();
@@ -124,15 +120,10 @@ export class Parser {
     return false;
   }
 
-  /**
-   * Eats the specified token if it the same as the current token.
-   * Otherwise, it would means that you have expected the other token.
-   *
-   * @param expectedToken What type of the token to eat
-   */
-  private expect(expectedToken: TokenType): void | never {
+  private expect(expectedToken: TokenType): null | never {
     if (this.currentToken.is(expectedToken)) {
       this.advance();
+      return null;
     } else {
       const location = this.currentToken.location;
       const current = this.currentToken.lexeme;
@@ -151,6 +142,18 @@ export class Parser {
 
     this.errors.push(error);
     throw error;
+  }
+
+  private openNode<T extends INode>(type: T["type"]): T {
+    return { type, loc: null } as T;
+  }
+
+  private closeNode<T>(node: T): T {
+    return node;
+  }
+
+  private isEOF(): boolean {
+    return this.currentToken.is(TokenType.EOF) || (this.offset >= this.tokens.length);
   }
 
   private synchronize(): null {
@@ -178,42 +181,17 @@ export class Parser {
       TokenType.PRINT,
     ];
 
-    while (!this.isEOF()) {
-      if (this.currentToken.isSomeOf(SYNC_POINTS)) {
-        return null;
-      }
-
+    while (!this.currentToken.isSomeOf(SYNC_POINTS) && !this.isEOF()) {
       this.advance();
     }
 
     return null;
   }
 
-  /**
-   * Creates a new AST node and fills in required properties.
-   *
-   * @param type Node type
-   */
-  private openNode<T extends INode>(type: T["type"]): T {
-    return { type, loc: null } as T;
-  }
-
-  /**
-   * Closes the created AST node.
-   *
-   * @param node AST node to close
-   */
-  private closeNode<T>(node: T): T {
-    return node;
-  }
-
-  private isEOF(): boolean {
-    return this.currentToken.is(TokenType.EOF) || (this.offset >= this.tokens.length);
-  }
-
-  // ----------------------------- //
-  // --- GRAMMAR (EXPRESSIONS) --- //
-  // ----------------------------- //
+  // ---------------------------------------------------------------------------------- //
+  // ------------------------------ GRAMMAR (EXPRESSIONS) ----------------------------- //
+  // --- https://www.ecma-international.org/ecma-262/9.0/index.html#sec-expressions --- //
+  // ---------------------------------------------------------------------------------- //
   private identifier(): IIdentifier {
     const token = this.currentToken;
     this.expect(TokenType.IDENTIFIER);
@@ -859,9 +837,10 @@ export class Parser {
     return node.expressions.length === 1 ? node.expressions[0] : this.closeNode(node);
   }
 
-  // ---------------------------- //
-  // --- GRAMMAR (STATEMENTS) --- //
-  // ---------------------------- //
+  // --------------------------------------------------------------------------------- //
+  // ------------------------------ GRAMMAR (STATEMENTS) ----------------------------- //
+  // --- https://www.ecma-international.org/ecma-262/9.0/index.html#sec-statements --- //
+  // --------------------------------------------------------------------------------- //
   private statement(): IStatement {
     if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
       return this.blockStatement();
@@ -1385,9 +1364,10 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  // --------------------------------------- //
-  // --- GRAMMAR (FUNCTIONS AND CLASSES) --- //
-  // --------------------------------------- //
+  // -------------------------------------------------------------------------------------------- //
+  // ----------------------------- GRAMMAR (FUNCTIONS AND CLASSES) ------------------------------ //
+  // --- https://www.ecma-international.org/ecma-262/9.0/index.html#sec-functions-and-classes --- //
+  // -------------------------------------------------------------------------------------------- //
   private functionDeclaration(): IFunctionDeclaration {
     const node = this.openNode<IFunctionDeclaration>("FunctionDeclaration");
     node.async = false;
@@ -1543,9 +1523,10 @@ export class Parser {
     return this.methodDefinition();
   }
 
-  // ------------------------- //
-  // --- GRAMMAR (MODULES) --- //
-  // ------------------------- //
+  // ------------------------------------------------------------------------------------------ //
+  // ----------------------------------- GRAMMAR (MODULES) ------------------------------------ //
+  // --- https://www.ecma-international.org/ecma-262/9.0/index.html#sec-scripts-and-modules --- //
+  // ------------------------------------------------------------------------------------------ //
   private module(): Array<IModuleDeclaration | IStatement> {
     return this.moduleBody();
   }
