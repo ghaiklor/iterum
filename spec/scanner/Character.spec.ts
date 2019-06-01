@@ -26,8 +26,8 @@ describe("Iterum::Lexer::Character", () => {
     const asterisk = Character.from("*");
     const newline = Character.from(`\n`);
 
-    expect(asterisk.isLineTerminator()).toBeFalsy();
-    expect(newline.isLineTerminator()).toBeTruthy();
+    expect(asterisk.isLineFeed()).toBeFalsy();
+    expect(newline.isLineFeed()).toBeTruthy();
   });
 
   it("Should properly check if it is whitespace", () => {

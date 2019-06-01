@@ -134,10 +134,10 @@ export class Parser {
     if (this.currentToken.is(expectedToken)) {
       this.advance();
     } else {
-      const location = { ...this.currentToken.location };
-      const code = this.currentToken.lexeme;
-      const name = TokenName.get(expectedToken) || "Unknown token name, see the lexeme";
-      const error = new SyntaxError(ErrorCode.EXPECTED_BUT_GOT, location, name, code);
+      const location = this.currentToken.location;
+      const current = this.currentToken.lexeme;
+      const expected = TokenName.get(expectedToken) || "Unknown token name, see the lexeme";
+      const error = new SyntaxError(ErrorCode.EXPECTED_BUT_GOT, location, expected, current);
 
       this.errors.push(error);
       throw error;
@@ -146,8 +146,8 @@ export class Parser {
 
   private unexpected(): never {
     const location = this.currentToken.location;
-    const code = this.currentToken.lexeme;
-    const error = new SyntaxError(ErrorCode.UNEXPECTED, location, code);
+    const name = this.currentToken.name;
+    const error = new SyntaxError(ErrorCode.UNEXPECTED, location, name);
 
     this.errors.push(error);
     throw error;

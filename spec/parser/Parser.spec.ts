@@ -38,7 +38,7 @@ describe("Iterum::Parser", () => {
         "[4:22] SyntaxError: Expected identifier, but got 10",
         "[5:21] SyntaxError: Expected identifier, but got function",
         "[5:27] SyntaxError: Expected (, but got throw",
-        "[6:5] SyntaxError: Unexpected EOF",
+        "[6:5] SyntaxError: Unexpected end-of-file",
       ].join("\n"));
     }
   });
