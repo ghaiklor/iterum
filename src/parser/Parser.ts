@@ -74,7 +74,6 @@ import { TokenType } from "../token/TokenType";
 
 type IIterationStatement = IDoWhileStatement | IWhileStatement | IForStatement | IForInStatement | IForOfStatement;
 type IBreakableStatement = IIterationStatement | ISwitchStatement;
-type IExportDeclaration = IExportDefaultDeclaration | IExportNamedDeclaration | IExportAllDeclaration;
 
 export class Parser {
   public static parse(source: string): IProgram | never {
@@ -1647,7 +1646,7 @@ export class Parser {
     return this.bindingIdentifier();
   }
 
-  private exportDeclaration(): IExportDeclaration {
+  private exportDeclaration(): IExportAllDeclaration | IExportNamedDeclaration | IExportDefaultDeclaration {
     this.expect(TokenType.EXPORT);
 
     if (this.eat(TokenType.MULTIPLY)) {
