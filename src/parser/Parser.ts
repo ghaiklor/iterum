@@ -73,7 +73,6 @@ import { TokenName } from "../token/TokenName";
 import { TokenType } from "../token/TokenType";
 
 type IIterationStatement = IDoWhileStatement | IWhileStatement | IForStatement | IForInStatement | IForOfStatement;
-type IBreakableStatement = IIterationStatement | ISwitchStatement;
 
 export class Parser {
   public static parse(source: string): IProgram | never {
@@ -295,7 +294,7 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private elementList(): IArrayExpression["elements"] {
+  private elementList(): Array<IExpression | null> {
     const expressions = [];
 
     while (this.currentToken.isNot(TokenType.RIGHT_SQUARE_BRACKETS)) {
@@ -345,7 +344,6 @@ export class Parser {
     ];
 
     const node = this.openNode<IProperty>("Property");
-
     node.computed = false;
     node.method = false;
     node.shorthand = true;
@@ -454,7 +452,7 @@ export class Parser {
     return args;
   }
 
-  private leftHandSideExpression(): IExpression {
+  private leftHandSideExpression(): INewExpression | ICallExpression | IExpression {
     if (this.currentToken.is(TokenType.NEW)) {
       return this.newExpression();
     } else {
@@ -886,7 +884,7 @@ export class Parser {
     return this.functionDeclaration();
   }
 
-  private breakableStatement(): IBreakableStatement {
+  private breakableStatement(): IIterationStatement | ISwitchStatement {
     const ITERATION_TOKENS = [
       TokenType.DO,
       TokenType.WHILE,
