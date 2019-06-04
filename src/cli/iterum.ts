@@ -32,11 +32,6 @@ if (program.args.length > 1) {
 
 if (program.args.length === 1) {
   const file = program.args[0];
-  if (!fs.existsSync(file)) {
-    process.stderr.write(`File ${file} does not exists\n`);
-    process.exit(1);
-  }
-
   const source = fs.readFileSync(file, "utf-8");
   const ast = parse(source);
 
