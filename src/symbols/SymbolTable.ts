@@ -1,39 +1,41 @@
+import { ErrorCode } from "../errors/ErrorCode";
+import { SymbolError } from "../errors/SymbolError";
 import { Symbol } from "./Symbol";
 
 export class SymbolTable {
   // tslint:disable-next-line: ban-types
-  private symbols: Map<string, Symbol>;
-  private enclosingScope: SymbolTable | null;
+  private symbols: Map<string, Symbol> = new Map();
+  private enclosingScope: SymbolTable | null = null;
   constructor(enclosingScope: SymbolTable | null = null) {
-    this.symbols = new Map();
     this.enclosingScope = enclosingScope;
   }
 
   // tslint:disable-next-line: ban-types
-  public define(symbol: Symbol): void {
+  public define(symbol: Symbol): null | never {
     if (this.symbols.has(symbol.name)) {
-      throw new Error(`${symbol.name} has already been declared`);
+      throw new SymbolError(ErrorCode.SYMBOL_ALREADY_DECLARED, symbol.name);
     }
 
     this.symbols.set(symbol.name, symbol);
+    return null;
   }
 
   // tslint:disable-next-line: ban-types
-  public assign(symbol: Symbol): void {
+  public assign(symbol: Symbol): null | never {
     if (this.symbols.has(symbol.name)) {
       this.symbols.set(symbol.name, symbol);
-      return;
+      return null;
     }
 
     if (this.enclosingScope !== null) {
       return this.enclosingScope.assign(symbol);
     }
 
-    throw new Error(`${symbol.name} is not declared`);
+    throw new SymbolError(ErrorCode.SYMBOL_IS_NOT_DECLARED, symbol.name);
   }
 
   // tslint:disable-next-line: ban-types
-  public lookup(name: string): Symbol {
+  public lookup(name: string): Symbol | never {
     const value = this.symbols.get(name);
     if (value !== undefined) {
       return value;
@@ -43,6 +45,6 @@ export class SymbolTable {
       return this.enclosingScope.lookup(name);
     }
 
-    throw new Error(`${name} is not declared`);
+    throw new SymbolError(ErrorCode.SYMBOL_IS_NOT_DECLARED, name);
   }
 }

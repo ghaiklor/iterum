@@ -1,1 +1,3 @@
-export abstract class Value { }
+export abstract class Value {
+  public abstract toString(): string;
+}

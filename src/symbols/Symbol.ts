@@ -1,12 +1,14 @@
+import { Value } from "../runtime/Value";
+
 export class Symbol {
   public name: string;
-  public value: any;
-  constructor(name: string, value: any) {
+  public value: Value;
+  constructor(name: string, value: Value) {
     this.name = name;
     this.value = value;
   }
 
   public toString() {
-    return `Symbol(${this.name})`;
+    return `Symbol(${this.name}, ${this.value.toString()})`;
   }
 }
