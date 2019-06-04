@@ -3,88 +3,58 @@
 import * as program from "commander";
 import * as fs from "fs";
 import * as repl from "repl";
-import { ParserError } from "../errors/ParserError";
 import { Interpreter } from "../interpreter/Interpreter";
-import { Parser } from "../parser/Parser";
-
-// TODO: make normal CLI ?
-
-function printAst(source: string) {
-  try {
-    const ast = Parser.parse(source);
-    process.stdout.write(JSON.stringify(ast, null, 4));
-  } catch (e) {
-    if (e instanceof ParserError) {
-      process.stderr.write(e.toString() + "\n");
-      process.exit(65);
-    }
-
-    throw e;
-  }
-}
-
-function interpret(source: string) {
-  try {
-    const ast = Parser.parse(source);
-    const result = Interpreter.interpret(ast);
-    process.stdout.write(result + "\n");
-  } catch (e) {
-    if (e instanceof ParserError) {
-      process.stderr.write(e.toString() + "\n");
-      process.exit(65);
-    }
-
-    throw e;
-  }
-}
+import { log } from "./log";
+import { parse } from "./parse";
+import { replEvaluator } from "./replEvaluator";
 
 program
   // TODO: make version from package.json
   .version("0.4.0", "--version")
-  .usage("[options] <file...>")
+  .usage("[options] [file]")
   .option("--print-ast", "print the AST after parsing the source language")
-  .option("--interpret", "interpret the code and output the result of last statement")
-  .parse(process.argv);
+  .option("--interpret", "interpret the code in provided file");
+
+program.on("--help", () => {
+  log(``);
+  log(`Examples:`);
+  log(`  $ iterum`);
+  log(`  $ iterum --help`);
+  log(`  $ iterum --print-ast your-file.js`);
+  log(`  $ iterum --interpret your-file.js`);
+});
+
+program.parse(process.argv);
 
 if (program.args.length > 1) {
-  program.outputHelp();
-  process.exit(64);
+  program.help();
 }
 
 if (program.args.length === 1) {
   const file = program.args[0];
-  if (!file || typeof file !== "string" || !fs.existsSync(file)) {
+  if (!fs.existsSync(file)) {
     process.stderr.write(`File ${file} does not exists\n`);
     process.exit(1);
   }
 
   const source = fs.readFileSync(file, "utf-8");
+  const ast = parse(source);
 
   if (program.printAst) {
-    printAst(source);
+    log(JSON.stringify(ast, null, 4));
   }
 
   if (program.interpret) {
-    interpret(source);
+    Interpreter.interpret(ast);
   }
 
   process.exit(0);
 }
 
 if (program.args.length === 0) {
-  const interpreter = new Interpreter();
-
   repl.start({
-    eval: (cmd, _, __, cb) => {
-      try {
-        const ast = Parser.parse(cmd);
-        const result = interpreter.interpret(ast);
-        cb(null, result);
-      } catch (e) {
-        const error = e as ParserError;
-        cb(error, null);
-      }
-    },
+    eval: replEvaluator(),
+    ignoreUndefined: true,
     prompt: "iterum > ",
   });
 }
