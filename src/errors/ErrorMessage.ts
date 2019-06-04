@@ -3,6 +3,7 @@ import { ErrorCode } from "./ErrorCode";
 export const ErrorMessage: Map<ErrorCode, string> = new Map([
   [ErrorCode.EXPECTED, `Expected %s`],
   [ErrorCode.EXPECTED_BUT_GOT, `Expected %s, but got %s`],
+  [ErrorCode.NO_TRAVERSER_IS_FOUND, "No traverser is found for node %s"],
   [ErrorCode.PARSER_ERROR, "There are some errors found in your code"],
   [ErrorCode.UNEXPECTED, "Unexpected %s"],
   [ErrorCode.UNRECOGNIZED_CHARACTER, "Unrecognized character %s"],

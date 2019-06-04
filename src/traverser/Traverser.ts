@@ -1,8 +1,10 @@
 import { INode } from "../ast/node/Node";
+import { ErrorCode } from "../errors/ErrorCode";
+import { TraverserError } from "../errors/TraverserError";
 import { Value } from "../runtime/Value";
 import { SymbolTable } from "../symbols/SymbolTable";
 
-type TraverserMap = Map<string, (node: INode, context: ITraverseContext) => Value | null>;
+type ListenerMap = Map<string, (node: INode, context: ITraverseContext) => Value | null>;
 
 export interface ITraverseContext {
   scope: SymbolTable;
@@ -10,19 +12,19 @@ export interface ITraverseContext {
 }
 
 export class Traverser {
-  private traverser: TraverserMap;
-  constructor(traverser: TraverserMap) {
-    this.traverser = traverser;
+  private listeners: ListenerMap;
+  constructor(listeners: ListenerMap) {
+    this.listeners = listeners;
   }
 
   public traverse(node: INode, context: ITraverseContext) {
     const type = node.type;
-    const traverse = this.traverser.get(type);
+    const listener = this.listeners.get(type);
 
-    if (traverse === undefined) {
-      throw new Error(`No traverser found for ${type}`);
+    if (listener === undefined) {
+      throw new TraverserError(ErrorCode.NO_TRAVERSER_IS_FOUND, type);
     }
 
-    return traverse(node, context);
+    return listener(node, context);
   }
 }
