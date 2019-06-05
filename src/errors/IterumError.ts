@@ -1,16 +1,9 @@
 import { format } from "util";
-import { ErrorCode } from "./ErrorCode";
-import { ErrorMessage } from "./ErrorMessage";
 
 export class IterumError extends Error {
-  constructor(code: ErrorCode, ...args: string[]) {
-    let message = ErrorMessage.get(code);
-    if (message === undefined) {
-      message = "Unrecognizable error";
-    }
-
+  constructor(message: string, ...args: string[]) {
     super(format(message, ...args));
-    this.name = "IterumError";
+    this.name = this.constructor.name;
   }
 
   public toString() {

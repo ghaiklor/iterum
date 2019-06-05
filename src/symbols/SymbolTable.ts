@@ -1,4 +1,3 @@
-import { ErrorCode } from "../errors/ErrorCode";
 import { SymbolError } from "../errors/SymbolError";
 import { Symbol } from "./Symbol";
 
@@ -13,7 +12,7 @@ export class SymbolTable {
   // tslint:disable-next-line: ban-types
   public define(symbol: Symbol): null | never {
     if (this.symbols.has(symbol.name)) {
-      throw new SymbolError(ErrorCode.SYMBOL_ALREADY_DECLARED, symbol.name);
+      throw new SymbolError(SymbolError.SYMBOL_ALREADY_DECLARED, symbol.name);
     }
 
     this.symbols.set(symbol.name, symbol);
@@ -31,7 +30,7 @@ export class SymbolTable {
       return this.enclosingScope.assign(symbol);
     }
 
-    throw new SymbolError(ErrorCode.SYMBOL_IS_NOT_DECLARED, symbol.name);
+    throw new SymbolError(SymbolError.SYMBOL_IS_NOT_DECLARED, symbol.name);
   }
 
   // tslint:disable-next-line: ban-types
@@ -45,6 +44,6 @@ export class SymbolTable {
       return this.enclosingScope.lookup(name);
     }
 
-    throw new SymbolError(ErrorCode.SYMBOL_IS_NOT_DECLARED, name);
+    throw new SymbolError(SymbolError.SYMBOL_IS_NOT_DECLARED, name);
   }
 }

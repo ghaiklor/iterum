@@ -64,7 +64,6 @@ import { IThrowStatement } from "../ast/statements/ThrowStatement";
 import { ITryStatement } from "../ast/statements/TryStatement";
 import { IWhileStatement } from "../ast/statements/WhileStatement";
 import { IWithStatement } from "../ast/statements/WithStatement";
-import { ErrorCode } from "../errors/ErrorCode";
 import { ParserError } from "../errors/ParserError";
 import { SyntaxError } from "../errors/SyntaxError";
 import { Scanner } from "../scanner/Scanner";
@@ -126,7 +125,7 @@ export class Parser {
       const location = this.currentToken.location;
       const current = this.currentToken.lexeme;
       const expected = TokenName.get(expectedToken) || "Unknown token name, see the lexeme";
-      const error = new SyntaxError(ErrorCode.EXPECTED_BUT_GOT, location, expected, current);
+      const error = new SyntaxError(SyntaxError.EXPECTED_BUT_GOT, location, expected, current);
 
       this.errors.push(error);
       throw error;
@@ -136,7 +135,7 @@ export class Parser {
   private unexpected(): never {
     const location = this.currentToken.location;
     const name = this.currentToken.name;
-    const error = new SyntaxError(ErrorCode.UNEXPECTED, location, name);
+    const error = new SyntaxError(SyntaxError.UNEXPECTED, location, name);
 
     this.errors.push(error);
     throw error;

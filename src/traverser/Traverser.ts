@@ -1,5 +1,4 @@
 import { INode } from "../ast/node/Node";
-import { ErrorCode } from "../errors/ErrorCode";
 import { TraverserError } from "../errors/TraverserError";
 import { Value } from "../runtime/Value";
 import { SymbolTable } from "../symbols/SymbolTable";
@@ -22,7 +21,7 @@ export class Traverser {
     const listener = this.listeners.get(type);
 
     if (listener === undefined) {
-      throw new TraverserError(ErrorCode.NO_TRAVERSER_IS_FOUND, type);
+      throw new TraverserError(TraverserError.NO_TRAVERSER_IS_FOUND, type);
     }
 
     return listener(node, context);

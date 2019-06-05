@@ -1,12 +1,11 @@
-import { ErrorCode } from "./ErrorCode";
 import { IterumError } from "./IterumError";
 import { LexicalError } from "./LexicalError";
+import { SyntaxError } from "./SyntaxError";
 
 export class ParserError extends IterumError {
-  public name: string = "ParserError";
   public errors: Array<LexicalError | SyntaxError> = [];
   constructor(errors: Array<LexicalError | SyntaxError>) {
-    super(ErrorCode.PARSER_ERROR);
+    super("There are some lexical and syntax errors found in your code");
     this.errors = errors;
   }
 

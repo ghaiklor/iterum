@@ -1,4 +1,3 @@
-import { ErrorCode } from "../errors/ErrorCode";
 import { LexicalError } from "../errors/LexicalError";
 import { ITokenLocation, Token } from "../token/Token";
 import { TokenType } from "../token/TokenType";
@@ -58,7 +57,7 @@ export class Scanner {
         }
       }
 
-      this.recoverableError(ErrorCode.UNRECOGNIZED_CHARACTER, this.char.toString());
+      this.recoverableError(LexicalError.UNRECOGNIZED_CHARACTER, this.char.toString());
       this.advance();
 
       return null;
@@ -97,8 +96,8 @@ export class Scanner {
     return new Token(type, lexeme, this.location);
   }
 
-  private recoverableError(code: ErrorCode, ...args: string[]): null {
-    this.errors.push(new LexicalError(code, this.location, ...args));
+  private recoverableError(message: string, ...args: string[]): null {
+    this.errors.push(new LexicalError(message, this.location, ...args));
     return null;
   }
 
@@ -138,7 +137,7 @@ export class Scanner {
 
       while (!(this.char.is("*") && this.peek().is("/"))) {
         if (this.isEOF()) {
-          this.recoverableError(ErrorCode.EXPECTED, "*/");
+          this.recoverableError(LexicalError.EXPECTED, "*/");
           return null;
         }
 
@@ -249,7 +248,7 @@ export class Scanner {
     this.advance();
     while (this.char.isNot(quoteType)) {
       if (this.char.isLineFeed() || this.isEOF()) {
-        this.recoverableError(ErrorCode.UNTERMINATED_STRING_LITERAL);
+        this.recoverableError(LexicalError.UNTERMINATED_STRING_LITERAL);
         this.advance();
         return null;
       }

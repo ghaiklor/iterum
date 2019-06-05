@@ -1,12 +1,14 @@
 import { ITokenLocation } from "../token/Token";
-import { ErrorCode } from "./ErrorCode";
 import { IterumError } from "./IterumError";
 
 export class LexicalError extends IterumError {
-  public name: string = "LexicalError";
+  public static EXPECTED = "Expected %s";
+  public static UNRECOGNIZED_CHARACTER = "Unrecognized character %s";
+  public static UNTERMINATED_STRING_LITERAL = "Unterminated string literal";
+
   public location: ITokenLocation;
-  constructor(code: ErrorCode, location: ITokenLocation, ...args: string[]) {
-    super(code, ...args);
+  constructor(message: string, location: ITokenLocation, ...args: string[]) {
+    super(message, ...args);
     this.location = { ...location };
   }
 
