@@ -10,7 +10,7 @@ import { replEvaluator } from "./replEvaluator";
 
 program
   // TODO: make version from package.json
-  .version("0.4.0", "--version")
+  .version("0.5.0", "--version")
   .usage("[options] [file]")
   .option("--print-ast", "print the AST after parsing the source language")
   .option("--interpret", "interpret the code in provided file");
