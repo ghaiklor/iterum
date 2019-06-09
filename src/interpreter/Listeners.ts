@@ -1,28 +1,28 @@
-import { ArrayExpression } from "./traverser/ArrayExpression";
-import { AssignmentExpression } from "./traverser/AssignmentExpression";
-import { BinaryExpression } from "./traverser/BinaryExpression";
-import { BlockStatement } from "./traverser/BlockStatement";
-import { CallExpression } from "./traverser/CallExpression";
-import { ConditionalExpression } from "./traverser/ConditionalExpression";
-import { DoWhileStatement } from "./traverser/DoWhileStatement";
-import { ExpressionStatement } from "./traverser/ExpressionStatement";
-import { ForStatement } from "./traverser/ForStatement";
-import { FunctionDeclaration } from "./traverser/FunctionDeclaration";
-import { Identifier } from "./traverser/Identifier";
-import { IfStatement } from "./traverser/IfStatement";
-import { Literal } from "./traverser/Literal";
-import { LogicalExpression } from "./traverser/LogicalExpression";
-import { PrintStatement } from "./traverser/PrintStatement";
-import { Program } from "./traverser/Program";
-import { ReturnStatement } from "./traverser/ReturnStatement";
-import { SequenceExpression } from "./traverser/SequenceExpression";
-import { UnaryExpression } from "./traverser/UnaryExpression";
-import { VariableDeclaration } from "./traverser/VariableDeclaration";
-import { VariableDeclarator } from "./traverser/VariableDeclarator";
-import { WhileStatement } from "./traverser/WhileStatement";
+import { ArrayExpression } from "./listeners/ArrayExpression";
+import { AssignmentExpression } from "./listeners/AssignmentExpression";
+import { BinaryExpression } from "./listeners/BinaryExpression";
+import { BlockStatement } from "./listeners/BlockStatement";
+import { CallExpression } from "./listeners/CallExpression";
+import { ConditionalExpression } from "./listeners/ConditionalExpression";
+import { DoWhileStatement } from "./listeners/DoWhileStatement";
+import { ExpressionStatement } from "./listeners/ExpressionStatement";
+import { ForStatement } from "./listeners/ForStatement";
+import { FunctionDeclaration } from "./listeners/FunctionDeclaration";
+import { Identifier } from "./listeners/Identifier";
+import { IfStatement } from "./listeners/IfStatement";
+import { Literal } from "./listeners/Literal";
+import { LogicalExpression } from "./listeners/LogicalExpression";
+import { PrintStatement } from "./listeners/PrintStatement";
+import { Program } from "./listeners/Program";
+import { ReturnStatement } from "./listeners/ReturnStatement";
+import { SequenceExpression } from "./listeners/SequenceExpression";
+import { UnaryExpression } from "./listeners/UnaryExpression";
+import { VariableDeclaration } from "./listeners/VariableDeclaration";
+import { VariableDeclarator } from "./listeners/VariableDeclarator";
+import { WhileStatement } from "./listeners/WhileStatement";
 
 // TODO: uncomment traverser when they will have an implementation
-export const TRAVERSER = {
+export const LISTENERS = new Map([
   // ArrayPattern: () => notImplemented(),
   // ArrowFunctionExpression: () => notImplemented(),
   // AssignmentPattern: () => notImplemented(),
@@ -83,26 +83,26 @@ export const TRAVERSER = {
   // UpdateExpression: () => notImplemented(),
   // WithStatement: () => notImplemented(),
   // YieldExpression: () => notImplemented(),
-  ArrayExpression,
-  AssignmentExpression,
-  BinaryExpression,
-  BlockStatement,
-  CallExpression,
-  ConditionalExpression,
-  DoWhileStatement,
-  ExpressionStatement,
-  ForStatement,
-  FunctionDeclaration,
-  Identifier,
-  IfStatement,
-  Literal,
-  LogicalExpression,
-  PrintStatement,
-  Program,
-  ReturnStatement,
-  SequenceExpression,
-  UnaryExpression,
-  VariableDeclaration,
-  VariableDeclarator,
-  WhileStatement,
-};
+  ["ArrayExpression", ArrayExpression],
+  ["AssignmentExpression", AssignmentExpression],
+  ["BinaryExpression", BinaryExpression],
+  ["BlockStatement", BlockStatement],
+  ["CallExpression", CallExpression],
+  ["ConditionalExpression", ConditionalExpression],
+  ["DoWhileStatement", DoWhileStatement],
+  ["ExpressionStatement", ExpressionStatement],
+  ["ForStatement", ForStatement],
+  ["FunctionDeclaration", FunctionDeclaration],
+  ["Identifier", Identifier],
+  ["IfStatement", IfStatement],
+  ["Literal", Literal],
+  ["LogicalExpression", LogicalExpression],
+  ["PrintStatement", PrintStatement],
+  ["Program", Program],
+  ["ReturnStatement", ReturnStatement],
+  ["SequenceExpression", SequenceExpression],
+  ["UnaryExpression", UnaryExpression],
+  ["VariableDeclaration", VariableDeclaration],
+  ["VariableDeclarator", VariableDeclarator],
+  ["WhileStatement", WhileStatement],
+]);

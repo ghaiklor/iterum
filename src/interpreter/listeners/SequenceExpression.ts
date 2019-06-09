@@ -1,8 +1,9 @@
 import { ISequenceExpression } from "../../ast/expressions/SequenceExpression";
 import { INode } from "../../ast/node/Node";
+import { Value } from "../../runtime/Value";
 import { ITraverseContext } from "../../traverser/Traverser";
 
-export function SequenceExpression(n: INode, context: ITraverseContext) {
+export function SequenceExpression(n: INode, context: ITraverseContext): Value {
   const node = n as ISequenceExpression;
 
   for (let i = 0; i < node.expressions.length - 1; i++) {

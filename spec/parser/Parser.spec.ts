@@ -11,7 +11,7 @@ describe("Iterum::Parser", () => {
     } catch (e) {
       const error = e as ParserError;
       expect(error.name).toEqual("ParserError");
-      expect(error.message).toEqual("There are some errors found in your code");
+      expect(error.message).toEqual("There are some lexical and syntax errors found in your code");
       expect(error.toString()).toEqual([
         "[1:7] SyntaxError: Expected ), but got ",
       ].join("\n"));
@@ -32,7 +32,7 @@ describe("Iterum::Parser", () => {
     } catch (e) {
       const error = e as ParserError;
       expect(error.name).toEqual("ParserError");
-      expect(error.message).toEqual("There are some errors found in your code");
+      expect(error.message).toEqual("There are some lexical and syntax errors found in your code");
       expect(error.toString()).toEqual([
         "[2:21] SyntaxError: Expected identifier, but got 5",
         "[4:22] SyntaxError: Expected identifier, but got 10",

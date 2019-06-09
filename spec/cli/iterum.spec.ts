@@ -11,7 +11,7 @@ interface ICliResult {
 function run(args: string[], cwd: string): Promise<ICliResult> {
   return new Promise((resolve) => {
     exec(
-      `node ${path.resolve(__dirname, "../../dist/cli/iterum.js")} ${args.join(" ")}`,
+      `node ${path.resolve(__dirname, "../../dist/cli/cli.js")} ${args.join(" ")}`,
       { cwd },
       (error, stdout, stderr) => {
         resolve({

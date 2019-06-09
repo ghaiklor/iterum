@@ -3,7 +3,7 @@ import { TraverserError } from "../errors/TraverserError";
 import { Value } from "../runtime/Value";
 import { SymbolTable } from "../symbols/SymbolTable";
 
-type ListenerMap = Map<string, (node: INode, context: ITraverseContext) => Value | null>;
+type ListenerMap = Map<string, (node: INode, context: ITraverseContext) => Value>;
 
 export interface ITraverseContext {
   scope: SymbolTable;

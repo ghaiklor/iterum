@@ -1,9 +1,8 @@
-import { ObjectValue } from "./objects/ObjectValue";
 import { ValueKind } from "./ValueKind";
 
 export abstract class Value {
+  public data: any;
   private kind: ValueKind;
-  private data: any;
   constructor(kind: ValueKind, data: any) {
     this.kind = kind;
     this.data = data;
@@ -26,8 +25,8 @@ export abstract class Value {
     return ValueKind[this.kind].toLowerCase();
   }
 
-  public instanceOf(that: ObjectValue): boolean {
-    if (typeof this.data === "object" && typeof that.data === "object") {
+  public instanceOf(that: Value): boolean {
+    if (this.typeOf() === "object" && that.typeOf() === "object") {
       return this.data.constructor === that.data.constructor;
     }
 
@@ -97,5 +96,71 @@ export abstract class Value {
 
   public toInteger(): number {
     return parseInt(this.data, 10);
+  }
+
+  public plus(that: Value): number {
+    return this.data + that.data;
+  }
+
+  public minus(that: Value): number {
+    return this.data - that.data;
+  }
+
+  public multiply(that: Value): number {
+    return this.data * that.data;
+  }
+
+  public exponentiation(that: Value): number {
+    return Math.pow(this.data, that.data);
+  }
+
+  public divide(that: Value): number {
+    return this.data / that.data;
+  }
+
+  public modulus(that: Value): number {
+    return this.data % that.data;
+  }
+
+  public bitwiseShiftToLeft(that: Value): number {
+    // tslint:disable-next-line: no-bitwise
+    return this.data << that.data;
+  }
+
+  public bitwiseShiftToRight(that: Value): number {
+    // tslint:disable-next-line: no-bitwise
+    return this.data >> that.data;
+  }
+
+  public bitwiseLogicalShiftToRight(that: Value): number {
+    // tslint:disable-next-line: no-bitwise
+    return this.data >>> that.data;
+  }
+
+  public bitwiseOr(that: Value): number {
+    // tslint:disable-next-line: no-bitwise
+    return this.data | that.data;
+  }
+
+  public bitwiseXor(that: Value): number {
+    // tslint:disable-next-line: no-bitwise
+    return this.data ^ that.data;
+  }
+
+  public bitwiseAnd(that: Value): number {
+    // tslint:disable-next-line: no-bitwise
+    return this.data & that.data;
+  }
+
+  public lessThan(that: Value): boolean {
+    return this.data < that.data;
+  }
+
+  public greaterThan(that: Value): boolean {
+    return this.data > that.data;
+  }
+
+  public in(that: Value): boolean {
+    return this.data in that.data;
   }
 }

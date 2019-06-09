@@ -4,7 +4,7 @@ import { Parser } from "../../src/parser/Parser";
 describe("Iterum::Interpreter::DoWhileStatement", () => {
   it("Should properly interpret do while statement", () => {
     const source = `
-      let a;
+      let a = 0;
 
       do {
         a = a + 1;

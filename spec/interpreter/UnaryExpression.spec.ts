@@ -47,6 +47,6 @@ describe("Iterum::Interpreter::UnaryExpression", () => {
     const ast = Parser.parse(source);
     const result = Interpreter.interpret(ast);
 
-    expect(result).toEqual(void 0);
+    expect(result).toEqual(null);
   });
 });
