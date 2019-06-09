@@ -1,3 +1,18 @@
+# [0.5.0](https://github.com/ghaiklor/iterum/compare/v0.4.0...v0.5.0) (2019-06-09)
+
+
+### Bug Fixes
+
+* 🐛 scope of the function declaration is lost in closures ([40ef511](https://github.com/ghaiklor/iterum/commit/40ef511))
+
+
+### Features
+
+* 🎸 implement Value wrappers for run-time data ([dc56dc3](https://github.com/ghaiklor/iterum/commit/dc56dc3))
+* 🎸 implement wrappers for run-time values ([365ad4d](https://github.com/ghaiklor/iterum/commit/365ad4d))
+
+
+
 # [0.4.0](https://github.com/ghaiklor/iterum/compare/v0.3.0...v0.4.0) (2019-05-31)
 
 
