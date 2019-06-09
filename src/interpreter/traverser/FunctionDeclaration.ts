@@ -1,6 +1,6 @@
 import { IFunctionDeclaration } from "../../ast/declarations/FunctionDeclaration";
 import { INode } from "../../ast/node/Node";
-import { Function } from "../../runtime/function/Function";
+import { FunctionValue } from "../../runtime/objects/FunctionValue";
 import { Symbol } from "../../symbols/Symbol";
 import { ITraverseContext } from "../../traverser/Traverser";
 
@@ -8,7 +8,7 @@ export function FunctionDeclaration(n: INode, context: ITraverseContext) {
   const { scope } = context;
   const node = n as IFunctionDeclaration;
   const name = node.id.name;
-  const fn = new Function(node, scope);
+  const fn = new FunctionValue(node, scope);
 
   scope.define(new Symbol(name, fn));
 }

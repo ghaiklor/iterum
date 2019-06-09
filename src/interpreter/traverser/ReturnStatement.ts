@@ -1,6 +1,6 @@
 import { INode } from "../../ast/node/Node";
 import { IReturnStatement } from "../../ast/statements/ReturnStatement";
-import { ReturnException } from "../../runtime/function/ReturnException";
+import { ReturnException } from "../../runtime/exceptions/ReturnException";
 import { ITraverseContext } from "../../traverser/Traverser";
 
 export function ReturnStatement(n: INode, context: ITraverseContext) {

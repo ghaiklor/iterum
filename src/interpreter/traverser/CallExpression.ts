@@ -1,6 +1,6 @@
 import { ICallExpression } from "../../ast/expressions/CallExpression";
 import { INode } from "../../ast/node/Node";
-import { Function } from "../../runtime/function/Function";
+import { FunctionValue } from "../../runtime/objects/FunctionValue";
 import { ITraverseContext } from "../../traverser/Traverser";
 
 export function CallExpression(n: INode, context: ITraverseContext) {
@@ -14,6 +14,6 @@ export function CallExpression(n: INode, context: ITraverseContext) {
   }
 
   // tslint:disable-next-line: ban-types
-  const fn = callee as Function;
+  const fn = callee as FunctionValue;
   return fn.call(args, context);
 }
