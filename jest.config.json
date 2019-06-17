@@ -2,7 +2,7 @@
   "collectCoverage": false,
   "collectCoverageFrom": [
     "./src/**/*.ts",
-    "!./src/cli/iterum.ts"
+    "!./src/cli/*.ts"
   ],
   "coverageDirectory": "coverage",
   "coverageThreshold": {
