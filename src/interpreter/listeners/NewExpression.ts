@@ -2,7 +2,6 @@ import { INewExpression } from "../../ast/expressions/NewExpression";
 import { INode } from "../../ast/node/Node";
 import { RuntimeError } from "../../errors/RuntimeError";
 import { ClassValue } from "../../runtime/classes/ClassValue";
-import { InstanceValue } from "../../runtime/classes/InstanceValue";
 import { Value } from "../../runtime/Value";
 import { ITraverseContext } from "../../traverser/Traverser";
 
@@ -15,5 +14,5 @@ export function NewExpression(n: INode, context: ITraverseContext): Value {
     throw new RuntimeError(RuntimeError.NEW_CALLED_ON_NON_CLASS, klass.toString());
   }
 
-  return new InstanceValue(klass);
+  return klass.call([], context);
 }
