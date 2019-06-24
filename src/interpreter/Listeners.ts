@@ -6,6 +6,7 @@ import { CallExpression } from "./listeners/CallExpression";
 import { ClassDeclaration } from "./listeners/ClassDeclaration";
 import { ConditionalExpression } from "./listeners/ConditionalExpression";
 import { DoWhileStatement } from "./listeners/DoWhileStatement";
+import { EmptyStatement } from "./listeners/EmptyStatement";
 import { ExpressionStatement } from "./listeners/ExpressionStatement";
 import { ForStatement } from "./listeners/ForStatement";
 import { FunctionDeclaration } from "./listeners/FunctionDeclaration";
@@ -30,10 +31,8 @@ export const LISTENERS = new Map([
   // AwaitExpression: () => notImplemented(),
   // BreakStatement: () => notImplemented(),
   // CatchClause: () => notImplemented(),
-  // ClassExpression: () => notImplemented(),
   // ContinueStatement: () => notImplemented(),
   // DebuggerStatement: () => notImplemented(),
-  // EmptyStatement: () => notImplemented(),
   // ExportAllDeclaration: () => notImplemented(),
   // ExportDefaultDeclaration: () => notImplemented(),
   // ExportNamedDeclaration: () => notImplemented(),
@@ -68,6 +67,7 @@ export const LISTENERS = new Map([
   ["ClassDeclaration", ClassDeclaration],
   ["ConditionalExpression", ConditionalExpression],
   ["DoWhileStatement", DoWhileStatement],
+  ["EmptyStatement", EmptyStatement],
   ["ExpressionStatement", ExpressionStatement],
   ["ForStatement", ForStatement],
   ["FunctionDeclaration", FunctionDeclaration],
