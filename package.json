@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@types/jest": "24.0.15",
-    "@types/node": "12.0.8",
+    "@types/node": "12.0.10",
     "chalk": "2.4.2",
     "codecov": "3.5.0",
     "git-cz": "3.0.1",
@@ -69,7 +69,7 @@
     "standard-changelog": "2.0.11",
     "test262-parser-tests": "github:tc39/test262-parser-tests",
     "ts-jest": "24.0.2",
-    "tslint": "5.17.0",
+    "tslint": "5.18.0",
     "typescript": "3.5.2"
   }
 }
