@@ -1,6 +1,6 @@
 import { ICallExpression } from "../../ast/expressions/CallExpression";
 import { INode } from "../../ast/node/Node";
-import { FunctionValue } from "../../runtime/objects/FunctionValue";
+import { FunctionValue } from "../../runtime/functions/FunctionValue";
 import { Value } from "../../runtime/Value";
 import { ITraverseContext } from "../../traverser/Traverser";
 

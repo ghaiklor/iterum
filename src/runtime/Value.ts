@@ -65,6 +65,14 @@ export abstract class Value {
     return this.is(ValueKind.OBJECT);
   }
 
+  public isClass(): boolean {
+    return this.is(ValueKind.CLASS);
+  }
+
+  public isInstance(): boolean {
+    return this.is(ValueKind.INSTANCE);
+  }
+
   public isBoolean(): boolean {
     return this.is(ValueKind.BOOLEAN);
   }

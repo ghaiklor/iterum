@@ -9,11 +9,7 @@ import { NullValue } from "../primitives/NullValue";
 import { Value } from "../Value";
 import { ValueKind } from "../ValueKind";
 
-export interface ICallable {
-  call(args: Value[], context: ITraverseContext): Value;
-}
-
-export class FunctionValue extends Value implements ICallable {
+export class FunctionValue extends Value {
   private fn: IFunctionDeclaration;
   private scope: SymbolTable;
   constructor(fn: IFunctionDeclaration, scope: SymbolTable) {

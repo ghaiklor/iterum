@@ -1,6 +1,6 @@
 import { IFunctionDeclaration } from "../../ast/declarations/FunctionDeclaration";
 import { INode } from "../../ast/node/Node";
-import { FunctionValue } from "../../runtime/objects/FunctionValue";
+import { FunctionValue } from "../../runtime/functions/FunctionValue";
 import { NullValue } from "../../runtime/primitives/NullValue";
 import { Value } from "../../runtime/Value";
 import { Symbol } from "../../symbols/Symbol";
