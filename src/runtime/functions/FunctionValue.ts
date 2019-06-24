@@ -8,12 +8,13 @@ import { ReturnException } from "../exceptions/ReturnException";
 import { NullValue } from "../primitives/NullValue";
 import { Value } from "../Value";
 import { ValueKind } from "../ValueKind";
+import { Function } from "./Function";
 
-export class FunctionValue extends Value {
+export class FunctionValue extends Function {
   private fn: IFunctionDeclaration;
   private scope: SymbolTable;
   constructor(fn: IFunctionDeclaration, scope: SymbolTable) {
-    super(ValueKind.FUNCTION, fn);
+    super(ValueKind.FUNCTION, null);
 
     this.fn = fn;
     this.scope = scope;
@@ -41,6 +42,10 @@ export class FunctionValue extends Value {
     }
 
     return new NullValue();
+  }
+
+  public arity(): number {
+    return this.fn.params.length;
   }
 
   public toString() {

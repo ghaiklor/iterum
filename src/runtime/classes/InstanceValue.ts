@@ -2,12 +2,13 @@ import { RuntimeError } from "../../errors/RuntimeError";
 import { Value } from "../Value";
 import { ValueKind } from "../ValueKind";
 import { ClassValue } from "./ClassValue";
+import { ObjectValue } from "./ObjectValue";
 
-export class InstanceValue extends Value {
+export class InstanceValue extends ObjectValue {
+  public fields: Map<string, Value> = new Map();
   private klass: ClassValue;
-  private fields: Map<string, Value> = new Map();
   constructor(klass: ClassValue) {
-    super(ValueKind.INSTANCE, klass);
+    super(ValueKind.INSTANCE, null);
 
     this.klass = klass;
   }
@@ -27,6 +28,6 @@ export class InstanceValue extends Value {
   }
 
   public toString() {
-    return `instanceof ${this.klass.toString()}`;
+    return `<instanceof ${this.klass.toString()}>`;
   }
 }

@@ -1,6 +1,6 @@
 import { IArrayExpression } from "../../ast/expressions/ArrayExpression";
 import { INode } from "../../ast/node/Node";
-import { ArrayValue } from "../../runtime/objects/ArrayValue";
+import { ArrayValue } from "../../runtime/complex/ArrayValue";
 import { ITraverseContext } from "../../traverser/Traverser";
 
 export function ArrayExpression(n: INode, context: ITraverseContext): ArrayValue {

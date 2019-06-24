@@ -1,7 +1,7 @@
-import { Value } from "../Value";
 import { ValueKind } from "../ValueKind";
+import { PrimitiveValue } from "./PrimitiveValue";
 
-export class NullValue extends Value {
+export class NullValue extends PrimitiveValue {
   constructor() {
     super(ValueKind.NULL, null);
   }

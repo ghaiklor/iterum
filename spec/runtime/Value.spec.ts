@@ -1,6 +1,3 @@
-import { IRegExpLiteral } from "../../src/ast/literals/RegExpLiteral";
-import { ObjectValue } from "../../src/runtime/objects/ObjectValue";
-import { RegExpValue } from "../../src/runtime/objects/RegExpValue";
 import { NumberValue } from "../../src/runtime/primitives/NumberValue";
 
 describe("Iterum::Runtime::Value", () => {
@@ -95,19 +92,5 @@ describe("Iterum::Runtime::Value", () => {
 
     expect(typeof value.toInteger()).toEqual("number");
     expect(value.toInteger()).toEqual(10);
-  });
-
-  it("Should properly create ObjectValue", () => {
-    const value = new ObjectValue({});
-
-    expect(value).toBeInstanceOf(ObjectValue);
-    expect(value.data).toEqual({});
-  });
-
-  it("Should properly create RegExpValue", () => {
-    const value = new RegExpValue({} as IRegExpLiteral);
-
-    expect(value).toBeInstanceOf(RegExpValue);
-    expect(value.data).toEqual({});
   });
 });
