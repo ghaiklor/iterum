@@ -2,7 +2,7 @@ import { Interpreter } from "../../src/interpreter/Interpreter";
 import { Parser } from "../../src/parser/Parser";
 
 describe("Iterum::Interpreter::MemberExpression", () => {
-  it("Should properly throw if field is not found", () => {
+  it("Should properly return null if field does not exist on object", () => {
     const source = `
       class Foo {}
 
@@ -11,7 +11,9 @@ describe("Iterum::Interpreter::MemberExpression", () => {
     `;
 
     const ast = Parser.parse(source);
-    expect(() => Interpreter.interpret(ast)).toThrowError("x is not exists");
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(null);
   });
 
   it("Should properly throw an error if trying to access field in non-instance value", () => {

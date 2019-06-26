@@ -1,4 +1,4 @@
-import { RuntimeError } from "../../errors/RuntimeError";
+import { NullValue } from "../primitives/NullValue";
 import { Value } from "../Value";
 import { ValueKind } from "../ValueKind";
 import { ClassValue } from "./ClassValue";
@@ -16,7 +16,7 @@ export class InstanceValue extends ObjectValue {
   public getField(key: string): Value {
     const value = this.fields.get(key);
     if (value === undefined) {
-      throw new RuntimeError(RuntimeError.UNDEFINED_PROPERTY, key);
+      return new NullValue();
     }
 
     return value;

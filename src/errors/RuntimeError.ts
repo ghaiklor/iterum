@@ -7,4 +7,5 @@ export class RuntimeError extends IterumError {
   public static NEW_CALLED_ON_NON_CLASS = "%s is not a class, you can instantiate only class objects";
   public static PROPERTY_ACCESS_ON_NON_INSTANCE = "%s is not an instance of a class";
   public static UNDEFINED_PROPERTY = "%s is not exists";
+  public static ASSIGNMENT_IS_NOT_SUPPORTED = "Assignment to %s is not supported";
 }

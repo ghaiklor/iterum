@@ -181,4 +181,40 @@ describe("Iterum::Interpreter::AssignmentExpression", () => {
 
     expect(result).toEqual(0);
   });
+
+  it("Should properly interpret assignment expression (with member expression)", () => {
+    const source = `
+      class Point {}
+      const point = new Point();
+
+      point.x = 2;
+      point.y = 3;
+
+      point.x + point.y;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(5);
+  });
+
+  it("Should properly interpret assignment expression (with member expression and updater)", () => {
+    const source = `
+      class Point {}
+      const point = new Point();
+
+      point.x += 2;
+      point.y += 3;
+
+      point.x **= 2;
+
+      point.x + point.y;
+    `;
+
+    const ast = Parser.parse(source);
+    const result = Interpreter.interpret(ast);
+
+    expect(result).toEqual(7);
+  });
 });
