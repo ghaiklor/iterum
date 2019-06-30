@@ -10,7 +10,7 @@ export function ClassDeclaration(n: INode, context: ITraverseContext): Value {
   const { scope } = context;
   const node = n as IClassDeclaration;
   const className = node.id.name;
-  const classValue = new ClassValue(node);
+  const classValue = new ClassValue(node, scope);
   scope.define(new Symbol(className, classValue));
 
   return new NullValue();

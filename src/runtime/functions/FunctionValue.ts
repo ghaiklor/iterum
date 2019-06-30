@@ -1,4 +1,5 @@
 import { IFunctionDeclaration } from "../../ast/declarations/FunctionDeclaration";
+import { IFunctionExpression } from "../../ast/expressions/FunctionExpression";
 import { IIdentifier } from "../../ast/miscellaneous/Identifier";
 import { RuntimeError } from "../../errors/RuntimeError";
 import { Symbol } from "../../symbols/Symbol";
@@ -11,9 +12,9 @@ import { ValueKind } from "../ValueKind";
 import { Function } from "./Function";
 
 export class FunctionValue extends Function {
-  private fn: IFunctionDeclaration;
+  private fn: IFunctionDeclaration | IFunctionExpression;
   private scope: SymbolTable;
-  constructor(fn: IFunctionDeclaration, scope: SymbolTable) {
+  constructor(fn: IFunctionDeclaration | IFunctionExpression, scope: SymbolTable) {
     super(ValueKind.FUNCTION, null);
 
     this.fn = fn;
@@ -49,6 +50,11 @@ export class FunctionValue extends Function {
   }
 
   public toString() {
-    return `<function ${this.fn.id.name}>`;
+    let fnName = `anonymous`;
+    if (this.fn.id !== null) {
+      fnName = this.fn.id.name;
+    }
+
+    return `<function ${fnName}>`;
   }
 }

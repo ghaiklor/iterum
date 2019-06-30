@@ -8,4 +8,5 @@ export class RuntimeError extends IterumError {
   public static PROPERTY_ACCESS_ON_NON_INSTANCE = "%s is not an instance of a class";
   public static UNDEFINED_PROPERTY = "%s is not exists";
   public static ASSIGNMENT_IS_NOT_SUPPORTED = "Assignment to %s is not supported";
+  public static VALUE_IS_NOT_A_FUNCTION = "%s is not a function";
 }

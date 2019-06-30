@@ -15,11 +15,16 @@ export class InstanceValue extends ObjectValue {
 
   public getField(key: string): Value {
     const value = this.fields.get(key);
-    if (value === undefined) {
-      return new NullValue();
+    if (value !== undefined) {
+      return value;
     }
 
-    return value;
+    const method = this.klass.getMethod(key);
+    if (method !== null) {
+      return method;
+    }
+
+    return new NullValue();
   }
 
   public setField(key: string, value: Value): Value {
