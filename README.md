@@ -1,4 +1,4 @@
-# Iterum
+# iterum
 
 ![Travis (.com) branch](https://img.shields.io/travis/com/ghaiklor/iterum/master.svg)
 ![Codecov branch](https://img.shields.io/codecov/c/github/ghaiklor/iterum/master.svg)
@@ -11,33 +11,68 @@
 [![GitHub followers](https://img.shields.io/github/followers/ghaiklor.svg?label=Follow&style=social)](https://github.com/ghaiklor)
 [![Twitter Follow](https://img.shields.io/twitter/follow/ghaiklor.svg?label=Follow&style=social)](https://twitter.com/ghaiklor)
 
-_Iterum (latin) means "again, a second time, repeatedly, once more, for the second time, anew"._
+_Iterum (latin) means “again, a second time, repeatedly, once more, for the second time, anew,”._
+_This is my another attempt to create a simple, but fully implemented interpreter for a subset of ECMA specification._
 
-_This is my another attempt to create a simple but fully implemented "virtual machine" with its own language._
-_It is not the real Virtual Machine in its sense._
-_It is just an educational project and VM itself is implemented on top of NodeJS run-time._
+__NOTE: This is an educational project, and it is not designed for use in production.__
+
+## Why
+
+For a last few years I was passionate about compilers, languages and similar stuff.
+And I am still passionate about it.
+
+However, all my knowledge was based on theoretical knowledge and not on a practical one.
+So, I’ve written an interpreter to fasten it.
+
+## Key Concepts
+
+iterum itself is implemented on top of these key concepts:
+
+- Recursive descent parser with a look-ahead by one character;
+- Parser for an ECMA subset emits ESTree;
+- Interpreter is implemented on top of traverser for different AST nodes;
 
 ## Getting Started
 
-Write your code in Iterum Language and save it somewhere, i.e (_examples/add.js_):
-
-```javascript
-function add(a, b) {
-    return a + b;
-}
-
-console.log(add(2, 5));
-```
-
-Run iterum and provide path to the file:
+iterum is packed as an npm package, so you can easily run it with `npx`:
 
 ```bash
-npx @ghaiklor/iterum --print-ast examples/add.js
+npx @ghaiklor/iterum --help
 ```
+
+Create a file somewhere on your machine with an iterum code:
+
+```javascript
+// hello-world.js
+function helloWorld() {
+    print "Hello, World";
+}
+
+helloWorld();
+```
+
+If you want to take a look into AST generated from the file above:
+
+```bash
+npx @ghaiklor/iterum --print-ast hello-world.js
+```
+
+Otherwise, you can interpret it:
+
+```bash
+npx @ghaiklor/iterum --interpret hello-world.js
+```
+
+## Contributing
+
+Pull requests are welcome.
+For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
 
 ## How It Works
 
-TK fill it when everything is done (explain everything in the code and provide links to it here)
+You can find more documentation about the project itself and how it works [here](https://ghaiklor.github.io/iterum/).
 
 ## License
 
