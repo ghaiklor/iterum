@@ -5,6 +5,7 @@ import { RuntimeError } from "../../errors/RuntimeError";
 import { Symbol } from "../../symbols/Symbol";
 import { SymbolTable } from "../../symbols/SymbolTable";
 import { ITraverseContext } from "../../traverser/Traverser";
+import { InstanceValue } from "../classes/InstanceValue";
 import { ReturnException } from "../exceptions/ReturnException";
 import { NullValue } from "../primitives/NullValue";
 import { Value } from "../Value";
@@ -43,6 +44,13 @@ export class FunctionValue extends Function {
     }
 
     return new NullValue();
+  }
+
+  public bind(instance: InstanceValue): FunctionValue {
+    const scope = new SymbolTable(this.scope);
+    scope.define(new Symbol("this", instance));
+
+    return new FunctionValue(this.fn, scope);
   }
 
   public arity(): number {

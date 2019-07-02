@@ -21,7 +21,7 @@ export class InstanceValue extends ObjectValue {
 
     const method = this.klass.getMethod(key);
     if (method !== null) {
-      return method;
+      return method.bind(this);
     }
 
     return new NullValue();
