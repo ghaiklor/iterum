@@ -9,8 +9,7 @@ import { parse } from "./parse";
 import { replEvaluator } from "./replEvaluator";
 
 program
-  // TODO: make version from package.json
-  .version("0.5.0", "--version")
+  .version("1.0.0", "--version")
   .usage("[options] [file]")
   .option("--print-ast", "print the AST after parsing the source language")
   .option("--interpret", "interpret the code in provided file");

@@ -76,7 +76,6 @@ export function AssignmentExpression(n: INode, context: ITraverseContext): Value
       scope.assign(new Symbol(lName, rValue));
       break;
     case "MemberExpression":
-      // TODO: implement other ways for property, i.e. foo.bar[3]
       const property = ((node.left as IMemberExpression).property as IIdentifier).name;
       const object = traverser.traverse((node.left as IMemberExpression).object, context);
       if (!(object instanceof InstanceValue)) {

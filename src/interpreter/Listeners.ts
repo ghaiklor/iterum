@@ -27,31 +27,7 @@ import { VariableDeclaration } from "./listeners/VariableDeclaration";
 import { VariableDeclarator } from "./listeners/VariableDeclarator";
 import { WhileStatement } from "./listeners/WhileStatement";
 
-// TODO: uncomment traverser when they will have an implementation
 export const LISTENERS = new Map([
-  // BreakStatement: () => notImplemented(),
-  // CatchClause: () => notImplemented(),
-  // ContinueStatement: () => notImplemented(),
-  // ExportAllDeclaration: () => notImplemented(),
-  // ExportDefaultDeclaration: () => notImplemented(),
-  // ExportNamedDeclaration: () => notImplemented(),
-  // ExportSpecifier: () => notImplemented(),
-  // ForInStatement: () => notImplemented(),
-  // ForOfStatement: () => notImplemented(),
-  // ImportDeclaration: () => notImplemented(),
-  // ImportDefaultSpecifier: () => notImplemented(),
-  // ImportNamespaceSpecifier: () => notImplemented(),
-  // ImportSpecifier: () => notImplemented(),
-  // MethodDefinition: () => notImplemented(),
-  // ModuleSpecifier: () => notImplemented(),
-  // ObjectExpression: () => notImplemented(),
-  // Property: () => notImplemented(),
-  // Super: () => notImplemented(),
-  // SwitchCase: () => notImplemented(),
-  // SwitchStatement: () => notImplemented(),
-  // ThrowStatement: () => notImplemented(),
-  // TryStatement: () => notImplemented(),
-  // UpdateExpression: () => notImplemented(),
   ["ArrayExpression", ArrayExpression],
   ["AssignmentExpression", AssignmentExpression],
   ["BinaryExpression", BinaryExpression],

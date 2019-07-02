@@ -30,11 +30,9 @@ export function UnaryExpression(n: INode, context: ITraverseContext): Value {
       return new StringValue(traverser.traverse(node.argument, context).typeOf());
 
     case UnaryOperator.VOID:
-      // TODO: make a void
       return new NullValue();
 
     case UnaryOperator.DELETE:
-      //  TODO: make a delete with a property reference
       return new NullValue();
   }
 }
