@@ -15,6 +15,12 @@ export function CallExpression(n: INode, context: ITraverseContext): Value {
     throw new RuntimeError(RuntimeError.VALUE_IS_NOT_A_FUNCTION, callee.toString());
   }
 
+  if (callee.arity() !== node.arguments.length) {
+    const expected = callee.arity().toString();
+    const got = node.arguments.length.toString();
+    throw new RuntimeError(RuntimeError.ARITY_MISMATCH, callee.toString(), expected, got);
+  }
+
   for (const arg of node.arguments) {
     args.push(traverser.traverse(arg, context));
   }

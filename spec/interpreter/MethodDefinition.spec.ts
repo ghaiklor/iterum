@@ -51,4 +51,21 @@ describe("Iterum::Interpreter::MethodDefinition", () => {
 
     expect(result).toEqual(17);
   });
+
+  it("Should throw an error when arity mismatch in constructor", () => {
+    const source = `
+      class Point {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+        }
+      }
+
+      const point1 = new Point(2);
+    `;
+
+    const ast = Parser.parse(source);
+
+    expect(() => Interpreter.interpret(ast)).toThrowError(`<class Point> expect 2 arguments, but got 1`);
+  });
 });

@@ -15,6 +15,12 @@ export function NewExpression(n: INode, context: ITraverseContext): Value {
     throw new RuntimeError(RuntimeError.NEW_CALLED_ON_NON_CLASS, klass.toString());
   }
 
+  if (klass.arity() !== node.arguments.length) {
+    const expected = klass.arity().toString();
+    const got = node.arguments.length.toString();
+    throw new RuntimeError(RuntimeError.ARITY_MISMATCH, klass.toString(), expected, got);
+  }
+
   for (const arg of node.arguments) {
     args.push(traverser.traverse(arg, context));
   }

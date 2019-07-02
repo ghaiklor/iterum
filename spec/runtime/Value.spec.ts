@@ -66,6 +66,18 @@ describe("Iterum::Runtime::Value", () => {
     expect(value.isRegExp()).toBeFalsy();
   });
 
+  it("Should properly check if value is class", () => {
+    const value = new NumberValue(10);
+
+    expect(value.isClass()).toBeFalsy();
+  });
+
+  it("Should properly check if value is instance", () => {
+    const value = new NumberValue(10);
+
+    expect(value.isInstance()).toBeFalsy();
+  });
+
   it("Should properly convert value to boolean", () => {
     const value = new NumberValue(10);
 

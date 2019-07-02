@@ -10,4 +10,5 @@ export class RuntimeError extends IterumError {
   public static ASSIGNMENT_IS_NOT_SUPPORTED = "Assignment to %s is not supported";
   public static VALUE_IS_NOT_A_FUNCTION = "%s is not a function";
   public static THIS_IS_NOT_AN_INSTANCE = "'this' refers to non-instance value";
+  public static ARITY_MISMATCH = "%s expect %d arguments, but got %d";
 }
