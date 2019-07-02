@@ -1,3 +1,13 @@
+# [1.0.0](https://github.com/ghaiklor/iterum/compare/v0.6.0...v1.0.0) (2019-07-02)
+
+
+### Features
+
+* 🎸 classes inheritance ([11cc06a](https://github.com/ghaiklor/iterum/commit/11cc06a))
+* 🎸 implement SuperExpression to access superclasses direct ([ba8d27f](https://github.com/ghaiklor/iterum/commit/ba8d27f))
+
+
+
 # [0.6.0](https://github.com/ghaiklor/iterum/compare/v0.5.0...v0.6.0) (2019-07-02)
 
 
