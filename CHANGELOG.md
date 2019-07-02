@@ -1,3 +1,23 @@
+# [0.6.0](https://github.com/ghaiklor/iterum/compare/v0.5.0...v0.6.0) (2019-07-02)
+
+
+### Bug Fixes
+
+* 🐛 classes in JavaScript are functions you can call ([bcfb877](https://github.com/ghaiklor/iterum/commit/bcfb877))
+
+
+### Features
+
+* 🎸 check for function arity before call it ([b7d1840](https://github.com/ghaiklor/iterum/commit/b7d1840))
+* 🎸 implement [[Set]] expressions for assignments ([ce6cf4b](https://github.com/ghaiklor/iterum/commit/ce6cf4b))
+* 🎸 implement classes/instances and fields looking up there ([908b64b](https://github.com/ghaiklor/iterum/commit/908b64b))
+* 🎸 implement methods support in classes ([e39a07a](https://github.com/ghaiklor/iterum/commit/e39a07a))
+* 🎸 interpreter for empty statements ([a722adc](https://github.com/ghaiklor/iterum/commit/a722adc))
+* 🎸 support for constructors in classes ([b2abf89](https://github.com/ghaiklor/iterum/commit/b2abf89))
+* 🎸 this expressions now refers to an instance ([f966b2f](https://github.com/ghaiklor/iterum/commit/f966b2f))
+
+
+
 # [0.5.0](https://github.com/ghaiklor/iterum/compare/v0.4.0...v0.5.0) (2019-06-09)
 
 
