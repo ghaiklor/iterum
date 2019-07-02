@@ -72,7 +72,7 @@ Please make sure to update tests as appropriate.
 
 ## How It Works
 
-You can find more documentation about the project itself and how it works [here](https://ghaiklor.github.io/iterum/).
+You can find rough explanation [here](https://ghaiklor.github.io/iterum/).
 
 ## License
 
