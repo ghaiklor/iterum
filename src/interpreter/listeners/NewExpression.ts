@@ -8,11 +8,16 @@ import { ITraverseContext } from "../../traverser/Traverser";
 export function NewExpression(n: INode, context: ITraverseContext): Value {
   const { traverser } = context;
   const node = n as INewExpression;
+  const args = [];
   const klass = traverser.traverse(node.callee, context);
 
   if (!(klass instanceof ClassValue)) {
     throw new RuntimeError(RuntimeError.NEW_CALLED_ON_NON_CLASS, klass.toString());
   }
 
-  return klass.call([], context);
+  for (const arg of node.arguments) {
+    args.push(traverser.traverse(arg, context));
+  }
+
+  return klass.call(args, context);
 }

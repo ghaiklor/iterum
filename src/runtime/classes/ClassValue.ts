@@ -19,20 +19,28 @@ export class ClassValue extends Function {
     this.scope = scope;
 
     for (const method of this.decl.body.body) {
-      // TODO: implement a support for constructor/set/get/etc ?
       const fn = new FunctionValue(method.value, this.scope);
       this.methods.set((method.key as IIdentifier).name, fn);
     }
   }
 
-  public call(_: Value[], __: ITraverseContext): Value {
-    // TODO: implement support for constructor and arguments here
-    return new InstanceValue(this);
+  public call(args: Value[], context: ITraverseContext): InstanceValue {
+    const instance = new InstanceValue(this);
+    const initializer = this.getMethod("constructor");
+    if (initializer !== null) {
+      initializer.bind(instance).call(args, context);
+    }
+
+    return instance;
   }
 
   public arity(): number {
-    // TODO: when constructor will be supported, make arity based on constructor arguments
-    return 0;
+    const initializer = this.getMethod("constructor");
+    if (initializer === null) {
+      return 0;
+    }
+
+    return initializer.arity();
   }
 
   public getMethod(key: string): FunctionValue | null {
