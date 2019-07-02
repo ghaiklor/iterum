@@ -12,11 +12,13 @@ export class ClassValue extends Function {
   private decl: IClassDeclaration;
   private methods: Map<string, FunctionValue> = new Map();
   private scope: SymbolTable;
-  constructor(decl: IClassDeclaration, scope: SymbolTable) {
+  private superClass: ClassValue | null = null;
+  constructor(decl: IClassDeclaration, scope: SymbolTable, superClass: ClassValue | null) {
     super(ValueKind.CLASS, null);
 
     this.decl = decl;
     this.scope = scope;
+    this.superClass = superClass;
 
     for (const method of this.decl.body.body) {
       const fn = new FunctionValue(method.value, this.scope);
@@ -45,11 +47,15 @@ export class ClassValue extends Function {
 
   public getMethod(key: string): FunctionValue | null {
     const method = this.methods.get(key);
-    if (method === undefined) {
-      return null;
+    if (method !== undefined) {
+      return method;
     }
 
-    return method;
+    if (this.superClass !== null) {
+      return this.superClass.getMethod(key);
+    }
+
+    return null;
   }
 
   public toString() {
