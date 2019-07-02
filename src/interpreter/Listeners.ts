@@ -20,6 +20,7 @@ import { PrintStatement } from "./listeners/PrintStatement";
 import { Program } from "./listeners/Program";
 import { ReturnStatement } from "./listeners/ReturnStatement";
 import { SequenceExpression } from "./listeners/SequenceExpression";
+import { SuperExpression } from "./listeners/SuperExpression";
 import { ThisExpression } from "./listeners/ThisExpression";
 import { UnaryExpression } from "./listeners/UnaryExpression";
 import { VariableDeclaration } from "./listeners/VariableDeclaration";
@@ -73,6 +74,7 @@ export const LISTENERS = new Map([
   ["Program", Program],
   ["ReturnStatement", ReturnStatement],
   ["SequenceExpression", SequenceExpression],
+  ["SuperExpression", SuperExpression],
   ["ThisExpression", ThisExpression],
   ["UnaryExpression", UnaryExpression],
   ["VariableDeclaration", VariableDeclaration],

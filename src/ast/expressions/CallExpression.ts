@@ -1,9 +1,9 @@
 import { ISpreadElement } from "../miscellaneous/SpreadElement";
-import { ISuper } from "../miscellaneous/Super";
 import { IExpression } from "./Expression";
+import { ISuperExpression } from "./SuperExpression";
 
 export interface ICallExpression extends IExpression {
   type: "CallExpression";
-  callee: IExpression | ISuper;
+  callee: IExpression | ISuperExpression;
   arguments: Array<IExpression | ISpreadElement>;
 }

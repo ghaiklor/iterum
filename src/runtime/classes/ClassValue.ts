@@ -1,9 +1,11 @@
 import { IClassDeclaration } from "../../ast/classes/ClassDeclaration";
 import { IIdentifier } from "../../ast/miscellaneous/Identifier";
+import { Symbol } from "../../symbols/Symbol";
 import { SymbolTable } from "../../symbols/SymbolTable";
 import { ITraverseContext } from "../../traverser/Traverser";
 import { Function } from "../functions/Function";
 import { FunctionValue } from "../functions/FunctionValue";
+import { NullValue } from "../primitives/NullValue";
 import { Value } from "../Value";
 import { ValueKind } from "../ValueKind";
 import { InstanceValue } from "./InstanceValue";
@@ -18,7 +20,11 @@ export class ClassValue extends Function {
 
     this.decl = decl;
     this.scope = scope;
+
     this.superClass = superClass;
+    if (this.superClass !== null) {
+      this.scope.define(new Symbol("super", this.superClass));
+    }
 
     for (const method of this.decl.body.body) {
       const fn = new FunctionValue(method.value, this.scope);
@@ -29,7 +35,7 @@ export class ClassValue extends Function {
   public call(args: Value[], context: ITraverseContext): InstanceValue {
     const instance = new InstanceValue(this);
     const initializer = this.getMethod("constructor");
-    if (initializer !== null) {
+    if (!(initializer instanceof NullValue)) {
       initializer.bind(instance).call(args, context);
     }
 
@@ -38,14 +44,14 @@ export class ClassValue extends Function {
 
   public arity(): number {
     const initializer = this.getMethod("constructor");
-    if (initializer === null) {
+    if (initializer instanceof NullValue) {
       return 0;
     }
 
     return initializer.arity();
   }
 
-  public getMethod(key: string): FunctionValue | null {
+  public getMethod(key: string): FunctionValue | NullValue {
     const method = this.methods.get(key);
     if (method !== undefined) {
       return method;
@@ -55,7 +61,7 @@ export class ClassValue extends Function {
       return this.superClass.getMethod(key);
     }
 
-    return null;
+    return new NullValue();
   }
 
   public toString() {

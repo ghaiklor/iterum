@@ -1,3 +1,4 @@
+import { FunctionValue } from "../functions/FunctionValue";
 import { NullValue } from "../primitives/NullValue";
 import { Value } from "../Value";
 import { ValueKind } from "../ValueKind";
@@ -20,7 +21,7 @@ export class InstanceValue extends ObjectValue {
     }
 
     const method = this.klass.getMethod(key);
-    if (method !== null) {
+    if (method instanceof FunctionValue) {
       return method.bind(this);
     }
 

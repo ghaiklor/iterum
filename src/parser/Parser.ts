@@ -20,6 +20,7 @@ import { IMemberExpression } from "../ast/expressions/MemberExpression";
 import { INewExpression } from "../ast/expressions/NewExpression";
 import { IObjectExpression } from "../ast/expressions/ObjectExpression";
 import { ISequenceExpression } from "../ast/expressions/SequenceExpression";
+import { ISuperExpression } from "../ast/expressions/SuperExpression";
 import { IThisExpression } from "../ast/expressions/ThisExpression";
 import { IUnaryExpression } from "../ast/expressions/UnaryExpression";
 import { IUpdateExpression } from "../ast/expressions/UpdateExpression";
@@ -224,6 +225,9 @@ export class Parser {
 
     if (this.eat(TokenType.THIS)) {
       const node = this.openNode<IThisExpression>("ThisExpression");
+      return this.closeNode(node);
+    } else if (this.eat(TokenType.SUPER)) {
+      const node = this.openNode<ISuperExpression>("SuperExpression");
       return this.closeNode(node);
     } else if (this.currentToken.is(TokenType.IDENTIFIER)) {
       return this.identifierReference();
