@@ -62,7 +62,7 @@
     "@types/jest": "24.0.18",
     "@types/node": "12.7.12",
     "chalk": "2.4.2",
-    "codecov": "3.6.1",
+    "codecov": "3.6.5",
     "git-cz": "3.2.1",
     "jest": "24.9.0",
     "rimraf": "3.0.0",
