@@ -1,4 +1,4 @@
 export const enum LogicalOperator {
-  OR = "||",
-  AND = "&&",
+  OR = '||',
+  AND = '&&',
 }

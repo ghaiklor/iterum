@@ -1,5 +1,5 @@
-import { IExpression } from "./Expression";
+import { IExpression } from './Expression';
 
 export interface IThisExpression extends IExpression {
-  type: "ThisExpression";
+  type: 'ThisExpression'
 }

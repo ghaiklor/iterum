@@ -1,4 +1,4 @@
 export interface IPosition {
-  line: number;
-  column: number;
+  line: number
+  column: number
 }

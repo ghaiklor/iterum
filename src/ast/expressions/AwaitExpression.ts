@@ -1,6 +1,6 @@
-import { IExpression } from "./Expression";
+import { IExpression } from './Expression';
 
 export interface IAwaitExpression extends IExpression {
-  type: "AwaitExpression";
-  argument: IExpression;
+  type: 'AwaitExpression'
+  argument: IExpression
 }

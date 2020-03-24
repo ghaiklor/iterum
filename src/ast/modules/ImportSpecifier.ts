@@ -1,7 +1,7 @@
-import { IIdentifier } from "../miscellaneous/Identifier";
-import { IModuleSpecifier } from "./ModuleSpecifier";
+import { IIdentifier } from '../miscellaneous/Identifier';
+import { IModuleSpecifier } from './ModuleSpecifier';
 
 export interface IImportSpecifier extends IModuleSpecifier {
-  type: "ImportSpecifier";
-  imported: IIdentifier;
+  type: 'ImportSpecifier'
+  imported: IIdentifier
 }

@@ -1,15 +1,15 @@
-import { ICatchClause } from "../../../src/ast/clauses/CatchClause";
-import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
-import { ILiteral } from "../../../src/ast/literals/Literal";
-import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { IProgram } from "../../../src/ast/programs/Program";
-import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
-import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
-import { ITryStatement } from "../../../src/ast/statements/TryStatement";
-import { Parser } from "../../../src/parser/Parser";
+import { ICatchClause } from '../../../src/ast/clauses/CatchClause';
+import { IBinaryExpression } from '../../../src/ast/expressions/BinaryExpression';
+import { ILiteral } from '../../../src/ast/literals/Literal';
+import { IIdentifier } from '../../../src/ast/miscellaneous/Identifier';
+import { IProgram } from '../../../src/ast/programs/Program';
+import { IBlockStatement } from '../../../src/ast/statements/BlockStatement';
+import { IExpressionStatement } from '../../../src/ast/statements/ExpressionStatement';
+import { ITryStatement } from '../../../src/ast/statements/TryStatement';
+import { Parser } from '../../../src/parser/Parser';
 
-describe("Iterum::Parser::TryStatement", () => {
-  it("Should properly parse catch/finally block", () => {
+describe('Iterum::Parser::TryStatement', () => {
+  it('Should properly parse catch/finally block', () => {
     const source = `
     try {
       2 + 3;
@@ -27,63 +27,63 @@ describe("Iterum::Parser::TryStatement", () => {
         block: {
           body: [{
             expression: {
-              left: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              left: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
               loc: null,
-              operator: "+",
-              right: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
-              type: "BinaryExpression",
+              operator: '+',
+              right: { type: 'Literal', loc: null, value: 3, raw: '3' } as ILiteral,
+              type: 'BinaryExpression'
             } as IBinaryExpression,
             loc: null,
-            type: "ExpressionStatement",
+            type: 'ExpressionStatement'
           } as IExpressionStatement],
           loc: null,
-          type: "BlockStatement",
+          type: 'BlockStatement'
         } as IBlockStatement,
         finalizer: {
           body: [{
             expression: {
-              left: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              left: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
               loc: null,
-              operator: "+",
-              right: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
-              type: "BinaryExpression",
+              operator: '+',
+              right: { type: 'Literal', loc: null, value: 3, raw: '3' } as ILiteral,
+              type: 'BinaryExpression'
             } as IBinaryExpression,
             loc: null,
-            type: "ExpressionStatement",
+            type: 'ExpressionStatement'
           } as IExpressionStatement],
           loc: null,
-          type: "BlockStatement",
+          type: 'BlockStatement'
         } as IBlockStatement,
         handler: {
           body: {
             body: [{
               expression: {
-                left: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+                left: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
                 loc: null,
-                operator: "+",
-                right: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
-                type: "BinaryExpression",
+                operator: '+',
+                right: { type: 'Literal', loc: null, value: 3, raw: '3' } as ILiteral,
+                type: 'BinaryExpression'
               } as IBinaryExpression,
               loc: null,
-              type: "ExpressionStatement",
+              type: 'ExpressionStatement'
             } as IExpressionStatement],
             loc: null,
-            type: "BlockStatement",
+            type: 'BlockStatement'
           } as IBlockStatement,
           loc: null,
-          param: { type: "Identifier", loc: null, name: "e" } as IIdentifier,
-          type: "CatchClause",
+          param: { type: 'Identifier', loc: null, name: 'e' } as IIdentifier,
+          type: 'CatchClause'
         } as ICatchClause,
         loc: null,
-        type: "TryStatement",
+        type: 'TryStatement'
       } as ITryStatement],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse catch block only", () => {
+  it('Should properly parse catch block only', () => {
     const source = `
     try {
       2 + 3;
@@ -99,49 +99,49 @@ describe("Iterum::Parser::TryStatement", () => {
         block: {
           body: [{
             expression: {
-              left: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              left: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
               loc: null,
-              operator: "+",
-              right: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
-              type: "BinaryExpression",
+              operator: '+',
+              right: { type: 'Literal', loc: null, value: 3, raw: '3' } as ILiteral,
+              type: 'BinaryExpression'
             } as IBinaryExpression,
             loc: null,
-            type: "ExpressionStatement",
+            type: 'ExpressionStatement'
           } as IExpressionStatement],
           loc: null,
-          type: "BlockStatement",
+          type: 'BlockStatement'
         } as IBlockStatement,
         finalizer: null,
         handler: {
           body: {
             body: [{
               expression: {
-                left: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+                left: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
                 loc: null,
-                operator: "+",
-                right: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
-                type: "BinaryExpression",
+                operator: '+',
+                right: { type: 'Literal', loc: null, value: 3, raw: '3' } as ILiteral,
+                type: 'BinaryExpression'
               } as IBinaryExpression,
               loc: null,
-              type: "ExpressionStatement",
+              type: 'ExpressionStatement'
             } as IExpressionStatement],
             loc: null,
-            type: "BlockStatement",
+            type: 'BlockStatement'
           } as IBlockStatement,
           loc: null,
-          param: { type: "Identifier", loc: null, name: "e" } as IIdentifier,
-          type: "CatchClause",
+          param: { type: 'Identifier', loc: null, name: 'e' } as IIdentifier,
+          type: 'CatchClause'
         } as ICatchClause,
         loc: null,
-        type: "TryStatement",
+        type: 'TryStatement'
       } as ITryStatement],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse finally block only", () => {
+  it('Should properly parse finally block only', () => {
     const source = `
     try {
       2 + 3;
@@ -157,40 +157,40 @@ describe("Iterum::Parser::TryStatement", () => {
         block: {
           body: [{
             expression: {
-              left: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              left: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
               loc: null,
-              operator: "+",
-              right: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
-              type: "BinaryExpression",
+              operator: '+',
+              right: { type: 'Literal', loc: null, value: 3, raw: '3' } as ILiteral,
+              type: 'BinaryExpression'
             } as IBinaryExpression,
             loc: null,
-            type: "ExpressionStatement",
+            type: 'ExpressionStatement'
           } as IExpressionStatement],
           loc: null,
-          type: "BlockStatement",
+          type: 'BlockStatement'
         } as IBlockStatement,
         finalizer: {
           body: [{
             expression: {
-              left: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              left: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
               loc: null,
-              operator: "+",
-              right: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
-              type: "BinaryExpression",
+              operator: '+',
+              right: { type: 'Literal', loc: null, value: 3, raw: '3' } as ILiteral,
+              type: 'BinaryExpression'
             } as IBinaryExpression,
             loc: null,
-            type: "ExpressionStatement",
+            type: 'ExpressionStatement'
           } as IExpressionStatement],
           loc: null,
-          type: "BlockStatement",
+          type: 'BlockStatement'
         } as IBlockStatement,
         handler: null,
         loc: null,
-        type: "TryStatement",
+        type: 'TryStatement'
       } as ITryStatement],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 });

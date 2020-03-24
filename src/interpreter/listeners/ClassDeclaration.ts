@@ -1,13 +1,13 @@
-import { IClassDeclaration } from "../../ast/classes/ClassDeclaration";
-import { INode } from "../../ast/node/Node";
-import { RuntimeError } from "../../errors/RuntimeError";
-import { ClassValue } from "../../runtime/classes/ClassValue";
-import { NullValue } from "../../runtime/primitives/NullValue";
-import { Value } from "../../runtime/Value";
-import { Symbol } from "../../symbols/Symbol";
-import { ITraverseContext } from "../../traverser/Traverser";
+import { IClassDeclaration } from '../../ast/classes/ClassDeclaration';
+import { INode } from '../../ast/node/Node';
+import { RuntimeError } from '../../errors/RuntimeError';
+import { ClassValue } from '../../runtime/classes/ClassValue';
+import { NullValue } from '../../runtime/primitives/NullValue';
+import { Value } from '../../runtime/Value';
+import { Symbol } from '../../symbols/Symbol';
+import { ITraverseContext } from '../../traverser/Traverser';
 
-export function ClassDeclaration(n: INode, context: ITraverseContext): Value {
+export function ClassDeclaration (n: INode, context: ITraverseContext): Value {
   const { traverser, scope } = context;
   const node = n as IClassDeclaration;
   const className = node.id.name;

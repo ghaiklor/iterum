@@ -1,14 +1,14 @@
-import { IAssignmentExpression } from "../../../src/ast/expressions/AssignmentExpression";
-import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
-import { ILiteral } from "../../../src/ast/literals/Literal";
-import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { IProgram } from "../../../src/ast/programs/Program";
-import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
-import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
-import { Parser } from "../../../src/parser/Parser";
+import { IAssignmentExpression } from '../../../src/ast/expressions/AssignmentExpression';
+import { IBinaryExpression } from '../../../src/ast/expressions/BinaryExpression';
+import { ILiteral } from '../../../src/ast/literals/Literal';
+import { IIdentifier } from '../../../src/ast/miscellaneous/Identifier';
+import { IProgram } from '../../../src/ast/programs/Program';
+import { IBlockStatement } from '../../../src/ast/statements/BlockStatement';
+import { IExpressionStatement } from '../../../src/ast/statements/ExpressionStatement';
+import { Parser } from '../../../src/parser/Parser';
 
-describe("Iterum::Parser::BlockStatement", () => {
-  it("Should properly parse multiple statements in one block", () => {
+describe('Iterum::Parser::BlockStatement', () => {
+  it('Should properly parse multiple statements in one block', () => {
     const source = `
       {
         a = 2;
@@ -23,39 +23,39 @@ describe("Iterum::Parser::BlockStatement", () => {
         body: [
           {
             expression: {
-              left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+              left: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
               loc: null,
-              operator: "=",
-              right: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
-              type: "AssignmentExpression",
+              operator: '=',
+              right: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
+              type: 'AssignmentExpression'
             } as IAssignmentExpression,
             loc: null,
-            type: "ExpressionStatement",
+            type: 'ExpressionStatement'
           } as IExpressionStatement,
           {
             expression: {
-              left: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+              left: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier,
               loc: null,
-              operator: "=",
+              operator: '=',
               right: {
-                left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+                left: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
                 loc: null,
-                operator: "+",
-                right: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
-                type: "BinaryExpression",
+                operator: '+',
+                right: { type: 'Literal', loc: null, value: 3, raw: '3' } as ILiteral,
+                type: 'BinaryExpression'
               } as IBinaryExpression,
-              type: "AssignmentExpression",
+              type: 'AssignmentExpression'
             } as IAssignmentExpression,
             loc: null,
-            type: "ExpressionStatement",
-          } as IExpressionStatement,
+            type: 'ExpressionStatement'
+          } as IExpressionStatement
         ],
         loc: null,
-        type: "BlockStatement",
+        type: 'BlockStatement'
       } as IBlockStatement],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 });

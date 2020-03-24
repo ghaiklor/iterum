@@ -1,4 +1,4 @@
-import { Value } from "../Value";
+import { Value } from '../Value';
 
 export abstract class ObjectValue extends Value {
   public abstract getField(key: string): Value;

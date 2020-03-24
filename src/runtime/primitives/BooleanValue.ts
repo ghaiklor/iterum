@@ -1,8 +1,8 @@
-import { ValueKind } from "../ValueKind";
-import { PrimitiveValue } from "./PrimitiveValue";
+import { ValueKind } from '../ValueKind';
+import { PrimitiveValue } from './PrimitiveValue';
 
 export class BooleanValue extends PrimitiveValue {
-  constructor(data: boolean) {
+  constructor (data: boolean) {
     super(ValueKind.BOOLEAN, data);
   }
 }

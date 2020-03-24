@@ -1,7 +1,7 @@
-import { IExpression } from "../expressions/Expression";
-import { IPattern } from "../patterns/Pattern";
+import { IExpression } from '../expressions/Expression';
+import { IPattern } from '../patterns/Pattern';
 
 export interface IIdentifier extends IExpression, IPattern {
-  type: "Identifier";
-  name: string;
+  type: 'Identifier'
+  name: string
 }

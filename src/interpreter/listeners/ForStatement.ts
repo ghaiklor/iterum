@@ -1,11 +1,11 @@
-import { ILiteral } from "../../ast/literals/Literal";
-import { INode } from "../../ast/node/Node";
-import { IForStatement } from "../../ast/statements/ForStatement";
-import { NullValue } from "../../runtime/primitives/NullValue";
-import { Value } from "../../runtime/Value";
-import { ITraverseContext } from "../../traverser/Traverser";
+import { ILiteral } from '../../ast/literals/Literal';
+import { INode } from '../../ast/node/Node';
+import { IForStatement } from '../../ast/statements/ForStatement';
+import { NullValue } from '../../runtime/primitives/NullValue';
+import { Value } from '../../runtime/Value';
+import { ITraverseContext } from '../../traverser/Traverser';
 
-export function ForStatement(n: INode, context: ITraverseContext): Value {
+export function ForStatement (n: INode, context: ITraverseContext): Value {
   const { traverser } = context;
   const node = n as IForStatement;
 
@@ -14,7 +14,7 @@ export function ForStatement(n: INode, context: ITraverseContext): Value {
   }
 
   if (node.test === null) {
-    node.test = { type: "Literal", value: true } as ILiteral;
+    node.test = { type: 'Literal', value: true } as ILiteral;
   }
 
   while (traverser.traverse(node.test, context).isTrue()) {

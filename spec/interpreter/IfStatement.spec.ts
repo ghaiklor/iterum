@@ -1,8 +1,8 @@
-import { Interpreter } from "../../src/interpreter/Interpreter";
-import { Parser } from "../../src/parser/Parser";
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import { Parser } from '../../src/parser/Parser';
 
-describe("Iterum::Interpreter::IfStatement", () => {
-  it("Should properly interpret if statement (truthy)", () => {
+describe('Iterum::Interpreter::IfStatement', () => {
+  it('Should properly interpret if statement (truthy)', () => {
     const source = `
       let a;
 
@@ -20,7 +20,7 @@ describe("Iterum::Interpreter::IfStatement", () => {
     expect(result).toEqual(10);
   });
 
-  it("Should properly interpret if statement (falsy)", () => {
+  it('Should properly interpret if statement (falsy)', () => {
     const source = `
       let a;
 

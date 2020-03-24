@@ -1,5 +1,5 @@
-import { IStatement } from "./Statement";
+import { IStatement } from './Statement';
 
 export interface IEmptyStatement extends IStatement {
-  type: "EmptyStatement";
+  type: 'EmptyStatement'
 }

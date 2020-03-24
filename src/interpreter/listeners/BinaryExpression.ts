@@ -1,12 +1,12 @@
-import { IBinaryExpression } from "../../ast/expressions/BinaryExpression";
-import { INode } from "../../ast/node/Node";
-import { BinaryOperator } from "../../ast/operators/BinaryOperator";
-import { BooleanValue } from "../../runtime/primitives/BooleanValue";
-import { NumberValue } from "../../runtime/primitives/NumberValue";
-import { Value } from "../../runtime/Value";
-import { ITraverseContext } from "../../traverser/Traverser";
+import { IBinaryExpression } from '../../ast/expressions/BinaryExpression';
+import { INode } from '../../ast/node/Node';
+import { BinaryOperator } from '../../ast/operators/BinaryOperator';
+import { BooleanValue } from '../../runtime/primitives/BooleanValue';
+import { NumberValue } from '../../runtime/primitives/NumberValue';
+import { Value } from '../../runtime/Value';
+import { ITraverseContext } from '../../traverser/Traverser';
 
-export function BinaryExpression(n: INode, context: ITraverseContext): Value {
+export function BinaryExpression (n: INode, context: ITraverseContext): Value {
   const node = n as IBinaryExpression;
   const left = context.traverser.traverse(node.left, context);
   const right = context.traverser.traverse(node.right, context);

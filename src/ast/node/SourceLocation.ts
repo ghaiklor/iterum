@@ -1,7 +1,7 @@
-import { IPosition } from "./Position";
+import { IPosition } from './Position';
 
 export interface ISourceLocation {
-  source: string | null;
-  start: IPosition;
-  end: IPosition;
+  source: string | null
+  start: IPosition
+  end: IPosition
 }

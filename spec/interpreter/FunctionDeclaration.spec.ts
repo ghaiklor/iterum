@@ -1,8 +1,8 @@
-import { Interpreter } from "../../src/interpreter/Interpreter";
-import { Parser } from "../../src/parser/Parser";
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import { Parser } from '../../src/parser/Parser';
 
-describe("Iterum::Interpreter::FunctionDeclaration", () => {
-  it("Should properly define the function in scope and call it", () => {
+describe('Iterum::Interpreter::FunctionDeclaration', () => {
+  it('Should properly define the function in scope and call it', () => {
     const source = `
       function add(a, b) {
         return a + b;
@@ -17,7 +17,7 @@ describe("Iterum::Interpreter::FunctionDeclaration", () => {
     expect(result).toEqual(3);
   });
 
-  it("Should properly calculate fibonacci recursively with function declaration", () => {
+  it('Should properly calculate fibonacci recursively with function declaration', () => {
     const source = `
       function fibonacci(num) {
         if (num <= 1) return 1;
@@ -33,7 +33,7 @@ describe("Iterum::Interpreter::FunctionDeclaration", () => {
     expect(result).toEqual(89);
   });
 
-  it("Should properly create closures over function declarations", () => {
+  it('Should properly create closures over function declarations', () => {
     const source = `
       function makePoint(x, y) {
         function closure(method) {

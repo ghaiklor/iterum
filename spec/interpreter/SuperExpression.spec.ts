@@ -1,8 +1,8 @@
-import { Interpreter } from "../../src/interpreter/Interpreter";
-import { Parser } from "../../src/parser/Parser";
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import { Parser } from '../../src/parser/Parser';
 
-describe("Iterum::Interpreter::SuperExpression", () => {
-  it("Should properly resolve the call to super.method()", () => {
+describe('Iterum::Interpreter::SuperExpression', () => {
+  it('Should properly resolve the call to super.method()', () => {
     const source = `
       class Animal {
         whoAmI() {
@@ -24,6 +24,6 @@ describe("Iterum::Interpreter::SuperExpression", () => {
     const ast = Parser.parse(source);
     const result = Interpreter.interpret(ast);
 
-    expect(result).toEqual("Animal Dog");
+    expect(result).toEqual('Animal Dog');
   });
 });

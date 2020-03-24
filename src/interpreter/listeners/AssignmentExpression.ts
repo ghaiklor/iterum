@@ -1,26 +1,26 @@
-import { IAssignmentExpression } from "../../ast/expressions/AssignmentExpression";
-import { IMemberExpression } from "../../ast/expressions/MemberExpression";
-import { IIdentifier } from "../../ast/miscellaneous/Identifier";
-import { INode } from "../../ast/node/Node";
-import { AssignmentOperator } from "../../ast/operators/AssignmentOperator";
-import { RuntimeError } from "../../errors/RuntimeError";
-import { InstanceValue } from "../../runtime/classes/InstanceValue";
-import { NullValue } from "../../runtime/primitives/NullValue";
-import { NumberValue } from "../../runtime/primitives/NumberValue";
-import { Value } from "../../runtime/Value";
-import { Symbol } from "../../symbols/Symbol";
-import { ITraverseContext } from "../../traverser/Traverser";
+import { IAssignmentExpression } from '../../ast/expressions/AssignmentExpression';
+import { IMemberExpression } from '../../ast/expressions/MemberExpression';
+import { IIdentifier } from '../../ast/miscellaneous/Identifier';
+import { INode } from '../../ast/node/Node';
+import { AssignmentOperator } from '../../ast/operators/AssignmentOperator';
+import { RuntimeError } from '../../errors/RuntimeError';
+import { InstanceValue } from '../../runtime/classes/InstanceValue';
+import { NullValue } from '../../runtime/primitives/NullValue';
+import { NumberValue } from '../../runtime/primitives/NumberValue';
+import { Value } from '../../runtime/Value';
+import { Symbol } from '../../symbols/Symbol';
+import { ITraverseContext } from '../../traverser/Traverser';
 
-export function AssignmentExpression(n: INode, context: ITraverseContext): Value {
+export function AssignmentExpression (n: INode, context: ITraverseContext): Value {
   const { traverser, scope } = context;
   const node = n as IAssignmentExpression;
 
   let lValue: Value;
   switch (node.left.type) {
-    case "Identifier":
+    case 'Identifier':
       lValue = scope.lookup((node.left as IIdentifier).name).value;
       break;
-    case "MemberExpression":
+    case 'MemberExpression':
       lValue = traverser.traverse(node.left, context);
       break;
     default:
@@ -30,6 +30,7 @@ export function AssignmentExpression(n: INode, context: ITraverseContext): Value
   let rValue = traverser.traverse(node.right, context);
   switch (node.operator) {
     case AssignmentOperator.ASSIGN:
+      // eslint-disable-next-line no-self-assign
       rValue = rValue;
       break;
     case AssignmentOperator.PLUS_ASSIGN:
@@ -71,18 +72,17 @@ export function AssignmentExpression(n: INode, context: ITraverseContext): Value
   }
 
   switch (node.left.type) {
-    case "Identifier":
-      const lName = (node.left as IIdentifier).name;
-      scope.assign(new Symbol(lName, rValue));
+    case 'Identifier':
+      scope.assign(new Symbol((node.left as IIdentifier).name, rValue));
       break;
-    case "MemberExpression":
-      const property = ((node.left as IMemberExpression).property as IIdentifier).name;
+    case 'MemberExpression':
+      // eslint-disable-next-line no-case-declarations
       const object = traverser.traverse((node.left as IMemberExpression).object, context);
       if (!(object instanceof InstanceValue)) {
         throw new RuntimeError(RuntimeError.ASSIGNMENT_IS_NOT_SUPPORTED, object.toString());
       }
 
-      object.setField(property, rValue);
+      object.setField(((node.left as IMemberExpression).property as IIdentifier).name, rValue);
       break;
   }
 

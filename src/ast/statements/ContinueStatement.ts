@@ -1,7 +1,7 @@
-import { IIdentifier } from "../miscellaneous/Identifier";
-import { IStatement } from "./Statement";
+import { IIdentifier } from '../miscellaneous/Identifier';
+import { IStatement } from './Statement';
 
 export interface IContinueStatement extends IStatement {
-  type: "ContinueStatement";
-  label: IIdentifier | null;
+  type: 'ContinueStatement'
+  label: IIdentifier | null
 }

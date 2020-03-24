@@ -1,6 +1,6 @@
-import { IPattern } from "./Pattern";
+import { IPattern } from './Pattern';
 
 export interface IRestElement extends IPattern {
-  type: "RestElement";
-  argument: IPattern;
+  type: 'RestElement'
+  argument: IPattern
 }

@@ -1,4 +1,4 @@
 export const enum UpdateOperator {
-  PLUS_PLUS = "++",
-  MINUS_MINUS = "--",
+  PLUS_PLUS = '++',
+  MINUS_MINUS = '--',
 }

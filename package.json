@@ -21,18 +21,13 @@
     "url": "git+https://github.com/ghaiklor/iterum.git"
   },
   "directories": {
-    "lib": "src",
+    "lib": "dist",
     "doc": "docs",
     "example": "examples",
     "test": "spec"
   },
   "engines": {
-    "node": ">=8.0.0"
-  },
-  "config": {
-    "commitizen": {
-      "path": "git-cz"
-    }
+    "node": ">=12.0.0"
   },
   "publishConfig": {
     "tag": "latest",
@@ -40,36 +35,44 @@
     "access": "public"
   },
   "scripts": {
-    "build": "npm run clean && npm run lint && npm run test && npm run compile",
+    "all": "npm run clean && npm run build && npm run lint && npm run test",
+    "build": "tsc",
     "changelog": "standard-changelog",
-    "clean": "rimraf coverage dist",
+    "clean": "rimraf coverage dist tsconfig.tsbuildinfo",
     "commit": "git-cz",
-    "compile": "tsc",
-    "lint": "tslint --project tsconfig.json --config tslint.json",
+    "lint": "eslint --fix --ext .js,.ts .",
     "postversion": "git push && git push --tags",
-    "prepare": "npm run compile",
-    "pretest": "npm run compile",
-    "preversion": "npm run build",
-    "test": "npm run test:unit && npm run test:test262-parser-tests",
+    "prepare": "npm run build",
+    "pretest": "npm run build",
+    "preversion": "npm run all",
     "test:test262-parser-tests": "node tools/test262-parser-tests/test262-parser-tests.js",
-    "test:unit": "jest --no-cache --coverage --config jest.config.json",
+    "test:unit": "jest --no-cache --config jest.config.json",
+    "test": "npm run test:unit && npm run test:test262-parser-tests",
     "version": "npm run changelog && git add CHANGELOG.md"
   },
   "dependencies": {
-    "commander": "3.0.2"
+    "commander": "5.0.0"
   },
   "devDependencies": {
-    "@types/jest": "24.0.18",
-    "@types/node": "12.7.12",
-    "chalk": "2.4.2",
-    "codecov": "3.6.5",
-    "git-cz": "3.2.1",
-    "jest": "24.9.0",
-    "rimraf": "3.0.0",
-    "standard-changelog": "2.0.15",
+    "@types/jest": "25.1.4",
+    "@types/node": "13.9.3",
+    "@typescript-eslint/eslint-plugin": "2.25.0",
+    "@typescript-eslint/parser": "2.25.0",
+    "chalk": "3.0.0",
+    "eslint": "6.8.0",
+    "eslint-config-standard": "14.1.1",
+    "eslint-config-standard-with-typescript": "15.0.1",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jest": "23.8.2",
+    "eslint-plugin-node": "11.0.0",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-standard": "4.0.1",
+    "git-cz": "4.3.1",
+    "jest": "25.1.0",
+    "rimraf": "3.0.2",
+    "standard-changelog": "2.0.21",
     "test262-parser-tests": "github:tc39/test262-parser-tests",
-    "ts-jest": "24.1.0",
-    "tslint": "5.20.0",
-    "typescript": "3.6.4"
+    "ts-jest": "25.2.1",
+    "typescript": "3.8.3"
   }
 }

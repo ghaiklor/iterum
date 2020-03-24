@@ -1,16 +1,16 @@
-import { SymbolError } from "../errors/SymbolError";
-import { Symbol } from "./Symbol";
+import { SymbolError } from '../errors/SymbolError';
+import { Symbol } from './Symbol';
 
 export class SymbolTable {
-  // tslint:disable-next-line: ban-types
-  private symbols: Map<string, Symbol> = new Map();
-  private enclosingScope: SymbolTable | null = null;
-  constructor(enclosingScope: SymbolTable | null = null) {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  private readonly symbols: Map<string, Symbol> = new Map();
+  private readonly enclosingScope: SymbolTable | null = null;
+  constructor (enclosingScope: SymbolTable | null = null) {
     this.enclosingScope = enclosingScope;
   }
 
-  // tslint:disable-next-line: ban-types
-  public define(symbol: Symbol): null | never {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  public define (symbol: Symbol): null | never {
     if (this.symbols.has(symbol.name)) {
       throw new SymbolError(SymbolError.SYMBOL_ALREADY_DECLARED, symbol.name);
     }
@@ -19,8 +19,8 @@ export class SymbolTable {
     return null;
   }
 
-  // tslint:disable-next-line: ban-types
-  public assign(symbol: Symbol): null | never {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  public assign (symbol: Symbol): null | never {
     if (this.symbols.has(symbol.name)) {
       this.symbols.set(symbol.name, symbol);
       return null;
@@ -33,8 +33,8 @@ export class SymbolTable {
     throw new SymbolError(SymbolError.SYMBOL_IS_NOT_DECLARED, symbol.name);
   }
 
-  // tslint:disable-next-line: ban-types
-  public lookup(name: string): Symbol | never {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  public lookup (name: string): Symbol | never {
     const value = this.symbols.get(name);
     if (value !== undefined) {
       return value;

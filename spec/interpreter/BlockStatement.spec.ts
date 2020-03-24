@@ -1,8 +1,8 @@
-import { Interpreter } from "../../src/interpreter/Interpreter";
-import { Parser } from "../../src/parser/Parser";
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import { Parser } from '../../src/parser/Parser';
 
-describe("Iterum::Interpreter::BlockStatement", () => {
-  it("Should properly interpret binary expression with variables in different lexical scopes", () => {
+describe('Iterum::Interpreter::BlockStatement', () => {
+  it('Should properly interpret binary expression with variables in different lexical scopes', () => {
     const source = `
       let result;
 

@@ -1,16 +1,16 @@
-import { IAssignmentExpression } from "../../../src/ast/expressions/AssignmentExpression";
-import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
-import { IUpdateExpression } from "../../../src/ast/expressions/UpdateExpression";
-import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { IProgram } from "../../../src/ast/programs/Program";
-import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
-import { IDoWhileStatement } from "../../../src/ast/statements/DoWhileStatement";
-import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
-import { IWhileStatement } from "../../../src/ast/statements/WhileStatement";
-import { Parser } from "../../../src/parser/Parser";
+import { IAssignmentExpression } from '../../../src/ast/expressions/AssignmentExpression';
+import { IBinaryExpression } from '../../../src/ast/expressions/BinaryExpression';
+import { IUpdateExpression } from '../../../src/ast/expressions/UpdateExpression';
+import { IIdentifier } from '../../../src/ast/miscellaneous/Identifier';
+import { IProgram } from '../../../src/ast/programs/Program';
+import { IBlockStatement } from '../../../src/ast/statements/BlockStatement';
+import { IDoWhileStatement } from '../../../src/ast/statements/DoWhileStatement';
+import { IExpressionStatement } from '../../../src/ast/statements/ExpressionStatement';
+import { IWhileStatement } from '../../../src/ast/statements/WhileStatement';
+import { Parser } from '../../../src/parser/Parser';
 
-describe("Iterum::Parser::DoWhileStatement", () => {
-  it("Should properly parse do-while loop", () => {
+describe('Iterum::Parser::DoWhileStatement', () => {
+  it('Should properly parse do-while loop', () => {
     const source = `
       do {
         a = b++;
@@ -24,41 +24,41 @@ describe("Iterum::Parser::DoWhileStatement", () => {
         body: {
           body: [{
             expression: {
-              left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+              left: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
               loc: null,
-              operator: "=",
+              operator: '=',
               right: {
-                argument: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+                argument: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier,
                 loc: null,
-                operator: "++",
+                operator: '++',
                 prefix: false,
-                type: "UpdateExpression",
+                type: 'UpdateExpression'
               } as IUpdateExpression,
-              type: "AssignmentExpression",
+              type: 'AssignmentExpression'
             } as IAssignmentExpression,
             loc: null,
-            type: "ExpressionStatement",
+            type: 'ExpressionStatement'
           } as IExpressionStatement],
           loc: null,
-          type: "BlockStatement",
+          type: 'BlockStatement'
         } as IBlockStatement,
         loc: null,
         test: {
-          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          left: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
           loc: null,
-          operator: "<",
-          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
-          type: "BinaryExpression",
+          operator: '<',
+          right: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier,
+          type: 'BinaryExpression'
         } as IBinaryExpression,
-        type: "DoWhileStatement",
+        type: 'DoWhileStatement'
       } as IDoWhileStatement],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse the while loop", () => {
+  it('Should properly parse the while loop', () => {
     const source = `
       while (a < b) {
         a = b++;
@@ -72,37 +72,37 @@ describe("Iterum::Parser::DoWhileStatement", () => {
         body: {
           body: [{
             expression: {
-              left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+              left: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
               loc: null,
-              operator: "=",
+              operator: '=',
               right: {
-                argument: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+                argument: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier,
                 loc: null,
-                operator: "++",
+                operator: '++',
                 prefix: false,
-                type: "UpdateExpression",
+                type: 'UpdateExpression'
               } as IUpdateExpression,
-              type: "AssignmentExpression",
+              type: 'AssignmentExpression'
             } as IAssignmentExpression,
             loc: null,
-            type: "ExpressionStatement",
+            type: 'ExpressionStatement'
           } as IExpressionStatement],
           loc: null,
-          type: "BlockStatement",
+          type: 'BlockStatement'
         } as IBlockStatement,
         loc: null,
         test: {
-          left: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+          left: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
           loc: null,
-          operator: "<",
-          right: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
-          type: "BinaryExpression",
+          operator: '<',
+          right: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier,
+          type: 'BinaryExpression'
         } as IBinaryExpression,
-        type: "WhileStatement",
+        type: 'WhileStatement'
       } as IWhileStatement],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 });

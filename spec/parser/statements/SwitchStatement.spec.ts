@@ -1,13 +1,13 @@
-import { ISwitchCase } from "../../../src/ast/clauses/SwitchCase";
-import { ILiteral } from "../../../src/ast/literals/Literal";
-import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { IProgram } from "../../../src/ast/programs/Program";
-import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
-import { ISwitchStatement } from "../../../src/ast/statements/SwitchStatement";
-import { Parser } from "../../../src/parser/Parser";
+import { ISwitchCase } from '../../../src/ast/clauses/SwitchCase';
+import { ILiteral } from '../../../src/ast/literals/Literal';
+import { IIdentifier } from '../../../src/ast/miscellaneous/Identifier';
+import { IProgram } from '../../../src/ast/programs/Program';
+import { IExpressionStatement } from '../../../src/ast/statements/ExpressionStatement';
+import { ISwitchStatement } from '../../../src/ast/statements/SwitchStatement';
+import { Parser } from '../../../src/parser/Parser';
 
-describe("Iterum::Parser::SwitchStatement", () => {
-  it("Should properly parse the statement", () => {
+describe('Iterum::Parser::SwitchStatement', () => {
+  it('Should properly parse the statement', () => {
     const source = `
       switch (foo) {
         case 'bar':
@@ -26,42 +26,42 @@ describe("Iterum::Parser::SwitchStatement", () => {
         cases: [
           {
             consequent: [{
-              expression: { type: "Literal", loc: null, value: 1, raw: "1" } as ILiteral,
+              expression: { type: 'Literal', loc: null, value: 1, raw: '1' } as ILiteral,
               loc: null,
-              type: "ExpressionStatement",
+              type: 'ExpressionStatement'
             } as IExpressionStatement],
             loc: null,
-            test: { type: "Literal", loc: null, value: "bar", raw: "bar" } as ILiteral,
-            type: "SwitchCase",
+            test: { type: 'Literal', loc: null, value: 'bar', raw: 'bar' } as ILiteral,
+            type: 'SwitchCase'
           } as ISwitchCase,
           {
             consequent: [{
-              expression: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              expression: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
               loc: null,
-              type: "ExpressionStatement",
+              type: 'ExpressionStatement'
             } as IExpressionStatement],
             loc: null,
-            test: { type: "Literal", loc: null, value: "baz", raw: "baz" } as ILiteral,
-            type: "SwitchCase",
+            test: { type: 'Literal', loc: null, value: 'baz', raw: 'baz' } as ILiteral,
+            type: 'SwitchCase'
           } as ISwitchCase,
           {
             consequent: [{
-              expression: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
+              expression: { type: 'Literal', loc: null, value: 3, raw: '3' } as ILiteral,
               loc: null,
-              type: "ExpressionStatement",
+              type: 'ExpressionStatement'
             } as IExpressionStatement],
             loc: null,
             test: null,
-            type: "SwitchCase",
-          } as ISwitchCase,
+            type: 'SwitchCase'
+          } as ISwitchCase
         ],
-        discriminant: { type: "Identifier", loc: null, name: "foo" } as IIdentifier,
+        discriminant: { type: 'Identifier', loc: null, name: 'foo' } as IIdentifier,
         loc: null,
-        type: "SwitchStatement",
+        type: 'SwitchStatement'
       } as ISwitchStatement],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 });

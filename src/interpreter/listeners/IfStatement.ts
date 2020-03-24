@@ -1,10 +1,10 @@
-import { INode } from "../../ast/node/Node";
-import { IIfStatement } from "../../ast/statements/IfStatement";
-import { NullValue } from "../../runtime/primitives/NullValue";
-import { Value } from "../../runtime/Value";
-import { ITraverseContext } from "../../traverser/Traverser";
+import { INode } from '../../ast/node/Node';
+import { IIfStatement } from '../../ast/statements/IfStatement';
+import { NullValue } from '../../runtime/primitives/NullValue';
+import { Value } from '../../runtime/Value';
+import { ITraverseContext } from '../../traverser/Traverser';
 
-export function IfStatement(n: INode, context: ITraverseContext): Value {
+export function IfStatement (n: INode, context: ITraverseContext): Value {
   const { traverser } = context;
   const node = n as IIfStatement;
 

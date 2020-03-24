@@ -1,5 +1,5 @@
-import { INode } from "../node/Node";
+import { INode } from '../node/Node';
 
 export interface ISuperExpression extends INode {
-  type: "SuperExpression";
+  type: 'SuperExpression'
 }

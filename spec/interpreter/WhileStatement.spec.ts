@@ -1,8 +1,8 @@
-import { Interpreter } from "../../src/interpreter/Interpreter";
-import { Parser } from "../../src/parser/Parser";
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import { Parser } from '../../src/parser/Parser';
 
-describe("Iterum::Interpreter::WhileStatement", () => {
-  it("Should properly interpret while statement", () => {
+describe('Iterum::Interpreter::WhileStatement', () => {
+  it('Should properly interpret while statement', () => {
     const source = `
       let a = 0;
 

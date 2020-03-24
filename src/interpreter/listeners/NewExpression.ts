@@ -1,11 +1,11 @@
-import { INewExpression } from "../../ast/expressions/NewExpression";
-import { INode } from "../../ast/node/Node";
-import { RuntimeError } from "../../errors/RuntimeError";
-import { ClassValue } from "../../runtime/classes/ClassValue";
-import { Value } from "../../runtime/Value";
-import { ITraverseContext } from "../../traverser/Traverser";
+import { INewExpression } from '../../ast/expressions/NewExpression';
+import { INode } from '../../ast/node/Node';
+import { RuntimeError } from '../../errors/RuntimeError';
+import { ClassValue } from '../../runtime/classes/ClassValue';
+import { Value } from '../../runtime/Value';
+import { ITraverseContext } from '../../traverser/Traverser';
 
-export function NewExpression(n: INode, context: ITraverseContext): Value {
+export function NewExpression (n: INode, context: ITraverseContext): Value {
   const { traverser } = context;
   const node = n as INewExpression;
   const args = [];

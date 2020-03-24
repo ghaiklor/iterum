@@ -1,17 +1,17 @@
-import { IAssignmentExpression } from "../../../src/ast/expressions/AssignmentExpression";
-import { IBinaryExpression } from "../../../src/ast/expressions/BinaryExpression";
-import { IObjectExpression } from "../../../src/ast/expressions/ObjectExpression";
-import { ILiteral } from "../../../src/ast/literals/Literal";
-import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { IProgram } from "../../../src/ast/programs/Program";
-import { IProperty } from "../../../src/ast/properties/Property";
-import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
-import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
-import { IWithStatement } from "../../../src/ast/statements/WithStatement";
-import { Parser } from "../../../src/parser/Parser";
+import { IAssignmentExpression } from '../../../src/ast/expressions/AssignmentExpression';
+import { IBinaryExpression } from '../../../src/ast/expressions/BinaryExpression';
+import { IObjectExpression } from '../../../src/ast/expressions/ObjectExpression';
+import { ILiteral } from '../../../src/ast/literals/Literal';
+import { IIdentifier } from '../../../src/ast/miscellaneous/Identifier';
+import { IProgram } from '../../../src/ast/programs/Program';
+import { IProperty } from '../../../src/ast/properties/Property';
+import { IBlockStatement } from '../../../src/ast/statements/BlockStatement';
+import { IExpressionStatement } from '../../../src/ast/statements/ExpressionStatement';
+import { IWithStatement } from '../../../src/ast/statements/WithStatement';
+import { Parser } from '../../../src/parser/Parser';
 
-describe("Iterum::Parser::WithStatement", () => {
-  it("Should properly parse the statement", () => {
+describe('Iterum::Parser::WithStatement', () => {
+  it('Should properly parse the statement', () => {
     const source = `
       with({foo: 'bar'}) {
         foo = foo + 'bar';
@@ -25,23 +25,23 @@ describe("Iterum::Parser::WithStatement", () => {
         body: {
           body: [{
             expression: {
-              left: { type: "Identifier", loc: null, name: "foo" } as IIdentifier,
+              left: { type: 'Identifier', loc: null, name: 'foo' } as IIdentifier,
               loc: null,
-              operator: "=",
+              operator: '=',
               right: {
-                left: { type: "Identifier", loc: null, name: "foo" } as IIdentifier,
+                left: { type: 'Identifier', loc: null, name: 'foo' } as IIdentifier,
                 loc: null,
-                operator: "+",
-                right: { type: "Literal", loc: null, value: "bar", raw: "bar" } as ILiteral,
-                type: "BinaryExpression",
+                operator: '+',
+                right: { type: 'Literal', loc: null, value: 'bar', raw: 'bar' } as ILiteral,
+                type: 'BinaryExpression'
               } as IBinaryExpression,
-              type: "AssignmentExpression",
+              type: 'AssignmentExpression'
             } as IAssignmentExpression,
             loc: null,
-            type: "ExpressionStatement",
+            type: 'ExpressionStatement'
           } as IExpressionStatement],
           loc: null,
-          type: "BlockStatement",
+          type: 'BlockStatement'
         } as IBlockStatement,
         loc: null,
         object: {
@@ -49,22 +49,22 @@ describe("Iterum::Parser::WithStatement", () => {
           properties: [
             {
               computed: false,
-              key: { type: "Identifier", loc: null, name: "foo" } as IIdentifier,
-              kind: "init",
+              key: { type: 'Identifier', loc: null, name: 'foo' } as IIdentifier,
+              kind: 'init',
               loc: null,
               method: false,
               shorthand: false,
-              type: "Property",
-              value: { type: "Literal", loc: null, value: "bar", raw: "bar" } as ILiteral,
-            } as IProperty,
+              type: 'Property',
+              value: { type: 'Literal', loc: null, value: 'bar', raw: 'bar' } as ILiteral
+            } as IProperty
           ],
-          type: "ObjectExpression",
+          type: 'ObjectExpression'
         } as IObjectExpression,
-        type: "WithStatement",
+        type: 'WithStatement'
       } as IWithStatement],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 });

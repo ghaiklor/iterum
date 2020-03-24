@@ -1,6 +1,6 @@
-import { IPattern } from "./Pattern";
+import { IPattern } from './Pattern';
 
 export interface IArrayPattern extends IPattern {
-  type: "ArrayPattern";
-  elements: Array<IPattern | null>;
+  type: 'ArrayPattern'
+  elements: Array<IPattern | null>
 }

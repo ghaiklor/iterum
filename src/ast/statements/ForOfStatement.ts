@@ -1,6 +1,6 @@
-import { IForInStatement } from "./ForInStatement";
+import { IForInStatement } from './ForInStatement';
 
-export interface IForOfStatement extends Pick<IForInStatement, Exclude<keyof IForInStatement, "type">> {
-  type: "ForOfStatement";
-  await: boolean;
+export interface IForOfStatement extends Pick<IForInStatement, Exclude<keyof IForInStatement, 'type'>> {
+  type: 'ForOfStatement'
+  await: boolean
 }

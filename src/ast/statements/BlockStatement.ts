@@ -1,6 +1,6 @@
-import { IStatement } from "./Statement";
+import { IStatement } from './Statement';
 
 export interface IBlockStatement extends IStatement {
-  type: "BlockStatement";
-  body: IStatement[];
+  type: 'BlockStatement'
+  body: IStatement[]
 }

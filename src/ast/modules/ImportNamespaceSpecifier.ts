@@ -1,5 +1,5 @@
-import { IModuleSpecifier } from "./ModuleSpecifier";
+import { IModuleSpecifier } from './ModuleSpecifier';
 
 export interface IImportNamespaceSpecifier extends IModuleSpecifier {
-  type: "ImportNamespaceSpecifier";
+  type: 'ImportNamespaceSpecifier'
 }

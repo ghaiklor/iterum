@@ -1,13 +1,13 @@
-import { IClassBody } from "../../../src/ast/classes/ClassBody";
-import { IClassExpression } from "../../../src/ast/expressions/ClassExpression";
-import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { IProgram } from "../../../src/ast/programs/Program";
-import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
-import { Parser } from "../../../src/parser/Parser";
+import { IClassBody } from '../../../src/ast/classes/ClassBody';
+import { IClassExpression } from '../../../src/ast/expressions/ClassExpression';
+import { IIdentifier } from '../../../src/ast/miscellaneous/Identifier';
+import { IProgram } from '../../../src/ast/programs/Program';
+import { IExpressionStatement } from '../../../src/ast/statements/ExpressionStatement';
+import { Parser } from '../../../src/parser/Parser';
 
-describe("Iterum::Parser::ClassExpression", () => {
-  it("Should properly parse the expression", () => {
-    const source = `(class Foo {});`;
+describe('Iterum::Parser::ClassExpression', () => {
+  it('Should properly parse the expression', () => {
+    const source = '(class Foo {});';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -16,18 +16,18 @@ describe("Iterum::Parser::ClassExpression", () => {
           body: {
             body: [],
             loc: null,
-            type: "ClassBody",
+            type: 'ClassBody'
           } as IClassBody,
-          id: { type: "Identifier", loc: null, name: "Foo" } as IIdentifier,
+          id: { type: 'Identifier', loc: null, name: 'Foo' } as IIdentifier,
           loc: null,
           superClass: null,
-          type: "ClassExpression",
+          type: 'ClassExpression'
         } as IClassExpression,
         loc: null,
-        type: "ExpressionStatement",
+        type: 'ExpressionStatement'
       } as IExpressionStatement],
       loc: null,
-      type: "Program",
+      type: 'Program'
     } as IProgram);
   });
 });

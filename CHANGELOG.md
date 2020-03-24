@@ -1,20 +1,15 @@
 # [1.0.0](https://github.com/ghaiklor/iterum/compare/v0.6.0...v1.0.0) (2019-07-02)
 
-
 ### Features
 
 * 🎸 classes inheritance ([11cc06a](https://github.com/ghaiklor/iterum/commit/11cc06a))
 * 🎸 implement SuperExpression to access superclasses direct ([ba8d27f](https://github.com/ghaiklor/iterum/commit/ba8d27f))
 
-
-
 # [0.6.0](https://github.com/ghaiklor/iterum/compare/v0.5.0...v0.6.0) (2019-07-02)
-
 
 ### Bug Fixes
 
 * 🐛 classes in JavaScript are functions you can call ([bcfb877](https://github.com/ghaiklor/iterum/commit/bcfb877))
-
 
 ### Features
 
@@ -26,30 +21,22 @@
 * 🎸 support for constructors in classes ([b2abf89](https://github.com/ghaiklor/iterum/commit/b2abf89))
 * 🎸 this expressions now refers to an instance ([f966b2f](https://github.com/ghaiklor/iterum/commit/f966b2f))
 
-
-
 # [0.5.0](https://github.com/ghaiklor/iterum/compare/v0.4.0...v0.5.0) (2019-06-09)
-
 
 ### Bug Fixes
 
 * 🐛 scope of the function declaration is lost in closures ([40ef511](https://github.com/ghaiklor/iterum/commit/40ef511))
-
 
 ### Features
 
 * 🎸 implement Value wrappers for run-time data ([dc56dc3](https://github.com/ghaiklor/iterum/commit/dc56dc3))
 * 🎸 implement wrappers for run-time values ([365ad4d](https://github.com/ghaiklor/iterum/commit/365ad4d))
 
-
-
 # [0.4.0](https://github.com/ghaiklor/iterum/compare/v0.3.0...v0.4.0) (2019-05-31)
-
 
 ### Bug Fixes
 
 * 🐛 building issues with json resolver for TypeScript ([2233831](https://github.com/ghaiklor/iterum/commit/2233831))
-
 
 ### Features
 
@@ -58,24 +45,17 @@
 * 🎸 implement syntax\runtime support for holes in an array ([d0713c5](https://github.com/ghaiklor/iterum/commit/d0713c5))
 * 🎸 implement wrappers for different kinds of errors ([df88098](https://github.com/ghaiklor/iterum/commit/df88098))
 
-
-
 # [0.3.0](https://github.com/ghaiklor/iterum/compare/v0.2.0...v0.3.0) (2019-05-28)
-
 
 ### Features
 
 * 🎸 add {do-while, while, for} loops, if statement and expr ([f9ee865](https://github.com/ghaiklor/iterum/commit/f9ee865))
 
-
-
 # [0.2.0](https://github.com/ghaiklor/iterum/compare/v0.1.0...v0.2.0) (2019-05-25)
-
 
 ### Bug Fixes
 
 * 🐛 symbol table instance leak as an interpret result ([00c8a6a](https://github.com/ghaiklor/iterum/commit/00c8a6a))
-
 
 ### Features
 
@@ -87,10 +67,7 @@
 * 🎸 implement visitor for AST nodes ([563fdbb](https://github.com/ghaiklor/iterum/commit/563fdbb))
 * 🎸 implementation for symbol tables ([248eae6](https://github.com/ghaiklor/iterum/commit/248eae6))
 
-
-
 # 0.1.0 (2019-05-11)
-
 
 ### Bug Fixes
 
@@ -118,7 +95,6 @@
 * 🐛 when class has an empty body, it throws an error ([e9d9ab2](https://github.com/ghaiklor/iterum/commit/e9d9ab2))
 * 🐛 while statements were created in DoWhile AST nodes ([e0d0027](https://github.com/ghaiklor/iterum/commit/e0d0027))
 
-
 ### Features
 
 * 🎸 add a simple CLI over iterum to print AST at least ([938f618](https://github.com/ghaiklor/iterum/commit/938f618))
@@ -134,7 +110,3 @@
 * 🎸 implement parsing the remaining statements ([b80b92e](https://github.com/ghaiklor/iterum/commit/b80b92e))
 * 🎸 introduce generic method openNode/closeNode ([9a15b5f](https://github.com/ghaiklor/iterum/commit/9a15b5f))
 * 🎸 update AST nodes to be conformant to the latest SM API ([4b9755f](https://github.com/ghaiklor/iterum/commit/4b9755f))
-
-
-
-

@@ -1,3 +1,3 @@
-import { IterumError } from "../../errors/IterumError";
+import { IterumError } from '../../errors/IterumError';
 
 export class RuntimeException extends IterumError { }

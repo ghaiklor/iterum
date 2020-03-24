@@ -1,9 +1,8 @@
 language: node_js
-cache: npm
 node_js:
   - "node"
   - "lts/*"
-
 script:
-  - npm run build
-  - codecov -f coverage/*.json
+  - npm run all
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

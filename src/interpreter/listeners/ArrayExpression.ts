@@ -1,9 +1,9 @@
-import { IArrayExpression } from "../../ast/expressions/ArrayExpression";
-import { INode } from "../../ast/node/Node";
-import { ArrayValue } from "../../runtime/complex/ArrayValue";
-import { ITraverseContext } from "../../traverser/Traverser";
+import { IArrayExpression } from '../../ast/expressions/ArrayExpression';
+import { INode } from '../../ast/node/Node';
+import { ArrayValue } from '../../runtime/complex/ArrayValue';
+import { ITraverseContext } from '../../traverser/Traverser';
 
-export function ArrayExpression(n: INode, context: ITraverseContext): ArrayValue {
+export function ArrayExpression (n: INode, context: ITraverseContext): ArrayValue {
   const node = n as IArrayExpression;
   const elements = [];
 

@@ -1,29 +1,29 @@
-import { IConditionalExpression } from "../../../src/ast/expressions/ConditionalExpression";
-import { ILiteral } from "../../../src/ast/literals/Literal";
-import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { IProgram } from "../../../src/ast/programs/Program";
-import { IExpressionStatement } from "../../../src/ast/statements/ExpressionStatement";
-import { Parser } from "../../../src/parser/Parser";
+import { IConditionalExpression } from '../../../src/ast/expressions/ConditionalExpression';
+import { ILiteral } from '../../../src/ast/literals/Literal';
+import { IIdentifier } from '../../../src/ast/miscellaneous/Identifier';
+import { IProgram } from '../../../src/ast/programs/Program';
+import { IExpressionStatement } from '../../../src/ast/statements/ExpressionStatement';
+import { Parser } from '../../../src/parser/Parser';
 
-describe("Iterum::Parser::ConditionalExpression", () => {
-  it("Should properly parse conditional expression", () => {
-    const source = `foo ? true : false;`;
+describe('Iterum::Parser::ConditionalExpression', () => {
+  it('Should properly parse conditional expression', () => {
+    const source = 'foo ? true : false;';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
       body: [{
         expression: {
-          alternate: { value: false, raw: "false", type: "Literal", loc: null } as ILiteral,
-          consequent: { value: true, raw: "true", type: "Literal", loc: null } as ILiteral,
+          alternate: { value: false, raw: 'false', type: 'Literal', loc: null } as ILiteral,
+          consequent: { value: true, raw: 'true', type: 'Literal', loc: null } as ILiteral,
           loc: null,
-          test: { name: "foo" } as IIdentifier,
-          type: "ConditionalExpression",
+          test: { name: 'foo' } as IIdentifier,
+          type: 'ConditionalExpression'
         } as IConditionalExpression,
         loc: null,
-        type: "ExpressionStatement",
+        type: 'ExpressionStatement'
       } as IExpressionStatement],
       loc: null,
-      type: "Program",
+      type: 'Program'
     } as IProgram);
   });
 });

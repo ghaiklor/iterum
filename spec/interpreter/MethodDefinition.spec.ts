@@ -1,8 +1,8 @@
-import { Interpreter } from "../../src/interpreter/Interpreter";
-import { Parser } from "../../src/parser/Parser";
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import { Parser } from '../../src/parser/Parser';
 
-describe("Iterum::Interpreter::MethodDefinition", () => {
-  it("Should properly interpret method in the class", () => {
+describe('Iterum::Interpreter::MethodDefinition', () => {
+  it('Should properly interpret method in the class', () => {
     const source = `
       class Point {
         sum(a, b) {
@@ -20,7 +20,7 @@ describe("Iterum::Interpreter::MethodDefinition", () => {
     expect(result).toEqual(5);
   });
 
-  it("Should properly interpret constructor in the class", () => {
+  it('Should properly interpret constructor in the class', () => {
     const source = `
       class Point {
         constructor(x, y) {
@@ -52,7 +52,7 @@ describe("Iterum::Interpreter::MethodDefinition", () => {
     expect(result).toEqual(17);
   });
 
-  it("Should throw an error when arity mismatch in constructor", () => {
+  it('Should throw an error when arity mismatch in constructor', () => {
     const source = `
       class Point {
         constructor(x, y) {
@@ -66,6 +66,6 @@ describe("Iterum::Interpreter::MethodDefinition", () => {
 
     const ast = Parser.parse(source);
 
-    expect(() => Interpreter.interpret(ast)).toThrowError(`<class Point> expect 2 arguments, but got 1`);
+    expect(() => Interpreter.interpret(ast)).toThrowError('<class Point> expect 2 arguments, but got 1');
   });
 });

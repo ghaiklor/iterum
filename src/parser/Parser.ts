@@ -1,81 +1,81 @@
-import { IClassBody } from "../ast/classes/ClassBody";
-import { IClassDeclaration } from "../ast/classes/ClassDeclaration";
-import { IMethodDefinition } from "../ast/classes/MethodDefinition";
-import { ICatchClause } from "../ast/clauses/CatchClause";
-import { ISwitchCase } from "../ast/clauses/SwitchCase";
-import { IDeclaration } from "../ast/declarations/Declaration";
-import { IFunctionDeclaration } from "../ast/declarations/FunctionDeclaration";
-import { IVariableDeclaration } from "../ast/declarations/VariableDeclaration";
-import { IVariableDeclarator } from "../ast/declarations/VariableDeclarator";
-import { IArrayExpression } from "../ast/expressions/ArrayExpression";
-import { IAssignmentExpression } from "../ast/expressions/AssignmentExpression";
-import { IBinaryExpression } from "../ast/expressions/BinaryExpression";
-import { ICallExpression } from "../ast/expressions/CallExpression";
-import { IClassExpression } from "../ast/expressions/ClassExpression";
-import { IConditionalExpression } from "../ast/expressions/ConditionalExpression";
-import { IExpression } from "../ast/expressions/Expression";
-import { IFunctionExpression } from "../ast/expressions/FunctionExpression";
-import { ILogicalExpression } from "../ast/expressions/LogicalExpression";
-import { IMemberExpression } from "../ast/expressions/MemberExpression";
-import { INewExpression } from "../ast/expressions/NewExpression";
-import { IObjectExpression } from "../ast/expressions/ObjectExpression";
-import { ISequenceExpression } from "../ast/expressions/SequenceExpression";
-import { ISuperExpression } from "../ast/expressions/SuperExpression";
-import { IThisExpression } from "../ast/expressions/ThisExpression";
-import { IUnaryExpression } from "../ast/expressions/UnaryExpression";
-import { IUpdateExpression } from "../ast/expressions/UpdateExpression";
-import { ILiteral } from "../ast/literals/Literal";
-import { IIdentifier } from "../ast/miscellaneous/Identifier";
-import { IExportAllDeclaration } from "../ast/modules/ExportAllDeclaration";
-import { IExportDefaultDeclaration } from "../ast/modules/ExportDefaultDeclaration";
-import { IExportNamedDeclaration } from "../ast/modules/ExportNamedDeclaration";
-import { IExportSpecifier } from "../ast/modules/ExportSpecifier";
-import { IImportDeclaration } from "../ast/modules/ImportDeclaration";
-import { IImportDefaultSpecifier } from "../ast/modules/ImportDefaultSpecifier";
-import { IImportNamespaceSpecifier } from "../ast/modules/ImportNamespaceSpecifier";
-import { IImportSpecifier } from "../ast/modules/ImportSpecifier";
-import { IModuleDeclaration } from "../ast/modules/ModuleDeclaration";
-import { INode } from "../ast/node/Node";
-import { AssignmentOperator } from "../ast/operators/AssignmentOperator";
-import { BinaryOperator } from "../ast/operators/BinaryOperator";
-import { LogicalOperator } from "../ast/operators/LogicalOperator";
-import { UnaryOperator } from "../ast/operators/UnaryOperator";
-import { UpdateOperator } from "../ast/operators/UpdateOperator";
-import { IArrayPattern } from "../ast/patterns/ArrayPattern";
-import { IObjectPattern } from "../ast/patterns/ObjectPattern";
-import { IProgram } from "../ast/programs/Program";
-import { IAssignmentProperty } from "../ast/properties/AssignmentProperty";
-import { IProperty } from "../ast/properties/Property";
-import { IBlockStatement } from "../ast/statements/BlockStatement";
-import { IBreakStatement } from "../ast/statements/BreakStatement";
-import { IContinueStatement } from "../ast/statements/ContinueStatement";
-import { IDebuggerStatement } from "../ast/statements/DebuggerStatement";
-import { IDoWhileStatement } from "../ast/statements/DoWhileStatement";
-import { IEmptyStatement } from "../ast/statements/EmptyStatement";
-import { IExpressionStatement } from "../ast/statements/ExpressionStatement";
-import { IForInStatement } from "../ast/statements/ForInStatement";
-import { IForOfStatement } from "../ast/statements/ForOfStatement";
-import { IForStatement } from "../ast/statements/ForStatement";
-import { IIfStatement } from "../ast/statements/IfStatement";
-import { IPrintStatement } from "../ast/statements/PrintStatement";
-import { IReturnStatement } from "../ast/statements/ReturnStatement";
-import { IStatement } from "../ast/statements/Statement";
-import { ISwitchStatement } from "../ast/statements/SwitchStatement";
-import { IThrowStatement } from "../ast/statements/ThrowStatement";
-import { ITryStatement } from "../ast/statements/TryStatement";
-import { IWhileStatement } from "../ast/statements/WhileStatement";
-import { IWithStatement } from "../ast/statements/WithStatement";
-import { ParserError } from "../errors/ParserError";
-import { SyntaxError } from "../errors/SyntaxError";
-import { Scanner } from "../scanner/Scanner";
-import { Token } from "../token/Token";
-import { TokenName } from "../token/TokenName";
-import { TokenType } from "../token/TokenType";
+import { IClassBody } from '../ast/classes/ClassBody';
+import { IClassDeclaration } from '../ast/classes/ClassDeclaration';
+import { IMethodDefinition } from '../ast/classes/MethodDefinition';
+import { ICatchClause } from '../ast/clauses/CatchClause';
+import { ISwitchCase } from '../ast/clauses/SwitchCase';
+import { IDeclaration } from '../ast/declarations/Declaration';
+import { IFunctionDeclaration } from '../ast/declarations/FunctionDeclaration';
+import { IVariableDeclaration } from '../ast/declarations/VariableDeclaration';
+import { IVariableDeclarator } from '../ast/declarations/VariableDeclarator';
+import { IArrayExpression } from '../ast/expressions/ArrayExpression';
+import { IAssignmentExpression } from '../ast/expressions/AssignmentExpression';
+import { IBinaryExpression } from '../ast/expressions/BinaryExpression';
+import { ICallExpression } from '../ast/expressions/CallExpression';
+import { IClassExpression } from '../ast/expressions/ClassExpression';
+import { IConditionalExpression } from '../ast/expressions/ConditionalExpression';
+import { IExpression } from '../ast/expressions/Expression';
+import { IFunctionExpression } from '../ast/expressions/FunctionExpression';
+import { ILogicalExpression } from '../ast/expressions/LogicalExpression';
+import { IMemberExpression } from '../ast/expressions/MemberExpression';
+import { INewExpression } from '../ast/expressions/NewExpression';
+import { IObjectExpression } from '../ast/expressions/ObjectExpression';
+import { ISequenceExpression } from '../ast/expressions/SequenceExpression';
+import { ISuperExpression } from '../ast/expressions/SuperExpression';
+import { IThisExpression } from '../ast/expressions/ThisExpression';
+import { IUnaryExpression } from '../ast/expressions/UnaryExpression';
+import { IUpdateExpression } from '../ast/expressions/UpdateExpression';
+import { ILiteral } from '../ast/literals/Literal';
+import { IIdentifier } from '../ast/miscellaneous/Identifier';
+import { IExportAllDeclaration } from '../ast/modules/ExportAllDeclaration';
+import { IExportDefaultDeclaration } from '../ast/modules/ExportDefaultDeclaration';
+import { IExportNamedDeclaration } from '../ast/modules/ExportNamedDeclaration';
+import { IExportSpecifier } from '../ast/modules/ExportSpecifier';
+import { IImportDeclaration } from '../ast/modules/ImportDeclaration';
+import { IImportDefaultSpecifier } from '../ast/modules/ImportDefaultSpecifier';
+import { IImportNamespaceSpecifier } from '../ast/modules/ImportNamespaceSpecifier';
+import { IImportSpecifier } from '../ast/modules/ImportSpecifier';
+import { IModuleDeclaration } from '../ast/modules/ModuleDeclaration';
+import { INode } from '../ast/node/Node';
+import { AssignmentOperator } from '../ast/operators/AssignmentOperator';
+import { BinaryOperator } from '../ast/operators/BinaryOperator';
+import { LogicalOperator } from '../ast/operators/LogicalOperator';
+import { UnaryOperator } from '../ast/operators/UnaryOperator';
+import { UpdateOperator } from '../ast/operators/UpdateOperator';
+import { IArrayPattern } from '../ast/patterns/ArrayPattern';
+import { IObjectPattern } from '../ast/patterns/ObjectPattern';
+import { IProgram } from '../ast/programs/Program';
+import { IAssignmentProperty } from '../ast/properties/AssignmentProperty';
+import { IProperty } from '../ast/properties/Property';
+import { IBlockStatement } from '../ast/statements/BlockStatement';
+import { IBreakStatement } from '../ast/statements/BreakStatement';
+import { IContinueStatement } from '../ast/statements/ContinueStatement';
+import { IDebuggerStatement } from '../ast/statements/DebuggerStatement';
+import { IDoWhileStatement } from '../ast/statements/DoWhileStatement';
+import { IEmptyStatement } from '../ast/statements/EmptyStatement';
+import { IExpressionStatement } from '../ast/statements/ExpressionStatement';
+import { IForInStatement } from '../ast/statements/ForInStatement';
+import { IForOfStatement } from '../ast/statements/ForOfStatement';
+import { IForStatement } from '../ast/statements/ForStatement';
+import { IIfStatement } from '../ast/statements/IfStatement';
+import { IPrintStatement } from '../ast/statements/PrintStatement';
+import { IReturnStatement } from '../ast/statements/ReturnStatement';
+import { IStatement } from '../ast/statements/Statement';
+import { ISwitchStatement } from '../ast/statements/SwitchStatement';
+import { IThrowStatement } from '../ast/statements/ThrowStatement';
+import { ITryStatement } from '../ast/statements/TryStatement';
+import { IWhileStatement } from '../ast/statements/WhileStatement';
+import { IWithStatement } from '../ast/statements/WithStatement';
+import { ParserError } from '../errors/ParserError';
+import { SyntaxError } from '../errors/SyntaxError';
+import { Scanner } from '../scanner/Scanner';
+import { Token } from '../token/Token';
+import { TokenName } from '../token/TokenName';
+import { TokenType } from '../token/TokenType';
 
 type IIterationStatement = IDoWhileStatement | IWhileStatement | IForStatement | IForInStatement | IForOfStatement;
 
 export class Parser {
-  public static parse(source: string): IProgram | never {
+  public static parse (source: string): IProgram | never {
     const { tokens, errors: lexicalErrors } = Scanner.tokenize(source);
     const parser = new Parser(tokens);
     const ast = parser.parse();
@@ -89,27 +89,27 @@ export class Parser {
   }
 
   public errors: SyntaxError[] = [];
-  private tokens: Token[];
+  private readonly tokens: Token[];
   private offset: number;
   private currentToken: Token;
-  constructor(tokens: Token[]) {
+  constructor (tokens: Token[]) {
     this.tokens = tokens;
     this.offset = 0;
     this.currentToken = this.tokens[this.offset];
   }
 
-  public parse(): IProgram {
+  public parse (): IProgram {
     return this.program();
   }
 
-  private advance(): null {
+  private advance (): null {
     this.offset++;
     this.currentToken = this.tokens[this.offset];
 
     return null;
   }
 
-  private eat(tokenToEat: TokenType): boolean {
+  private eat (tokenToEat: TokenType): boolean {
     if (this.currentToken.is(tokenToEat)) {
       this.advance();
       return true;
@@ -118,14 +118,14 @@ export class Parser {
     return false;
   }
 
-  private expect(expectedToken: TokenType): null | never {
+  private expect (expectedToken: TokenType): null | never {
     if (this.currentToken.is(expectedToken)) {
       this.advance();
       return null;
     } else {
       const location = this.currentToken.location;
       const current = this.currentToken.lexeme;
-      const expected = TokenName.get(expectedToken) || "Unknown token name, see the lexeme";
+      const expected = TokenName.get(expectedToken) ?? 'Unknown token name, see the lexeme';
       const error = new SyntaxError(SyntaxError.EXPECTED_BUT_GOT, location, expected, current);
 
       this.errors.push(error);
@@ -133,7 +133,7 @@ export class Parser {
     }
   }
 
-  private unexpected(): never {
+  private unexpected (): never {
     const location = this.currentToken.location;
     const name = this.currentToken.name;
     const error = new SyntaxError(SyntaxError.UNEXPECTED, location, name);
@@ -142,7 +142,7 @@ export class Parser {
     throw error;
   }
 
-  private openNode<T extends INode>(type: T["type"]): T {
+  private openNode<T extends INode>(type: T['type']): T {
     return { type, loc: null } as T;
   }
 
@@ -150,11 +150,11 @@ export class Parser {
     return node;
   }
 
-  private isEOF(): boolean {
+  private isEOF (): boolean {
     return this.currentToken.is(TokenType.EOF) || (this.offset >= this.tokens.length);
   }
 
-  private synchronize(): null {
+  private synchronize (): null {
     const SYNC_POINTS = [
       TokenType.IMPORT,
       TokenType.EXPORT,
@@ -176,7 +176,7 @@ export class Parser {
       TokenType.WHILE,
       TokenType.FOR,
       TokenType.SWITCH,
-      TokenType.PRINT,
+      TokenType.PRINT
     ];
 
     while (!this.currentToken.isSomeOf(SYNC_POINTS) && !this.isEOF()) {
@@ -190,29 +190,29 @@ export class Parser {
   // ------------------------------ GRAMMAR (EXPRESSIONS) ----------------------------- //
   // --- https://www.ecma-international.org/ecma-262/9.0/index.html#sec-expressions --- //
   // ---------------------------------------------------------------------------------- //
-  private identifier(): IIdentifier {
+  private identifier (): IIdentifier {
     const token = this.currentToken;
     this.expect(TokenType.IDENTIFIER);
 
-    const node = this.openNode<IIdentifier>("Identifier");
+    const node = this.openNode<IIdentifier>('Identifier');
     node.name = token.lexeme;
 
     return this.closeNode(node);
   }
 
-  private identifierReference(): IIdentifier {
+  private identifierReference (): IIdentifier {
     return this.identifier();
   }
 
-  private bindingIdentifier(): IIdentifier {
+  private bindingIdentifier (): IIdentifier {
     return this.identifier();
   }
 
-  private labelIdentifier(): IIdentifier {
+  private labelIdentifier (): IIdentifier {
     return this.identifier();
   }
 
-  private primaryExpression(): IExpression | never {
+  private primaryExpression (): IExpression | never {
     const LITERAL_TOKENS = [
       TokenType.BINARY_LITERAL,
       TokenType.BOOLEAN_LITERAL,
@@ -220,14 +220,14 @@ export class Parser {
       TokenType.NULL_LITERAL,
       TokenType.HEXADECIMAL_LITERAL,
       TokenType.OCTAL_LITERAL,
-      TokenType.STRING_LITERAL,
+      TokenType.STRING_LITERAL
     ];
 
     if (this.eat(TokenType.THIS)) {
-      const node = this.openNode<IThisExpression>("ThisExpression");
+      const node = this.openNode<IThisExpression>('ThisExpression');
       return this.closeNode(node);
     } else if (this.eat(TokenType.SUPER)) {
-      const node = this.openNode<ISuperExpression>("SuperExpression");
+      const node = this.openNode<ISuperExpression>('SuperExpression');
       return this.closeNode(node);
     } else if (this.currentToken.is(TokenType.IDENTIFIER)) {
       return this.identifierReference();
@@ -252,8 +252,8 @@ export class Parser {
     return this.unexpected();
   }
 
-  private literal(): ILiteral {
-    const node = this.openNode<ILiteral>("Literal");
+  private literal (): ILiteral {
+    const node = this.openNode<ILiteral>('Literal');
     const token = this.currentToken;
 
     node.raw = token.lexeme;
@@ -261,7 +261,7 @@ export class Parser {
       node.value = null;
       return this.closeNode(node);
     } else if (this.eat(TokenType.BOOLEAN_LITERAL)) {
-      node.value = token.lexeme === "true";
+      node.value = token.lexeme === 'true';
       return this.closeNode(node);
     } else if (this.eat(TokenType.STRING_LITERAL)) {
       node.value = token.lexeme;
@@ -282,8 +282,8 @@ export class Parser {
     }
   }
 
-  private arrayLiteral(): IArrayExpression {
-    const node = this.openNode<IArrayExpression>("ArrayExpression");
+  private arrayLiteral (): IArrayExpression {
+    const node = this.openNode<IArrayExpression>('ArrayExpression');
     node.elements = [];
 
     this.expect(TokenType.LEFT_SQUARE_BRACKETS);
@@ -297,7 +297,7 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private elementList(): Array<IExpression | null> {
+  private elementList (): Array<IExpression | null> {
     const expressions = [];
 
     while (this.currentToken.isNot(TokenType.RIGHT_SQUARE_BRACKETS)) {
@@ -312,8 +312,8 @@ export class Parser {
     return expressions;
   }
 
-  private objectLiteral(): IObjectExpression {
-    const node = this.openNode<IObjectExpression>("ObjectExpression");
+  private objectLiteral (): IObjectExpression {
+    const node = this.openNode<IObjectExpression>('ObjectExpression');
     node.properties = [];
 
     this.expect(TokenType.LEFT_CURLY_BRACES);
@@ -327,7 +327,7 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private propertyDefinitionList(): IProperty[] {
+  private propertyDefinitionList (): IProperty[] {
     const properties = [this.propertyDefinition()];
 
     while (this.eat(TokenType.COMMA)) {
@@ -337,20 +337,20 @@ export class Parser {
     return properties;
   }
 
-  private propertyDefinition(): IProperty {
+  private propertyDefinition (): IProperty {
     const LITERAL_PROPERTY_NAME = [
       TokenType.STRING_LITERAL,
       TokenType.DECIMAL_LITERAL,
       TokenType.HEXADECIMAL_LITERAL,
       TokenType.OCTAL_LITERAL,
-      TokenType.BINARY_LITERAL,
+      TokenType.BINARY_LITERAL
     ];
 
-    const node = this.openNode<IProperty>("Property");
+    const node = this.openNode<IProperty>('Property');
     node.computed = false;
     node.method = false;
     node.shorthand = true;
-    node.kind = "init";
+    node.kind = 'init';
 
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
       const identifierReference = this.identifierReference();
@@ -375,8 +375,8 @@ export class Parser {
     return node;
   }
 
-  private memberExpression(): IMemberExpression | IExpression {
-    const node = this.openNode<IMemberExpression>("MemberExpression");
+  private memberExpression (): IMemberExpression | IExpression {
+    const node = this.openNode<IMemberExpression>('MemberExpression');
     const object = this.primaryExpression();
 
     node.object = object;
@@ -410,18 +410,18 @@ export class Parser {
     return object;
   }
 
-  private newExpression(): INewExpression | IExpression {
+  private newExpression (): INewExpression | IExpression {
     this.expect(TokenType.NEW);
 
-    const node = this.openNode<INewExpression>("NewExpression");
+    const node = this.openNode<INewExpression>('NewExpression');
     node.callee = this.memberExpression();
     node.arguments = this.arguments();
 
     return this.closeNode(node);
   }
 
-  private callExpression(): ICallExpression | IExpression {
-    const node = this.openNode<ICallExpression>("CallExpression");
+  private callExpression (): ICallExpression | IExpression {
+    const node = this.openNode<ICallExpression>('CallExpression');
     const callee = this.memberExpression();
 
     if (this.currentToken.is(TokenType.LEFT_PARENTHESIS)) {
@@ -433,7 +433,7 @@ export class Parser {
     return callee;
   }
 
-  private arguments(): IExpression[] {
+  private arguments (): IExpression[] {
     this.expect(TokenType.LEFT_PARENTHESIS);
     if (this.eat(TokenType.RIGHT_PARENTHESIS)) {
       return [];
@@ -445,7 +445,7 @@ export class Parser {
     return args;
   }
 
-  private argumentList(): IExpression[] {
+  private argumentList (): IExpression[] {
     const args = [this.assignmentExpression()];
 
     while (this.eat(TokenType.COMMA)) {
@@ -455,7 +455,7 @@ export class Parser {
     return args;
   }
 
-  private leftHandSideExpression(): INewExpression | ICallExpression | IExpression {
+  private leftHandSideExpression (): INewExpression | ICallExpression | IExpression {
     if (this.currentToken.is(TokenType.NEW)) {
       return this.newExpression();
     } else {
@@ -463,8 +463,8 @@ export class Parser {
     }
   }
 
-  private updateExpression(): IUpdateExpression | IExpression {
-    const node = this.openNode<IUpdateExpression>("UpdateExpression");
+  private updateExpression (): IUpdateExpression | IExpression {
+    const node = this.openNode<IUpdateExpression>('UpdateExpression');
 
     if (this.eat(TokenType.MINUS_MINUS)) {
       node.argument = this.unaryExpression();
@@ -495,45 +495,45 @@ export class Parser {
     }
   }
 
-  private unaryExpression(): IUnaryExpression | IExpression {
+  private unaryExpression (): IUnaryExpression | IExpression {
     if (this.eat(TokenType.LOGICAL_NOT)) {
-      const node = this.openNode<IUnaryExpression>("UnaryExpression");
+      const node = this.openNode<IUnaryExpression>('UnaryExpression');
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.LOGICAL_NOT;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.BITWISE_NOT)) {
-      const node = this.openNode<IUnaryExpression>("UnaryExpression");
+      const node = this.openNode<IUnaryExpression>('UnaryExpression');
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.BITWISE_NOT;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.MINUS)) {
-      const node = this.openNode<IUnaryExpression>("UnaryExpression");
+      const node = this.openNode<IUnaryExpression>('UnaryExpression');
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.MINUS;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.PLUS)) {
-      const node = this.openNode<IUnaryExpression>("UnaryExpression");
+      const node = this.openNode<IUnaryExpression>('UnaryExpression');
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.PLUS;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.TYPE_OF)) {
-      const node = this.openNode<IUnaryExpression>("UnaryExpression");
+      const node = this.openNode<IUnaryExpression>('UnaryExpression');
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.TYPE_OF;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.VOID)) {
-      const node = this.openNode<IUnaryExpression>("UnaryExpression");
+      const node = this.openNode<IUnaryExpression>('UnaryExpression');
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.VOID;
       node.prefix = true;
       return this.closeNode(node);
     } else if (this.eat(TokenType.DELETE)) {
-      const node = this.openNode<IUnaryExpression>("UnaryExpression");
+      const node = this.openNode<IUnaryExpression>('UnaryExpression');
       node.argument = this.unaryExpression();
       node.operator = UnaryOperator.DELETE;
       node.prefix = true;
@@ -543,8 +543,8 @@ export class Parser {
     }
   }
 
-  private exponentiationExpression(): IBinaryExpression | IExpression {
-    const node = this.openNode<IBinaryExpression>("BinaryExpression");
+  private exponentiationExpression (): IBinaryExpression | IExpression {
+    const node = this.openNode<IBinaryExpression>('BinaryExpression');
     const left = this.unaryExpression();
 
     node.left = left;
@@ -557,8 +557,8 @@ export class Parser {
     return left;
   }
 
-  private multiplicativeExpression(): IBinaryExpression | IExpression {
-    const node = this.openNode<IBinaryExpression>("BinaryExpression");
+  private multiplicativeExpression (): IBinaryExpression | IExpression {
+    const node = this.openNode<IBinaryExpression>('BinaryExpression');
     const left = this.exponentiationExpression();
 
     node.left = left;
@@ -579,8 +579,8 @@ export class Parser {
     return left;
   }
 
-  private additiveExpression(): IBinaryExpression | IExpression {
-    const node = this.openNode<IBinaryExpression>("BinaryExpression");
+  private additiveExpression (): IBinaryExpression | IExpression {
+    const node = this.openNode<IBinaryExpression>('BinaryExpression');
     const left = this.multiplicativeExpression();
 
     node.left = left;
@@ -597,8 +597,8 @@ export class Parser {
     return left;
   }
 
-  private shiftExpression(): IBinaryExpression | IExpression {
-    const node = this.openNode<IBinaryExpression>("BinaryExpression");
+  private shiftExpression (): IBinaryExpression | IExpression {
+    const node = this.openNode<IBinaryExpression>('BinaryExpression');
     const left = this.additiveExpression();
 
     node.left = left;
@@ -619,8 +619,8 @@ export class Parser {
     return left;
   }
 
-  private relationalExpression(): IBinaryExpression | IExpression {
-    const node = this.openNode<IBinaryExpression>("BinaryExpression");
+  private relationalExpression (): IBinaryExpression | IExpression {
+    const node = this.openNode<IBinaryExpression>('BinaryExpression');
     const left = this.shiftExpression();
 
     node.left = left;
@@ -653,8 +653,8 @@ export class Parser {
     return left;
   }
 
-  private equalityExpression(): IBinaryExpression | IExpression {
-    const node = this.openNode<IBinaryExpression>("BinaryExpression");
+  private equalityExpression (): IBinaryExpression | IExpression {
+    const node = this.openNode<IBinaryExpression>('BinaryExpression');
     const left = this.relationalExpression();
 
     node.left = left;
@@ -679,8 +679,8 @@ export class Parser {
     return left;
   }
 
-  private bitwiseAndExpression(): IBinaryExpression | IExpression {
-    const node = this.openNode<IBinaryExpression>("BinaryExpression");
+  private bitwiseAndExpression (): IBinaryExpression | IExpression {
+    const node = this.openNode<IBinaryExpression>('BinaryExpression');
     const left = this.equalityExpression();
 
     node.left = left;
@@ -693,8 +693,8 @@ export class Parser {
     return left;
   }
 
-  private bitwiseXorExpression(): IBinaryExpression | IExpression {
-    const node = this.openNode<IBinaryExpression>("BinaryExpression");
+  private bitwiseXorExpression (): IBinaryExpression | IExpression {
+    const node = this.openNode<IBinaryExpression>('BinaryExpression');
     const left = this.bitwiseAndExpression();
 
     node.left = left;
@@ -707,8 +707,8 @@ export class Parser {
     return left;
   }
 
-  private bitwiseOrExpression(): IBinaryExpression | IExpression {
-    const node = this.openNode<IBinaryExpression>("BinaryExpression");
+  private bitwiseOrExpression (): IBinaryExpression | IExpression {
+    const node = this.openNode<IBinaryExpression>('BinaryExpression');
     const left = this.bitwiseXorExpression();
 
     node.left = left;
@@ -721,8 +721,8 @@ export class Parser {
     return left;
   }
 
-  private logicalAndExpression(): ILogicalExpression | IExpression {
-    const node = this.openNode<ILogicalExpression>("LogicalExpression");
+  private logicalAndExpression (): ILogicalExpression | IExpression {
+    const node = this.openNode<ILogicalExpression>('LogicalExpression');
     const left = this.bitwiseOrExpression();
 
     node.left = left;
@@ -735,8 +735,8 @@ export class Parser {
     return left;
   }
 
-  private logicalOrExpression(): ILogicalExpression | IExpression {
-    const node = this.openNode<ILogicalExpression>("LogicalExpression");
+  private logicalOrExpression (): ILogicalExpression | IExpression {
+    const node = this.openNode<ILogicalExpression>('LogicalExpression');
     const left = this.logicalAndExpression();
 
     node.left = left;
@@ -749,8 +749,8 @@ export class Parser {
     return left;
   }
 
-  private conditionalExpression(): IConditionalExpression | IExpression {
-    const node = this.openNode<IConditionalExpression>("ConditionalExpression");
+  private conditionalExpression (): IConditionalExpression | IExpression {
+    const node = this.openNode<IConditionalExpression>('ConditionalExpression');
     const test = this.logicalOrExpression();
 
     node.test = test;
@@ -764,8 +764,8 @@ export class Parser {
     return test;
   }
 
-  private assignmentExpression(): IAssignmentExpression | IExpression {
-    const node = this.openNode<IAssignmentExpression>("AssignmentExpression");
+  private assignmentExpression (): IAssignmentExpression | IExpression {
+    const node = this.openNode<IAssignmentExpression>('AssignmentExpression');
     const left = this.conditionalExpression();
 
     node.left = left;
@@ -826,8 +826,8 @@ export class Parser {
     return left;
   }
 
-  private expression(): ISequenceExpression | IExpression {
-    const node = this.openNode<ISequenceExpression>("SequenceExpression");
+  private expression (): ISequenceExpression | IExpression {
+    const node = this.openNode<ISequenceExpression>('SequenceExpression');
     node.expressions = [this.assignmentExpression()];
 
     while (this.eat(TokenType.COMMA)) {
@@ -841,7 +841,7 @@ export class Parser {
   // ------------------------------ GRAMMAR (STATEMENTS) ----------------------------- //
   // --- https://www.ecma-international.org/ecma-262/9.0/index.html#sec-statements --- //
   // --------------------------------------------------------------------------------- //
-  private statement(): IStatement {
+  private statement (): IStatement {
     if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
       return this.blockStatement();
     } else if (this.currentToken.isSomeOf([TokenType.VAR, TokenType.LET, TokenType.CONST])) {
@@ -873,7 +873,7 @@ export class Parser {
     }
   }
 
-  private declaration(): IDeclaration {
+  private declaration (): IDeclaration {
     if (this.currentToken.is(TokenType.FUNCTION)) {
       return this.hoistableDeclaration();
     } else if (this.currentToken.is(TokenType.CLASS)) {
@@ -883,15 +883,15 @@ export class Parser {
     }
   }
 
-  private hoistableDeclaration(): IDeclaration {
+  private hoistableDeclaration (): IDeclaration {
     return this.functionDeclaration();
   }
 
-  private breakableStatement(): IIterationStatement | ISwitchStatement {
+  private breakableStatement (): IIterationStatement | ISwitchStatement {
     const ITERATION_TOKENS = [
       TokenType.DO,
       TokenType.WHILE,
-      TokenType.FOR,
+      TokenType.FOR
     ];
 
     if (this.currentToken.isSomeOf(ITERATION_TOKENS)) {
@@ -901,8 +901,8 @@ export class Parser {
     }
   }
 
-  private printStatement(): IPrintStatement {
-    const node = this.openNode<IPrintStatement>("PrintStatement");
+  private printStatement (): IPrintStatement {
+    const node = this.openNode<IPrintStatement>('PrintStatement');
     this.expect(TokenType.PRINT);
 
     node.expression = this.expression();
@@ -910,14 +910,14 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private blockStatement(): IBlockStatement {
-    const node = this.openNode<IBlockStatement>("BlockStatement");
+  private blockStatement (): IBlockStatement {
+    const node = this.openNode<IBlockStatement>('BlockStatement');
     node.body = this.block();
 
     return this.closeNode(node);
   }
 
-  private block(): Array<IStatement | IDeclaration> {
+  private block (): Array<IStatement | IDeclaration> {
     this.expect(TokenType.LEFT_CURLY_BRACES);
     if (this.eat(TokenType.RIGHT_CURLY_BRACES)) {
       return [];
@@ -929,11 +929,11 @@ export class Parser {
     return statementList;
   }
 
-  private statementList(): Array<IStatement | IDeclaration> {
+  private statementList (): Array<IStatement | IDeclaration> {
     const END_OF_STATEMENT_TOKENS = [
       TokenType.RIGHT_CURLY_BRACES,
       TokenType.CASE,
-      TokenType.DEFAULT,
+      TokenType.DEFAULT
     ];
 
     const items = [this.statementListItem()];
@@ -945,12 +945,12 @@ export class Parser {
     return items;
   }
 
-  private statementListItem(): IStatement | IDeclaration {
+  private statementListItem (): IStatement | IDeclaration {
     const DECLARATION_TOKENS = [
       TokenType.FUNCTION,
       TokenType.CLASS,
       TokenType.LET,
-      TokenType.CONST,
+      TokenType.CONST
     ];
 
     if (this.currentToken.isSomeOf(DECLARATION_TOKENS)) {
@@ -964,22 +964,22 @@ export class Parser {
     }
   }
 
-  private lexicalDeclaration(): IVariableDeclaration {
-    const node = this.openNode<IVariableDeclaration>("VariableDeclaration");
+  private lexicalDeclaration (): IVariableDeclaration {
+    const node = this.openNode<IVariableDeclaration>('VariableDeclaration');
 
     if (this.eat(TokenType.LET)) {
       node.declarations = this.bindingList();
-      node.kind = "let";
+      node.kind = 'let';
       return this.closeNode(node);
     } else {
       this.expect(TokenType.CONST);
       node.declarations = this.bindingList();
-      node.kind = "const";
+      node.kind = 'const';
       return this.closeNode(node);
     }
   }
 
-  private bindingList(): IVariableDeclarator[] {
+  private bindingList (): IVariableDeclarator[] {
     const bindings = [this.lexicalBinding()];
 
     while (this.eat(TokenType.COMMA)) {
@@ -989,8 +989,8 @@ export class Parser {
     return bindings;
   }
 
-  private lexicalBinding(): IVariableDeclarator {
-    const node = this.openNode<IVariableDeclarator>("VariableDeclarator");
+  private lexicalBinding (): IVariableDeclarator {
+    const node = this.openNode<IVariableDeclarator>('VariableDeclarator');
     node.init = null;
 
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
@@ -1009,17 +1009,17 @@ export class Parser {
     }
   }
 
-  private variableStatement(): IVariableDeclaration {
-    const node = this.openNode<IVariableDeclaration>("VariableDeclaration");
+  private variableStatement (): IVariableDeclaration {
+    const node = this.openNode<IVariableDeclaration>('VariableDeclaration');
     this.expect(TokenType.VAR);
 
-    node.kind = "var";
+    node.kind = 'var';
     node.declarations = this.variableDeclarationList();
 
     return this.closeNode(node);
   }
 
-  private variableDeclarationList(): IVariableDeclarator[] {
+  private variableDeclarationList (): IVariableDeclarator[] {
     const declarations = [this.variableDeclaration()];
 
     while (this.eat(TokenType.COMMA)) {
@@ -1029,8 +1029,8 @@ export class Parser {
     return declarations;
   }
 
-  private variableDeclaration(): IVariableDeclarator {
-    const node = this.openNode<IVariableDeclarator>("VariableDeclarator");
+  private variableDeclaration (): IVariableDeclarator {
+    const node = this.openNode<IVariableDeclarator>('VariableDeclarator');
     node.init = null;
 
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
@@ -1049,7 +1049,7 @@ export class Parser {
     }
   }
 
-  private bindingPattern(): IObjectPattern | IArrayPattern {
+  private bindingPattern (): IObjectPattern | IArrayPattern {
     if (this.currentToken.is(TokenType.LEFT_CURLY_BRACES)) {
       return this.objectBindingPattern();
     } else {
@@ -1057,8 +1057,8 @@ export class Parser {
     }
   }
 
-  private objectBindingPattern(): IObjectPattern {
-    const node = this.openNode<IObjectPattern>("ObjectPattern");
+  private objectBindingPattern (): IObjectPattern {
+    const node = this.openNode<IObjectPattern>('ObjectPattern');
     node.properties = [];
 
     this.expect(TokenType.LEFT_CURLY_BRACES);
@@ -1072,8 +1072,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private arrayBindingPattern(): IArrayPattern {
-    const node = this.openNode<IArrayPattern>("ArrayPattern");
+  private arrayBindingPattern (): IArrayPattern {
+    const node = this.openNode<IArrayPattern>('ArrayPattern');
     node.elements = [];
 
     this.expect(TokenType.LEFT_SQUARE_BRACKETS);
@@ -1087,7 +1087,7 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private bindingPropertyList(): IAssignmentProperty[] {
+  private bindingPropertyList (): IAssignmentProperty[] {
     const properties = [this.bindingProperty()];
 
     while (this.eat(TokenType.COMMA)) {
@@ -1097,7 +1097,7 @@ export class Parser {
     return properties;
   }
 
-  private bindingElementList(): IIdentifier[] {
+  private bindingElementList (): IIdentifier[] {
     const expressions = [this.bindingElement()];
 
     while (this.eat(TokenType.COMMA)) {
@@ -1107,12 +1107,12 @@ export class Parser {
     return expressions;
   }
 
-  private bindingProperty(): IAssignmentProperty {
-    const node = this.openNode<IAssignmentProperty>("Property");
+  private bindingProperty (): IAssignmentProperty {
+    const node = this.openNode<IAssignmentProperty>('Property');
     const identifier = this.bindingIdentifier();
 
     node.computed = false;
-    node.kind = "init";
+    node.kind = 'init';
     node.method = false;
     node.shorthand = true;
     node.key = identifier;
@@ -1127,26 +1127,26 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private bindingElement(): IIdentifier {
+  private bindingElement (): IIdentifier {
     return this.bindingIdentifier();
   }
 
-  private emptyStatement(): IEmptyStatement {
-    const node = this.openNode<IEmptyStatement>("EmptyStatement");
+  private emptyStatement (): IEmptyStatement {
+    const node = this.openNode<IEmptyStatement>('EmptyStatement');
     this.expect(TokenType.SEMICOLON);
     return this.closeNode(node);
   }
 
-  private expressionStatement(): IExpressionStatement {
-    const node = this.openNode<IExpressionStatement>("ExpressionStatement");
+  private expressionStatement (): IExpressionStatement {
+    const node = this.openNode<IExpressionStatement>('ExpressionStatement');
     node.expression = this.expression();
     this.eat(TokenType.SEMICOLON);
 
     return this.closeNode(node);
   }
 
-  private ifStatement(): IIfStatement {
-    const node = this.openNode<IIfStatement>("IfStatement");
+  private ifStatement (): IIfStatement {
+    const node = this.openNode<IIfStatement>('IfStatement');
     node.alternate = null;
 
     this.expect(TokenType.IF);
@@ -1162,9 +1162,9 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private iterationStatement(): IIterationStatement {
+  private iterationStatement (): IIterationStatement {
     if (this.eat(TokenType.DO)) {
-      const node = this.openNode<IDoWhileStatement>("DoWhileStatement");
+      const node = this.openNode<IDoWhileStatement>('DoWhileStatement');
       node.body = this.statement();
       this.expect(TokenType.WHILE);
       this.expect(TokenType.LEFT_PARENTHESIS);
@@ -1174,7 +1174,7 @@ export class Parser {
 
       return this.closeNode(node);
     } else if (this.eat(TokenType.WHILE)) {
-      const node = this.openNode<IWhileStatement>("WhileStatement");
+      const node = this.openNode<IWhileStatement>('WhileStatement');
 
       this.expect(TokenType.LEFT_PARENTHESIS);
       node.test = this.expression();
@@ -1183,7 +1183,7 @@ export class Parser {
 
       return this.closeNode(node);
     } else {
-      const node = this.openNode<IForStatement>("ForStatement");
+      const node = this.openNode<IForStatement>('ForStatement');
 
       this.expect(TokenType.FOR);
       this.expect(TokenType.LEFT_PARENTHESIS);
@@ -1207,8 +1207,8 @@ export class Parser {
     }
   }
 
-  private continueStatement(): IContinueStatement {
-    const node = this.openNode<IContinueStatement>("ContinueStatement");
+  private continueStatement (): IContinueStatement {
+    const node = this.openNode<IContinueStatement>('ContinueStatement');
     node.label = null;
 
     this.expect(TokenType.CONTINUE);
@@ -1220,8 +1220,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private breakStatement(): IBreakStatement {
-    const node = this.openNode<IBreakStatement>("BreakStatement");
+  private breakStatement (): IBreakStatement {
+    const node = this.openNode<IBreakStatement>('BreakStatement');
     node.label = null;
 
     this.expect(TokenType.BREAK);
@@ -1233,8 +1233,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private returnStatement(): IReturnStatement {
-    const node = this.openNode<IReturnStatement>("ReturnStatement");
+  private returnStatement (): IReturnStatement {
+    const node = this.openNode<IReturnStatement>('ReturnStatement');
 
     this.expect(TokenType.RETURN);
     if (!this.currentToken.is(TokenType.SEMICOLON)) {
@@ -1245,8 +1245,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private withStatement(): IWithStatement {
-    const node = this.openNode<IWithStatement>("WithStatement");
+  private withStatement (): IWithStatement {
+    const node = this.openNode<IWithStatement>('WithStatement');
 
     this.expect(TokenType.WITH);
     this.expect(TokenType.LEFT_PARENTHESIS);
@@ -1257,8 +1257,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private switchStatement(): ISwitchStatement {
-    const node = this.openNode<ISwitchStatement>("SwitchStatement");
+  private switchStatement (): ISwitchStatement {
+    const node = this.openNode<ISwitchStatement>('SwitchStatement');
 
     this.expect(TokenType.SWITCH);
     this.expect(TokenType.LEFT_PARENTHESIS);
@@ -1269,7 +1269,7 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private caseBlock(): ISwitchCase[] {
+  private caseBlock (): ISwitchCase[] {
     this.expect(TokenType.LEFT_CURLY_BRACES);
     const clauses = this.caseClauses();
     clauses.push(this.defaultClause());
@@ -1278,7 +1278,7 @@ export class Parser {
     return clauses;
   }
 
-  private caseClauses(): ISwitchCase[] {
+  private caseClauses (): ISwitchCase[] {
     const clauses = [this.caseClause()];
 
     while (this.currentToken.is(TokenType.CASE)) {
@@ -1288,8 +1288,8 @@ export class Parser {
     return clauses;
   }
 
-  private caseClause(): ISwitchCase {
-    const node = this.openNode<ISwitchCase>("SwitchCase");
+  private caseClause (): ISwitchCase {
+    const node = this.openNode<ISwitchCase>('SwitchCase');
 
     this.expect(TokenType.CASE);
     node.test = this.expression();
@@ -1299,8 +1299,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private defaultClause(): ISwitchCase {
-    const node = this.openNode<ISwitchCase>("SwitchCase");
+  private defaultClause (): ISwitchCase {
+    const node = this.openNode<ISwitchCase>('SwitchCase');
 
     this.expect(TokenType.DEFAULT);
     this.expect(TokenType.COLON);
@@ -1311,8 +1311,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private throwStatement(): IThrowStatement {
-    const node = this.openNode<IThrowStatement>("ThrowStatement");
+  private throwStatement (): IThrowStatement {
+    const node = this.openNode<IThrowStatement>('ThrowStatement');
 
     this.expect(TokenType.THROW);
     node.argument = this.expression();
@@ -1321,8 +1321,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private tryStatement(): ITryStatement {
-    const node = this.openNode<ITryStatement>("TryStatement");
+  private tryStatement (): ITryStatement {
+    const node = this.openNode<ITryStatement>('TryStatement');
 
     this.expect(TokenType.TRY);
     node.block = this.blockStatement();
@@ -1330,18 +1330,18 @@ export class Parser {
     node.finalizer = null;
 
     if (this.currentToken.is(TokenType.CATCH)) {
-      node.handler = this.catch();
+      node.handler = this.catchClause();
     }
 
     if (this.currentToken.is(TokenType.FINALLY)) {
-      node.finalizer = this.finally();
+      node.finalizer = this.finallyClause();
     }
 
     return this.closeNode(node);
   }
 
-  private catch(): ICatchClause {
-    const node = this.openNode<ICatchClause>("CatchClause");
+  private catchClause (): ICatchClause {
+    const node = this.openNode<ICatchClause>('CatchClause');
 
     this.expect(TokenType.CATCH);
     this.expect(TokenType.LEFT_PARENTHESIS);
@@ -1352,13 +1352,13 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private finally(): IBlockStatement {
+  private finallyClause (): IBlockStatement {
     this.expect(TokenType.FINALLY);
     return this.blockStatement();
   }
 
-  private debuggerStatement(): IDebuggerStatement {
-    const node = this.openNode<IDebuggerStatement>("DebuggerStatement");
+  private debuggerStatement (): IDebuggerStatement {
+    const node = this.openNode<IDebuggerStatement>('DebuggerStatement');
     this.expect(TokenType.DEBUGGER);
     this.expect(TokenType.SEMICOLON);
     return this.closeNode(node);
@@ -1368,8 +1368,8 @@ export class Parser {
   // ----------------------------- GRAMMAR (FUNCTIONS AND CLASSES) ------------------------------ //
   // --- https://www.ecma-international.org/ecma-262/9.0/index.html#sec-functions-and-classes --- //
   // -------------------------------------------------------------------------------------------- //
-  private functionDeclaration(): IFunctionDeclaration {
-    const node = this.openNode<IFunctionDeclaration>("FunctionDeclaration");
+  private functionDeclaration (): IFunctionDeclaration {
+    const node = this.openNode<IFunctionDeclaration>('FunctionDeclaration');
     node.async = false;
     node.generator = false;
 
@@ -1386,8 +1386,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private functionExpression(): IFunctionExpression {
-    const node = this.openNode<IFunctionExpression>("FunctionExpression");
+  private functionExpression (): IFunctionExpression {
+    const node = this.openNode<IFunctionExpression>('FunctionExpression');
     node.async = false;
     node.generator = false;
     node.id = null;
@@ -1405,7 +1405,7 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private formalParameters(): IIdentifier[] {
+  private formalParameters (): IIdentifier[] {
     if (this.currentToken.is(TokenType.RIGHT_PARENTHESIS)) {
       return [];
     }
@@ -1413,7 +1413,7 @@ export class Parser {
     return this.formalParameterList();
   }
 
-  private formalParameterList(): IIdentifier[] {
+  private formalParameterList (): IIdentifier[] {
     const parameters = [this.formalParameter()];
 
     while (this.eat(TokenType.COMMA)) {
@@ -1423,31 +1423,31 @@ export class Parser {
     return parameters;
   }
 
-  private formalParameter(): IIdentifier {
+  private formalParameter (): IIdentifier {
     return this.bindingElement();
   }
 
-  private functionBody(): IBlockStatement {
+  private functionBody (): IBlockStatement {
     return this.functionStatementList();
   }
 
-  private functionStatementList(): IBlockStatement {
+  private functionStatementList (): IBlockStatement {
     return this.blockStatement();
   }
 
-  private methodDefinition(): IMethodDefinition {
-    const node = this.openNode<IMethodDefinition>("MethodDefinition");
+  private methodDefinition (): IMethodDefinition {
+    const node = this.openNode<IMethodDefinition>('MethodDefinition');
 
     node.computed = false;
     node.static = this.eat(TokenType.STATIC);
     if (this.eat(TokenType.SET)) {
-      node.kind = "set";
+      node.kind = 'set';
     } else if (this.eat(TokenType.GET)) {
-      node.kind = "get";
-    } else if (this.currentToken.lexeme === "constructor") {
-      node.kind = "constructor";
+      node.kind = 'get';
+    } else if (this.currentToken.lexeme === 'constructor') {
+      node.kind = 'constructor';
     } else {
-      node.kind = "method";
+      node.kind = 'method';
     }
 
     node.key = this.identifier();
@@ -1456,8 +1456,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private classDeclaration(): IClassDeclaration {
-    const node = this.openNode<IClassDeclaration>("ClassDeclaration");
+  private classDeclaration (): IClassDeclaration {
+    const node = this.openNode<IClassDeclaration>('ClassDeclaration');
 
     this.expect(TokenType.CLASS);
     node.id = this.bindingIdentifier();
@@ -1470,8 +1470,8 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private classExpression(): IClassExpression {
-    const node = this.openNode<IClassExpression>("ClassExpression");
+  private classExpression (): IClassExpression {
+    const node = this.openNode<IClassExpression>('ClassExpression');
 
     this.expect(TokenType.CLASS);
     node.id = this.bindingIdentifier();
@@ -1484,7 +1484,7 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private classHeritage(): IExpression | null {
+  private classHeritage (): IExpression | null {
     if (this.eat(TokenType.EXTENDS)) {
       return this.leftHandSideExpression();
     } else {
@@ -1492,19 +1492,19 @@ export class Parser {
     }
   }
 
-  private classBody(): IClassBody {
-    const node = this.openNode<IClassBody>("ClassBody");
+  private classBody (): IClassBody {
+    const node = this.openNode<IClassBody>('ClassBody');
     node.body = this.classElementList();
 
     return this.closeNode(node);
   }
 
-  private classElementList(): IMethodDefinition[] {
+  private classElementList (): IMethodDefinition[] {
     const METHOD_DEFINITION_TOKENS = [
       TokenType.STATIC,
       TokenType.SET,
       TokenType.GET,
-      TokenType.IDENTIFIER,
+      TokenType.IDENTIFIER
     ];
 
     if (this.currentToken.is(TokenType.RIGHT_CURLY_BRACES)) {
@@ -1519,7 +1519,7 @@ export class Parser {
     return elements;
   }
 
-  private classElement(): IMethodDefinition {
+  private classElement (): IMethodDefinition {
     return this.methodDefinition();
   }
 
@@ -1527,15 +1527,15 @@ export class Parser {
   // ----------------------------------- GRAMMAR (MODULES) ------------------------------------ //
   // --- https://www.ecma-international.org/ecma-262/9.0/index.html#sec-scripts-and-modules --- //
   // ------------------------------------------------------------------------------------------ //
-  private module(): Array<IModuleDeclaration | IStatement> {
+  private module (): Array<IModuleDeclaration | IStatement> {
     return this.moduleBody();
   }
 
-  private moduleBody(): Array<IModuleDeclaration | IStatement> {
+  private moduleBody (): Array<IModuleDeclaration | IStatement> {
     return this.moduleItemList();
   }
 
-  private moduleItemList(): Array<IModuleDeclaration | IStatement> {
+  private moduleItemList (): Array<IModuleDeclaration | IStatement> {
     const items = [];
 
     while (!this.isEOF()) {
@@ -1548,7 +1548,7 @@ export class Parser {
     return items;
   }
 
-  private moduleItem(): IModuleDeclaration | IStatement | null {
+  private moduleItem (): IModuleDeclaration | IStatement | null {
     try {
       if (this.currentToken.is(TokenType.IMPORT)) {
         return this.importDeclaration();
@@ -1563,8 +1563,8 @@ export class Parser {
     }
   }
 
-  private importDeclaration(): IImportDeclaration {
-    const node = this.openNode<IImportDeclaration>("ImportDeclaration");
+  private importDeclaration (): IImportDeclaration {
+    const node = this.openNode<IImportDeclaration>('ImportDeclaration');
 
     this.expect(TokenType.IMPORT);
     node.specifiers = this.importClause();
@@ -1574,7 +1574,7 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private importClause(): Array<IImportDefaultSpecifier | IImportNamespaceSpecifier | IImportSpecifier> {
+  private importClause (): Array<IImportDefaultSpecifier | IImportNamespaceSpecifier | IImportSpecifier> {
     if (this.currentToken.is(TokenType.IDENTIFIER)) {
       return this.importedDefaultBinding();
     } else if (this.currentToken.is(TokenType.MULTIPLY)) {
@@ -1584,14 +1584,14 @@ export class Parser {
     }
   }
 
-  private importedDefaultBinding(): IImportDefaultSpecifier[] {
-    const node = this.openNode<IImportDefaultSpecifier>("ImportDefaultSpecifier");
+  private importedDefaultBinding (): IImportDefaultSpecifier[] {
+    const node = this.openNode<IImportDefaultSpecifier>('ImportDefaultSpecifier');
     node.local = this.importedBinding();
     return [this.closeNode(node)];
   }
 
-  private namespaceImport(): IImportNamespaceSpecifier[] {
-    const node = this.openNode<IImportNamespaceSpecifier>("ImportNamespaceSpecifier");
+  private namespaceImport (): IImportNamespaceSpecifier[] {
+    const node = this.openNode<IImportNamespaceSpecifier>('ImportNamespaceSpecifier');
 
     this.expect(TokenType.MULTIPLY);
     this.expect(TokenType.AS);
@@ -1600,7 +1600,7 @@ export class Parser {
     return [this.closeNode(node)];
   }
 
-  private namedImports(): IImportSpecifier[] {
+  private namedImports (): IImportSpecifier[] {
     this.expect(TokenType.LEFT_CURLY_BRACES);
     if (this.eat(TokenType.RIGHT_CURLY_BRACES)) {
       return [];
@@ -1612,12 +1612,12 @@ export class Parser {
     return imports;
   }
 
-  private fromClause(): ILiteral {
+  private fromClause (): ILiteral {
     this.expect(TokenType.FROM);
     return this.moduleSpecifier();
   }
 
-  private importsList(): IImportSpecifier[] {
+  private importsList (): IImportSpecifier[] {
     const imports = [this.importSpecifier()];
 
     while (this.eat(TokenType.COMMA)) {
@@ -1627,8 +1627,8 @@ export class Parser {
     return imports;
   }
 
-  private importSpecifier(): IImportSpecifier {
-    const node = this.openNode<IImportSpecifier>("ImportSpecifier");
+  private importSpecifier (): IImportSpecifier {
+    const node = this.openNode<IImportSpecifier>('ImportSpecifier');
 
     node.imported = this.identifier();
     node.local = node.imported;
@@ -1639,19 +1639,19 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private moduleSpecifier(): ILiteral {
+  private moduleSpecifier (): ILiteral {
     return this.literal();
   }
 
-  private importedBinding(): IIdentifier {
+  private importedBinding (): IIdentifier {
     return this.bindingIdentifier();
   }
 
-  private exportDeclaration(): IExportAllDeclaration | IExportNamedDeclaration | IExportDefaultDeclaration {
+  private exportDeclaration (): IExportAllDeclaration | IExportNamedDeclaration | IExportDefaultDeclaration {
     this.expect(TokenType.EXPORT);
 
     if (this.eat(TokenType.MULTIPLY)) {
-      const node = this.openNode<IExportAllDeclaration>("ExportAllDeclaration");
+      const node = this.openNode<IExportAllDeclaration>('ExportAllDeclaration');
       node.source = this.fromClause();
       this.eat(TokenType.SEMICOLON);
       return this.closeNode(node);
@@ -1660,7 +1660,7 @@ export class Parser {
     } else {
       this.expect(TokenType.DEFAULT);
 
-      const node = this.openNode<IExportDefaultDeclaration>("ExportDefaultDeclaration");
+      const node = this.openNode<IExportDefaultDeclaration>('ExportDefaultDeclaration');
       node.declaration = this.classDeclaration();
       this.eat(TokenType.SEMICOLON);
 
@@ -1668,8 +1668,8 @@ export class Parser {
     }
   }
 
-  private exportClause(): IExportNamedDeclaration {
-    const node = this.openNode<IExportNamedDeclaration>("ExportNamedDeclaration");
+  private exportClause (): IExportNamedDeclaration {
+    const node = this.openNode<IExportNamedDeclaration>('ExportNamedDeclaration');
 
     node.declaration = null;
     node.source = null;
@@ -1686,7 +1686,7 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private exportsList(): IExportSpecifier[] {
+  private exportsList (): IExportSpecifier[] {
     const specifiers = [this.exportSpecifier()];
 
     while (this.eat(TokenType.COMMA)) {
@@ -1696,8 +1696,8 @@ export class Parser {
     return specifiers;
   }
 
-  private exportSpecifier(): IExportSpecifier {
-    const node = this.openNode<IExportSpecifier>("ExportSpecifier");
+  private exportSpecifier (): IExportSpecifier {
+    const node = this.openNode<IExportSpecifier>('ExportSpecifier');
 
     node.local = this.identifier();
     node.exported = node.local;
@@ -1708,9 +1708,9 @@ export class Parser {
     return this.closeNode(node);
   }
 
-  private program(): IProgram {
-    const node = this.openNode<IProgram>("Program");
-    node.sourceType = "module";
+  private program (): IProgram {
+    const node = this.openNode<IProgram>('Program');
+    node.sourceType = 'module';
     node.body = this.module();
 
     return this.closeNode(node);

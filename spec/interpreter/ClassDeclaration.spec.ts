@@ -1,8 +1,8 @@
-import { Interpreter } from "../../src/interpreter/Interpreter";
-import { Parser } from "../../src/parser/Parser";
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import { Parser } from '../../src/parser/Parser';
 
-describe("Iterum::Interpreter::ClassDeclaration", () => {
-  it("Should properly inherit from another class", () => {
+describe('Iterum::Interpreter::ClassDeclaration', () => {
+  it('Should properly inherit from another class', () => {
     const source = `
       class Animal {
         whoAmI() {
@@ -19,10 +19,10 @@ describe("Iterum::Interpreter::ClassDeclaration", () => {
     const ast = Parser.parse(source);
     const result = Interpreter.interpret(ast);
 
-    expect(result).toEqual("Animal");
+    expect(result).toEqual('Animal');
   });
 
-  it("Should properly override method in superclass", () => {
+  it('Should properly override method in superclass', () => {
     const source = `
       class Animal {
         whoAmI() {
@@ -43,6 +43,6 @@ describe("Iterum::Interpreter::ClassDeclaration", () => {
     const ast = Parser.parse(source);
     const result = Interpreter.interpret(ast);
 
-    expect(result).toEqual("Dog");
+    expect(result).toEqual('Dog');
   });
 });

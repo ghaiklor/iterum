@@ -1,9 +1,9 @@
-import { INode } from "../../ast/node/Node";
-import { IProgram } from "../../ast/programs/Program";
-import { Value } from "../../runtime/Value";
-import { ITraverseContext } from "../../traverser/Traverser";
+import { INode } from '../../ast/node/Node';
+import { IProgram } from '../../ast/programs/Program';
+import { Value } from '../../runtime/Value';
+import { ITraverseContext } from '../../traverser/Traverser';
 
-export function Program(n: INode, context: ITraverseContext): Value {
+export function Program (n: INode, context: ITraverseContext): Value {
   const node = n as IProgram;
   const body = node.body;
 

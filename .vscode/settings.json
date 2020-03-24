@@ -1,9 +1,11 @@
 {
   "cSpell.words": [
+    "Codacy",
     "Iterum",
     "Obrezkov",
     "Truthy",
     "codecov",
+    "eqeqeq",
     "finalizer",
     "ghaiklor",
     "gmail",
@@ -12,6 +14,11 @@
     "lexeme",
     "postversion",
     "preversion",
-    "quasis"
+    "printf",
+    "quasis",
+    "readonly",
+    "scanf",
+    "templating",
+    "tsbuildinfo"
   ]
 }

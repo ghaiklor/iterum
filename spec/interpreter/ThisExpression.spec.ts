@@ -1,8 +1,8 @@
-import { Interpreter } from "../../src/interpreter/Interpreter";
-import { Parser } from "../../src/parser/Parser";
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import { Parser } from '../../src/parser/Parser';
 
-describe("Iterum::Interpreter::ThisExpression", () => {
-  it("Should properly resolve this", () => {
+describe('Iterum::Interpreter::ThisExpression', () => {
+  it('Should properly resolve this', () => {
     const source = `
       class Point {
         sum() {

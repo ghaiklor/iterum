@@ -1,111 +1,111 @@
-import { IVariableDeclaration } from "../../../src/ast/declarations/VariableDeclaration";
-import { IVariableDeclarator } from "../../../src/ast/declarations/VariableDeclarator";
-import { IArrayExpression } from "../../../src/ast/expressions/ArrayExpression";
-import { IObjectExpression } from "../../../src/ast/expressions/ObjectExpression";
-import { ILiteral } from "../../../src/ast/literals/Literal";
-import { IIdentifier } from "../../../src/ast/miscellaneous/Identifier";
-import { IArrayPattern } from "../../../src/ast/patterns/ArrayPattern";
-import { IObjectPattern } from "../../../src/ast/patterns/ObjectPattern";
-import { IProgram } from "../../../src/ast/programs/Program";
-import { IProperty } from "../../../src/ast/properties/Property";
-import { IBlockStatement } from "../../../src/ast/statements/BlockStatement";
-import { Parser } from "../../../src/parser/Parser";
+import { IVariableDeclaration } from '../../../src/ast/declarations/VariableDeclaration';
+import { IVariableDeclarator } from '../../../src/ast/declarations/VariableDeclarator';
+import { IArrayExpression } from '../../../src/ast/expressions/ArrayExpression';
+import { IObjectExpression } from '../../../src/ast/expressions/ObjectExpression';
+import { ILiteral } from '../../../src/ast/literals/Literal';
+import { IIdentifier } from '../../../src/ast/miscellaneous/Identifier';
+import { IArrayPattern } from '../../../src/ast/patterns/ArrayPattern';
+import { IObjectPattern } from '../../../src/ast/patterns/ObjectPattern';
+import { IProgram } from '../../../src/ast/programs/Program';
+import { IProperty } from '../../../src/ast/properties/Property';
+import { IBlockStatement } from '../../../src/ast/statements/BlockStatement';
+import { Parser } from '../../../src/parser/Parser';
 
-describe("Iterum::Parser::VariableDeclaration", () => {
-  it("Should properly parse variable with initializer", () => {
-    const source = `var a = 2;`;
+describe('Iterum::Parser::VariableDeclaration', () => {
+  it('Should properly parse variable with initializer', () => {
+    const source = 'var a = 2;';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
       body: [{
         declarations: [{
-          id: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-          init: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+          id: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+          init: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse let with initializer", () => {
-    const source = `let a = 2;`;
+  it('Should properly parse let with initializer', () => {
+    const source = 'let a = 2;';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
       body: [{
         declarations: [{
-          id: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-          init: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+          id: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+          init: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse const with initializer", () => {
-    const source = `const a = 2;`;
+  it('Should properly parse const with initializer', () => {
+    const source = 'const a = 2;';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
       body: [{
         declarations: [{
-          id: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-          init: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+          id: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+          init: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse multiple variable declarator with initializer", () => {
-    const source = `var a, b = 2;`;
+  it('Should properly parse multiple variable declarator with initializer', () => {
+    const source = 'var a, b = 2;';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
       body: [{
         declarations: [
           {
-            id: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+            id: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
             init: null,
             loc: null,
-            type: "VariableDeclarator",
+            type: 'VariableDeclarator'
           } as IVariableDeclarator,
           {
-            id: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
-            init: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+            id: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier,
+            init: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral,
             loc: null,
-            type: "VariableDeclarator",
-          } as IVariableDeclarator,
+            type: 'VariableDeclarator'
+          } as IVariableDeclarator
         ],
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse variable declaration with object binding pattern", () => {
-    const source = `let { a } = { a: 2 };`;
+  it('Should properly parse variable declaration with object binding pattern (with let)', () => {
+    const source = 'let { a } = { a: 2 };';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -115,45 +115,45 @@ describe("Iterum::Parser::VariableDeclaration", () => {
             loc: null,
             properties: [{
               computed: false,
-              key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-              kind: "init",
+              key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+              kind: 'init',
               loc: null,
               method: false,
               shorthand: true,
-              type: "Property",
-              value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+              type: 'Property',
+              value: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier
             } as IProperty],
-            type: "ObjectPattern",
+            type: 'ObjectPattern'
           } as IObjectPattern,
           init: {
             loc: null,
             properties: [{
               computed: false,
-              key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-              kind: "init",
+              key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+              kind: 'init',
               loc: null,
               method: false,
               shorthand: false,
-              type: "Property",
-              value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              type: 'Property',
+              value: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral
             } as IProperty],
-            type: "ObjectExpression",
+            type: 'ObjectExpression'
           } as IObjectExpression,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
-        kind: "let",
+        kind: 'let',
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse variable declaration with object binding pattern", () => {
-    const source = `var { a } = { a: 2 };`;
+  it('Should properly parse variable declaration with object binding pattern (with var)', () => {
+    const source = 'var { a } = { a: 2 };';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -163,45 +163,45 @@ describe("Iterum::Parser::VariableDeclaration", () => {
             loc: null,
             properties: [{
               computed: false,
-              key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-              kind: "init",
+              key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+              kind: 'init',
               loc: null,
               method: false,
               shorthand: true,
-              type: "Property",
-              value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+              type: 'Property',
+              value: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier
             } as IProperty],
-            type: "ObjectPattern",
+            type: 'ObjectPattern'
           } as IObjectPattern,
           init: {
             loc: null,
             properties: [{
               computed: false,
-              key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-              kind: "init",
+              key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+              kind: 'init',
               loc: null,
               method: false,
               shorthand: false,
-              type: "Property",
-              value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              type: 'Property',
+              value: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral
             } as IProperty],
-            type: "ObjectExpression",
+            type: 'ObjectExpression'
           } as IObjectExpression,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
-        kind: "var",
+        kind: 'var',
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse variable declaration with object binding pattern (kind const)", () => {
-    const source = `const { a } = { a: 2 };`;
+  it('Should properly parse variable declaration with object binding pattern (kind const)', () => {
+    const source = 'const { a } = { a: 2 };';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -211,45 +211,45 @@ describe("Iterum::Parser::VariableDeclaration", () => {
             loc: null,
             properties: [{
               computed: false,
-              key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-              kind: "init",
+              key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+              kind: 'init',
               loc: null,
               method: false,
               shorthand: true,
-              type: "Property",
-              value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+              type: 'Property',
+              value: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier
             } as IProperty],
-            type: "ObjectPattern",
+            type: 'ObjectPattern'
           } as IObjectPattern,
           init: {
             loc: null,
             properties: [{
               computed: false,
-              key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-              kind: "init",
+              key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+              kind: 'init',
               loc: null,
               method: false,
               shorthand: false,
-              type: "Property",
-              value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              type: 'Property',
+              value: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral
             } as IProperty],
-            type: "ObjectExpression",
+            type: 'ObjectExpression'
           } as IObjectExpression,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
-        kind: "const",
+        kind: 'const',
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse variable declaration with array binding pattern", () => {
-    const source = `let [ a ] = [ 1 ];`;
+  it('Should properly parse variable declaration with array binding pattern', () => {
+    const source = 'let [ a ] = [ 1 ];';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -257,33 +257,33 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         declarations: [{
           id: {
             elements: [
-              { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+              { type: 'Identifier', loc: null, name: 'a' } as IIdentifier
             ],
             loc: null,
-            type: "ArrayPattern",
+            type: 'ArrayPattern'
           } as IArrayPattern,
           init: {
             elements: [
-              { type: "Literal", loc: null, value: 1, raw: "1" } as ILiteral,
+              { type: 'Literal', loc: null, value: 1, raw: '1' } as ILiteral
             ],
             loc: null,
-            type: "ArrayExpression",
+            type: 'ArrayExpression'
           } as IArrayExpression,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
-        kind: "let",
+        kind: 'let',
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse variable declaration with object binding pattern (different key/value)", () => {
-    const source = `let { a: c } = { a: 2 };`;
+  it('Should properly parse variable declaration with object binding pattern (different key/value)', () => {
+    const source = 'let { a: c } = { a: 2 };';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -293,45 +293,45 @@ describe("Iterum::Parser::VariableDeclaration", () => {
             loc: null,
             properties: [{
               computed: false,
-              key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-              kind: "init",
+              key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+              kind: 'init',
               loc: null,
               method: false,
               shorthand: false,
-              type: "Property",
-              value: { type: "Identifier", loc: null, name: "c" } as IIdentifier,
+              type: 'Property',
+              value: { type: 'Identifier', loc: null, name: 'c' } as IIdentifier
             } as IProperty],
-            type: "ObjectPattern",
+            type: 'ObjectPattern'
           } as IObjectPattern,
           init: {
             loc: null,
             properties: [{
               computed: false,
-              key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-              kind: "init",
+              key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+              kind: 'init',
               loc: null,
               method: false,
               shorthand: false,
-              type: "Property",
-              value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              type: 'Property',
+              value: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral
             } as IProperty],
-            type: "ObjectExpression",
+            type: 'ObjectExpression'
           } as IObjectExpression,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
-        kind: "let",
+        kind: 'let',
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse variable declaration with object binding pattern (empty)", () => {
-    const source = `let { } = { a: 2 };`;
+  it('Should properly parse variable declaration with object binding pattern (empty)', () => {
+    const source = 'let { } = { a: 2 };';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -340,37 +340,37 @@ describe("Iterum::Parser::VariableDeclaration", () => {
           id: {
             loc: null,
             properties: [],
-            type: "ObjectPattern",
+            type: 'ObjectPattern'
           } as IObjectPattern,
           init: {
             loc: null,
             properties: [{
               computed: false,
-              key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-              kind: "init",
+              key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+              kind: 'init',
               loc: null,
               method: false,
               shorthand: false,
-              type: "Property",
-              value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              type: 'Property',
+              value: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral
             } as IProperty],
-            type: "ObjectExpression",
+            type: 'ObjectExpression'
           } as IObjectExpression,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
-        kind: "let",
+        kind: 'let',
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse variable declaration with array binding pattern (empty)", () => {
-    const source = `let [ ] = [ 1 ];`;
+  it('Should properly parse variable declaration with array binding pattern (empty)', () => {
+    const source = 'let [ ] = [ 1 ];';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -379,30 +379,30 @@ describe("Iterum::Parser::VariableDeclaration", () => {
           id: {
             elements: [],
             loc: null,
-            type: "ArrayPattern",
+            type: 'ArrayPattern'
           } as IArrayPattern,
           init: {
             elements: [
-              { type: "Literal", loc: null, value: 1, raw: "1" } as ILiteral,
+              { type: 'Literal', loc: null, value: 1, raw: '1' } as ILiteral
             ],
             loc: null,
-            type: "ArrayExpression",
+            type: 'ArrayExpression'
           } as IArrayExpression,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
-        kind: "let",
+        kind: 'let',
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse variable declaration with array binding pattern (multiple variables)", () => {
-    const source = `let [ a, b ] = [ 1, 2 ];`;
+  it('Should properly parse variable declaration with array binding pattern (multiple variables)', () => {
+    const source = 'let [ a, b ] = [ 1, 2 ];';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -410,35 +410,35 @@ describe("Iterum::Parser::VariableDeclaration", () => {
         declarations: [{
           id: {
             elements: [
-              { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-              { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+              { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+              { type: 'Identifier', loc: null, name: 'b' } as IIdentifier
             ],
             loc: null,
-            type: "ArrayPattern",
+            type: 'ArrayPattern'
           } as IArrayPattern,
           init: {
             elements: [
-              { type: "Literal", loc: null, value: 1, raw: "1" } as ILiteral,
-              { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+              { type: 'Literal', loc: null, value: 1, raw: '1' } as ILiteral,
+              { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral
             ],
             loc: null,
-            type: "ArrayExpression",
+            type: 'ArrayExpression'
           } as IArrayExpression,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
-        kind: "let",
+        kind: 'let',
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse variable declaration with object binding pattern (multiple variables)", () => {
-    const source = `let { a, b } = { a: 2, b: 3 };`;
+  it('Should properly parse variable declaration with object binding pattern (multiple variables)', () => {
+    const source = 'let { a, b } = { a: 2, b: 3 };';
     const ast = Parser.parse(source);
 
     expect(ast).toMatchObject({
@@ -449,67 +449,67 @@ describe("Iterum::Parser::VariableDeclaration", () => {
             properties: [
               {
                 computed: false,
-                key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-                kind: "init",
+                key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+                kind: 'init',
                 loc: null,
                 method: false,
                 shorthand: true,
-                type: "Property",
-                value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+                type: 'Property',
+                value: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier
               } as IProperty,
               {
                 computed: false,
-                key: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
-                kind: "init",
+                key: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier,
+                kind: 'init',
                 loc: null,
                 method: false,
                 shorthand: true,
-                type: "Property",
-                value: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
-              } as IProperty,
+                type: 'Property',
+                value: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier
+              } as IProperty
             ],
-            type: "ObjectPattern",
+            type: 'ObjectPattern'
           } as IObjectPattern,
           init: {
             loc: null,
             properties: [
               {
                 computed: false,
-                key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-                kind: "init",
+                key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+                kind: 'init',
                 loc: null,
                 method: false,
                 shorthand: false,
-                type: "Property",
-                value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+                type: 'Property',
+                value: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral
               } as IProperty,
               {
                 computed: false,
-                key: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
-                kind: "init",
+                key: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier,
+                kind: 'init',
                 loc: null,
                 method: false,
                 shorthand: false,
-                type: "Property",
-                value: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
-              } as IProperty,
+                type: 'Property',
+                value: { type: 'Literal', loc: null, value: 3, raw: '3' } as ILiteral
+              } as IProperty
             ],
-            type: "ObjectExpression",
+            type: 'ObjectExpression'
           } as IObjectExpression,
           loc: null,
-          type: "VariableDeclarator",
+          type: 'VariableDeclarator'
         } as IVariableDeclarator],
-        kind: "let",
+        kind: 'let',
         loc: null,
-        type: "VariableDeclaration",
+        type: 'VariableDeclaration'
       } as IVariableDeclaration],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse lexical declaration inside block statement", () => {
+  it('Should properly parse lexical declaration inside block statement', () => {
     const source = `
       {
         const { a, b } = { a: 2, b: 3 };
@@ -527,70 +527,70 @@ describe("Iterum::Parser::VariableDeclaration", () => {
               properties: [
                 {
                   computed: false,
-                  key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-                  kind: "init",
+                  key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+                  kind: 'init',
                   loc: null,
                   method: false,
                   shorthand: true,
-                  type: "Property",
-                  value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
+                  type: 'Property',
+                  value: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier
                 } as IProperty,
                 {
                   computed: false,
-                  key: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
-                  kind: "init",
+                  key: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier,
+                  kind: 'init',
                   loc: null,
                   method: false,
                   shorthand: true,
-                  type: "Property",
-                  value: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
-                } as IProperty,
+                  type: 'Property',
+                  value: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier
+                } as IProperty
               ],
-              type: "ObjectPattern",
+              type: 'ObjectPattern'
             } as IObjectPattern,
             init: {
               loc: null,
               properties: [
                 {
                   computed: false,
-                  key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-                  kind: "init",
+                  key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+                  kind: 'init',
                   loc: null,
                   method: false,
                   shorthand: false,
-                  type: "Property",
-                  value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
+                  type: 'Property',
+                  value: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral
                 } as IProperty,
                 {
                   computed: false,
-                  key: { type: "Identifier", loc: null, name: "b" } as IIdentifier,
-                  kind: "init",
+                  key: { type: 'Identifier', loc: null, name: 'b' } as IIdentifier,
+                  kind: 'init',
                   loc: null,
                   method: false,
                   shorthand: false,
-                  type: "Property",
-                  value: { type: "Literal", loc: null, value: 3, raw: "3" } as ILiteral,
-                } as IProperty,
+                  type: 'Property',
+                  value: { type: 'Literal', loc: null, value: 3, raw: '3' } as ILiteral
+                } as IProperty
               ],
-              type: "ObjectExpression",
+              type: 'ObjectExpression'
             } as IObjectExpression,
             loc: null,
-            type: "VariableDeclarator",
+            type: 'VariableDeclarator'
           } as IVariableDeclarator],
-          kind: "const",
+          kind: 'const',
           loc: null,
-          type: "VariableDeclaration",
+          type: 'VariableDeclaration'
         } as IVariableDeclaration],
         loc: null,
-        type: "BlockStatement",
+        type: 'BlockStatement'
       } as IBlockStatement],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 
-  it("Should properly parse multiple lexical declarations inside block statement", () => {
+  it('Should properly parse multiple lexical declarations inside block statement', () => {
     const source = `
       {
         const { a } = { a: 2 }, [ b ] = [ 5 ];
@@ -609,65 +609,65 @@ describe("Iterum::Parser::VariableDeclaration", () => {
                 properties: [
                   {
                     computed: false,
-                    key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-                    kind: "init",
+                    key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+                    kind: 'init',
                     loc: null,
                     method: false,
                     shorthand: true,
-                    type: "Property",
-                    value: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-                  } as IProperty,
+                    type: 'Property',
+                    value: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier
+                  } as IProperty
                 ],
-                type: "ObjectPattern",
+                type: 'ObjectPattern'
               } as IObjectPattern,
               init: {
                 loc: null,
                 properties: [
                   {
                     computed: false,
-                    key: { type: "Identifier", loc: null, name: "a" } as IIdentifier,
-                    kind: "init",
+                    key: { type: 'Identifier', loc: null, name: 'a' } as IIdentifier,
+                    kind: 'init',
                     loc: null,
                     method: false,
                     shorthand: false,
-                    type: "Property",
-                    value: { type: "Literal", loc: null, value: 2, raw: "2" } as ILiteral,
-                  } as IProperty,
+                    type: 'Property',
+                    value: { type: 'Literal', loc: null, value: 2, raw: '2' } as ILiteral
+                  } as IProperty
                 ],
-                type: "ObjectExpression",
+                type: 'ObjectExpression'
               } as IObjectExpression,
               loc: null,
-              type: "VariableDeclarator",
+              type: 'VariableDeclarator'
             } as IVariableDeclarator,
             {
               id: {
                 elements: [
-                  { type: "Identifier", loc: null, name: "b" } as IIdentifier,
+                  { type: 'Identifier', loc: null, name: 'b' } as IIdentifier
                 ],
                 loc: null,
-                type: "ArrayPattern",
+                type: 'ArrayPattern'
               } as IArrayPattern,
               init: {
                 elements: [
-                  { type: "Literal", loc: null, value: 5, raw: "5" } as ILiteral,
+                  { type: 'Literal', loc: null, value: 5, raw: '5' } as ILiteral
                 ],
                 loc: null,
-                type: "ArrayExpression",
+                type: 'ArrayExpression'
               } as IArrayExpression,
               loc: null,
-              type: "VariableDeclarator",
-            } as IVariableDeclarator,
+              type: 'VariableDeclarator'
+            } as IVariableDeclarator
           ],
-          kind: "const",
+          kind: 'const',
           loc: null,
-          type: "VariableDeclaration",
+          type: 'VariableDeclaration'
         } as IVariableDeclaration],
         loc: null,
-        type: "BlockStatement",
+        type: 'BlockStatement'
       } as IBlockStatement],
       loc: null,
-      sourceType: "module",
-      type: "Program",
+      sourceType: 'module',
+      type: 'Program'
     } as IProgram);
   });
 });

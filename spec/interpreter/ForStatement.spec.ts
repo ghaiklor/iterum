@@ -1,8 +1,8 @@
-import { Interpreter } from "../../src/interpreter/Interpreter";
-import { Parser } from "../../src/parser/Parser";
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import { Parser } from '../../src/parser/Parser';
 
-describe("Iterum::Interpreter::ForStatement", () => {
-  it("Should properly interpret for statement", () => {
+describe('Iterum::Interpreter::ForStatement', () => {
+  it('Should properly interpret for statement', () => {
     const source = `
       let b = 0;
 

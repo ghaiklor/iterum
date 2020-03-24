@@ -1,7 +1,7 @@
-import { IExpression } from "../expressions/Expression";
-import { IStatement } from "./Statement";
+import { IExpression } from '../expressions/Expression';
+import { IStatement } from './Statement';
 
 export interface IExpressionStatement extends IStatement {
-  type: "ExpressionStatement";
-  expression: IExpression;
+  type: 'ExpressionStatement'
+  expression: IExpression
 }

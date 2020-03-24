@@ -1,5 +1,5 @@
 {
-  "collectCoverage": false,
+  "collectCoverage": true,
   "collectCoverageFrom": [
     "./src/**/*.ts",
     "!./src/cli/*.ts"
@@ -14,13 +14,9 @@
     }
   },
   "errorOnDeprecated": true,
-  "maxConcurrency": 10,
-  "notify": false,
-  "notifyMode": "failure-change",
   "preset": "ts-jest",
   "testEnvironment": "node",
   "testMatch": [
     "**/?(*.)+(spec|test).[jt]s?(x)"
-  ],
-  "verbose": false
+  ]
 }

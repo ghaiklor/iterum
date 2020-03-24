@@ -1,8 +1,8 @@
-import { ILiteral } from "../literals/Literal";
-import { IExpression } from "./Expression";
+import { ILiteral } from '../literals/Literal';
+import { IExpression } from './Expression';
 
 export interface IGraphExpression extends IExpression {
-  type: "GraphExpression";
-  index: number;
-  expression: ILiteral;
+  type: 'GraphExpression'
+  index: number
+  expression: ILiteral
 }

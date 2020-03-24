@@ -1,174 +1,175 @@
-import { ValueKind } from "./ValueKind";
+import { ValueKind } from './ValueKind';
 
 export abstract class Value {
   public data: any;
-  private kind: ValueKind;
-  constructor(kind: ValueKind, data: any) {
+  private readonly kind: ValueKind;
+  constructor (kind: ValueKind, data: any) {
     this.kind = kind;
     this.data = data;
   }
 
-  public equals(that: Value): boolean {
-    // tslint:disable-next-line: triple-equals
+  public equals (that: Value): boolean {
+    // eslint-disable-next-line eqeqeq
     return this.data == that.data;
   }
 
-  public strictEquals(that: Value): boolean {
+  public strictEquals (that: Value): boolean {
     return this.data === that.data;
   }
 
-  public sameValue(that: Value): boolean {
+  public sameValue (that: Value): boolean {
     return this === that;
   }
 
-  public typeOf(): string {
+  public typeOf (): string {
     return ValueKind[this.kind].toLowerCase();
   }
 
-  public instanceOf(that: Value): boolean {
-    if (this.typeOf() === "object" && that.typeOf() === "object") {
+  public instanceOf (that: Value): boolean {
+    if (this.typeOf() === 'object' && that.typeOf() === 'object') {
       return this.data.constructor === that.data.constructor;
     }
 
     return false;
   }
 
-  public is(kind: ValueKind): boolean {
+  public is (kind: ValueKind): boolean {
     return this.kind === kind;
   }
 
-  public isNull(): boolean {
+  public isNull (): boolean {
     return this.is(ValueKind.NULL);
   }
 
-  public isTrue(): boolean {
+  public isTrue (): boolean {
     return this.is(ValueKind.BOOLEAN) && this.data === true;
   }
 
-  public isFalse(): boolean {
+  public isFalse (): boolean {
     return this.is(ValueKind.BOOLEAN) && this.data === false;
   }
 
-  public isString(): boolean {
+  public isString (): boolean {
     return this.is(ValueKind.STRING);
   }
 
-  public isFunction(): boolean {
+  public isFunction (): boolean {
     return this.is(ValueKind.FUNCTION);
   }
 
-  public isArray(): boolean {
+  public isArray (): boolean {
     return this.is(ValueKind.ARRAY);
   }
 
-  public isObject(): boolean {
+  public isObject (): boolean {
     return this.is(ValueKind.OBJECT);
   }
 
-  public isClass(): boolean {
+  public isClass (): boolean {
     return this.is(ValueKind.CLASS);
   }
 
-  public isInstance(): boolean {
+  public isInstance (): boolean {
     return this.is(ValueKind.INSTANCE);
   }
 
-  public isBoolean(): boolean {
+  public isBoolean (): boolean {
     return this.is(ValueKind.BOOLEAN);
   }
 
-  public isNumber(): boolean {
+  public isNumber (): boolean {
     return this.is(ValueKind.NUMBER);
   }
 
-  public isRegExp(): boolean {
+  public isRegExp (): boolean {
     return this.is(ValueKind.REGEXP);
   }
 
-  public toBoolean(): boolean {
-    return !!this.data;
+  public toBoolean (): boolean {
+    return !!(this.data as boolean);
   }
 
-  public toNumber(): number {
+  public toNumber (): number {
     // tslint:disable-next-line: no-bitwise
     return this.data | 0;
   }
 
-  public toString(): string {
-    return "" + this.data;
+  public toString (): string {
+    return `${String(this.data)}`;
   }
 
-  public toObject(): object {
+  public toObject (): object {
     return this.data;
   }
 
-  public toInteger(): number {
+  public toInteger (): number {
     return parseInt(this.data, 10);
   }
 
-  public plus(that: Value): number {
+  public plus (that: Value): number {
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     return this.data + that.data;
   }
 
-  public minus(that: Value): number {
+  public minus (that: Value): number {
     return this.data - that.data;
   }
 
-  public multiply(that: Value): number {
+  public multiply (that: Value): number {
     return this.data * that.data;
   }
 
-  public exponentiation(that: Value): number {
+  public exponentiation (that: Value): number {
     return Math.pow(this.data, that.data);
   }
 
-  public divide(that: Value): number {
+  public divide (that: Value): number {
     return this.data / that.data;
   }
 
-  public modulus(that: Value): number {
+  public modulus (that: Value): number {
     return this.data % that.data;
   }
 
-  public bitwiseShiftToLeft(that: Value): number {
+  public bitwiseShiftToLeft (that: Value): number {
     // tslint:disable-next-line: no-bitwise
     return this.data << that.data;
   }
 
-  public bitwiseShiftToRight(that: Value): number {
+  public bitwiseShiftToRight (that: Value): number {
     // tslint:disable-next-line: no-bitwise
     return this.data >> that.data;
   }
 
-  public bitwiseLogicalShiftToRight(that: Value): number {
+  public bitwiseLogicalShiftToRight (that: Value): number {
     // tslint:disable-next-line: no-bitwise
     return this.data >>> that.data;
   }
 
-  public bitwiseOr(that: Value): number {
+  public bitwiseOr (that: Value): number {
     // tslint:disable-next-line: no-bitwise
     return this.data | that.data;
   }
 
-  public bitwiseXor(that: Value): number {
+  public bitwiseXor (that: Value): number {
     // tslint:disable-next-line: no-bitwise
     return this.data ^ that.data;
   }
 
-  public bitwiseAnd(that: Value): number {
+  public bitwiseAnd (that: Value): number {
     // tslint:disable-next-line: no-bitwise
     return this.data & that.data;
   }
 
-  public lessThan(that: Value): boolean {
+  public lessThan (that: Value): boolean {
     return this.data < that.data;
   }
 
-  public greaterThan(that: Value): boolean {
+  public greaterThan (that: Value): boolean {
     return this.data > that.data;
   }
 
-  public in(that: Value): boolean {
+  public in (that: Value): boolean {
     return this.data in that.data;
   }
 }

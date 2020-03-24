@@ -31,7 +31,7 @@ npm test
 Furthermore, if you want to make the whole pipeline of checks, call:
 
 ```bash
-npm run build
+npm run all
 ```
 
 We have ECMA-262 tests for parser as well.
@@ -57,7 +57,7 @@ npm run commit
 
 ## Coding conventions
 
-We are using recommended preset from `tslint` for our coding conventions.
+We are using recommended preset from `eslint` for our coding conventions.
 Start reading our code and you'll get the hang of it.
 
 In case, you are not sure about some styling in your code, you can check it by calling:

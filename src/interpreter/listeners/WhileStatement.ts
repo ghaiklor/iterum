@@ -1,10 +1,10 @@
-import { INode } from "../../ast/node/Node";
-import { IWhileStatement } from "../../ast/statements/WhileStatement";
-import { NullValue } from "../../runtime/primitives/NullValue";
-import { Value } from "../../runtime/Value";
-import { ITraverseContext } from "../../traverser/Traverser";
+import { INode } from '../../ast/node/Node';
+import { IWhileStatement } from '../../ast/statements/WhileStatement';
+import { NullValue } from '../../runtime/primitives/NullValue';
+import { Value } from '../../runtime/Value';
+import { ITraverseContext } from '../../traverser/Traverser';
 
-export function WhileStatement(n: INode, context: ITraverseContext): Value {
+export function WhileStatement (n: INode, context: ITraverseContext): Value {
   const { traverser } = context;
   const node = n as IWhileStatement;
 
