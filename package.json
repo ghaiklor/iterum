@@ -51,7 +51,7 @@
     "version": "npm run changelog && git add CHANGELOG.md"
   },
   "dependencies": {
-    "commander": "5.0.0"
+    "commander": "5.1.0"
   },
   "devDependencies": {
     "@types/jest": "25.1.4",
