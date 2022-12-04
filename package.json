@@ -72,7 +72,7 @@
     "rimraf": "3.0.2",
     "standard-changelog": "2.0.27",
     "test262-parser-tests": "github:tc39/test262-parser-tests",
-    "ts-jest": "25.2.1",
+    "ts-jest": "25.5.1",
     "typescript": "3.8.3"
   }
 }
